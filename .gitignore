@@ -1,6 +1,5 @@
 # Miscellaneous
 *.class
-*.lock
 *.log
 *.pyc
 *.swp
@@ -16,67 +15,42 @@
 *.iws
 .idea/
 
-# Visual Studio Code related
-.classpath
-.project
-.settings/
-.vscode/
+# IDEs and other tools (usually the default Flutter template includes this)
+.config/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
+**/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
-**/generated_plugin_registrant.dart
 .packages
-.pub-preload-cache/
 .pub-cache/
 .pub/
-build/
-flutter_*.png
-linked_*.ds
-/ios/Flutter/App.framework
-/ios/Flutter/engine.version
-/ios/Flutter/flutter_assets/
-/ios/Flutter/vm_snapshot_data
-/ios/Flutter/isolate_snapshot_data
-/ios/Runner/GeneratedPluginRegistrant.*
-/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
-/android/key.properties
-/android/.gradle
-/android/app/build
-/android/build
-/web/build
-/linux/build
-/windows/build
-/macos/build
-/macos/Flutter/ephemeral
+/build/
 
-# Generated files
+# Web related
 lib/generated_plugin_registrant.dart
 
-# Obfuscated files
-/app.so
-/app.dill
+# Symbolication related
+app.*.symbols
 
-# Android Studio
-captures/
-.externalNativeBuild
-.cxx
-*.apk
-*.aab
-*.jar
-*.jks
+# Obfuscation related
+app.*.map.json
 
-# Xcode
-*.moved-aside
-DerivedData/
-.hmap
-.ipa
-.xcarchive
-*.xccheckout
-*.xcscheme
-*.xcworkspace
-xcuserdata/
-# CocoaPods
-Pods/
-Podfile.lock
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Private Key
+private_key.pepk
+
+# ios 使わない
+/ios/
+
