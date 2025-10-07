@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'models/calendar_settings.dart';
+import 'models/calendar_item.dart';
+import 'models/calendar_records.dart';
+import 'widgets/calendar_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,59 +14,52 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Calendar App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // --- サンプルデータ ---
+    final settings = CalendarSettings();
+
+    final items = [
+      CalendarItem(id: 1, name: 'Work'),
+      CalendarItem(id: 2, name: 'Personal', itemColorHex: '#ff7f0e'),
+      CalendarItem(id: 3, name: 'Workout', icon: Icons.fitness_center),
+      CalendarItem(id: 9, name: 'Meeting', itemColorHex: '#d62728'),
+    ];
+
+    final today = DateTime.now();
+    final records = CalendarRecords(records: {
+      DateTime(today.year, today.month, 2): [1, 3],
+      DateTime(today.year, today.month, 10): [2],
+      DateTime(today.year, today.month, 11): [1, 2, 9],
+      DateTime(today.year, today.month, 25): [3],
+    });
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Calendar Demo'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        // CalendarWidgetにサンプルデータを渡して表示
+        child: CalendarWidget(
+          settings: settings,
+          items: items,
+          records: records,
+          // 表示範囲はデフォルト（今月1日から来月1日）
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
