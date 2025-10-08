@@ -31,4 +31,17 @@ class CalendarSettings {
     '#aec7e8': const Color(0xFFaec7e8), // 薄ブルー
     '#ffbb78': const Color(0xFFffbb78), // 薄オレンジ
   };
+
+  // 状態の更新を容易にするためのcopyWithメソッド
+  CalendarSettings copyWith({
+    Map<String, Color>? itemColorPalette,
+    Color? disabledItemColor,
+    int? startOfWeek,
+  }) {
+    return CalendarSettings(
+      itemColorPalette: itemColorPalette ?? this.itemColorPalette,
+      disabledItemColor: disabledItemColor ?? this.disabledItemColor,
+      startOfWeek: startOfWeek ?? this.startOfWeek,
+    );
+  }
 }
