@@ -105,12 +105,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: CalendarWidget(
-        settings: provider.settings,
-        items: provider.items,
-        records: provider.records,
-        onVisibleMonthChanged: _handleVisibleMonthChanged,
-        displayMonth: _displayMonth ?? DateTime.now(), // nullの場合は仮の値を渡す
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: CalendarWidget(
+          settings: provider.settings,
+          items: provider.items,
+          records: provider.records,
+          onVisibleMonthChanged: _handleVisibleMonthChanged,
+          displayMonth: _displayMonth ?? DateTime.now(), // nullの場合は仮の値を渡す
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
