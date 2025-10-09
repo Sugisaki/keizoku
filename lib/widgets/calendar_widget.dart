@@ -59,6 +59,63 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant CalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // recordsデータが非同期でロードされ、更新された場合に週を再生成する
+    if (widget.records != oldWidget.records) {
+      print("[DEBUG] Records updated. Regenerating weeks.");
+      setState(() {
+        _generateAllWeeks();
+      });
+      // 週が再生成された後、再度一番下にスクロールする
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          print("[DEBUG] Jumped to bottom after records update.");
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // recordsデータが非同期でロードされ、更新された場合に週を再生成する
+    if (widget.records != oldWidget.records) {
+      print("[DEBUG] Records updated. Regenerating weeks.");
+      setState(() {
+        _generateAllWeeks();
+      });
+      // 週が再生成された後、再度一番下にスクロールする
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          print("[DEBUG] Jumped to bottom after records update.");
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // recordsデータが非同期でロードされ、更新された場合に週を再生成する
+    if (widget.records != oldWidget.records) {
+      print("[DEBUG] Records updated. Regenerating weeks.");
+      setState(() {
+        _generateAllWeeks();
+      });
+      // 週が再生成された後、再度一番下にスクロールする
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          print("[DEBUG] Jumped to bottom after records update.");
+        }
+      });
+    }
+  }
+
   void _scrollListener() {
     print("[DEBUG] Scroll listener: Pixels: ${_scrollController.position.pixels}, Min: ${_scrollController.position.minScrollExtent}, Max: ${_scrollController.position.maxScrollExtent}");
     if (_scrollController.hasClients) {
