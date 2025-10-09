@@ -36,10 +36,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     _generateInitialWeeks();
     _scrollController.addListener(_scrollListener);
 
-    // 初期表示の年月を通知
+    // 初期スクロール位置の設定と、初期表示の年月の通知
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_weeks.isNotEmpty) {
-        widget.onVisibleMonthChanged(_weeks.first.first);
+      if (_scrollController.hasClients && _weeks.isNotEmpty) {
+        // 初期表示の年月を「今月」に設定
+        widget.onVisibleMonthChanged(DateTime.now());
+        // リストの一番下（最新の週）までジャンプしてスクロール可能にする
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       }
     });
   }
