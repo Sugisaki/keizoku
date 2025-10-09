@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'models/calendar_settings.dart';
@@ -12,11 +13,9 @@ import 'screens/settings_screen.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
 
-void main() async { // asyncに変更
-  // Flutterのネイティブコード呼び出しを保証
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // リポジトリのインスタンスをLocal実装に切り替え
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
 
@@ -55,21 +54,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  DateTime _displayMonth = DateTime.now();
+
+  // CalendarWidgetから表示月が変更されたときに呼び出されるコールバック
+  void _handleVisibleMonthChanged(DateTime date) {
+    // スクロールによる頻繁なUI更新を防ぐため、年月が実際に変更された場合のみ更新
+    if (date.year != _displayMonth.year || date.month != _displayMonth.month) {
+      setState(() {
+        _displayMonth = date;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // initState内でProviderのデータを非同期にロードする
-    // listen: falseを指定して、ビルドの再実行をトリガーしないようにする
     Provider.of<CalendarProvider>(context, listen: false).loadData();
   }
 
-  // 記録追加ダイアログを表示するメソッド
   void _showAddRecordDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        // 親のcontextからProviderをダイアログに渡す
         return ChangeNotifierProvider.value(
           value: context.read<CalendarProvider>(),
           child: const AddRecordDialog(),
@@ -80,12 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Providerから最新の状態を取得してUIを再構築
     final provider = context.watch<CalendarProvider>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar Demo'),
+        // タイトルをスクロールに応じて動的に変更
+        title: Text(DateFormat('yyyy年 M月').format(_displayMonth)),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -99,12 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: CalendarWidget(
-            settings: provider.settings,
-            items: provider.items,
-            records: provider.records,
-          ),
+        // 不要になったSingleChildScrollViewを削除し、コールバックを渡す
+        child: CalendarWidget(
+          settings: provider.settings,
+          items: provider.items,
+          records: provider.records,
+          onVisibleMonthChanged: _handleVisibleMonthChanged,
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -116,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// 記録追加ダイアログの本体
+// （AddRecordDialogの実装は変更なし）
 class AddRecordDialog extends StatefulWidget {
   const AddRecordDialog({super.key});
 
@@ -129,7 +135,6 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Providerから事柄リストを取得（このダイアログはwatchする必要はない）
     final provider = context.read<CalendarProvider>();
     final items = provider.items;
 
@@ -165,7 +170,6 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
         TextButton(
           child: const Text('Save'),
           onPressed: () {
-            // 保存処理をProviderに依頼する
             provider.addRecordsForToday(_selectedItemIds.toList());
             Navigator.of(context).pop();
           },

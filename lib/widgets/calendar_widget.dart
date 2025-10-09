@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:collection';
 import '../models/calendar_item.dart';
 import '../models/calendar_records.dart';
 import '../models/calendar_settings.dart';
@@ -9,16 +10,14 @@ class CalendarWidget extends StatefulWidget {
   final CalendarSettings settings;
   final List<CalendarItem> items;
   final CalendarRecords records;
-  final DateTime? startDate;
-  final DateTime? endDate;
+  final Function(DateTime) onVisibleMonthChanged;
 
   const CalendarWidget({
     super.key,
     required this.settings,
     required this.items,
     required this.records,
-    this.startDate,
-    this.endDate,
+    required this.onVisibleMonthChanged,
   });
 
   @override
@@ -26,73 +25,93 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  late List<List<DateTime>> _weeks;
-  late DateTime _displayMonth;
+  final ScrollController _scrollController = ScrollController();
+  // 週リスト。過去の週を効率的に追加するため、双方向キューを使用
+  final ListQueue<List<DateTime>> _weeks = ListQueue();
+  bool _isScrolling = false;
 
   @override
   void initState() {
     super.initState();
-    _calculateCalendar();
-  }
+    _generateInitialWeeks();
+    _scrollController.addListener(_scrollListener);
 
-  // ウィジェットのパラメータが変更されたときにカレンダーを再計算する
-  @override
-  void didUpdateWidget(covariant CalendarWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.startDate != oldWidget.startDate ||
-        widget.endDate != oldWidget.endDate ||
-        widget.settings.startOfWeek != oldWidget.settings.startOfWeek) {
-      _calculateCalendar();
-    }
-  }
-
-  // 表示するべき週のリストを計算する
-  void _calculateCalendar() {
-    final now = DateTime.now();
-    // 開始日と終了日のデフォルト値を設定
-    final firstDay = widget.startDate ?? DateTime(now.year, now.month, 1);
-    final lastDay = widget.endDate ?? DateTime(now.year, now.month + 1, 1);
-
-    // どの月を基準に表示するか（日付セルの色分けに使用）
-    _displayMonth = firstDay;
-
-    // カレンダーの開始日（firstDayを含む週の最初の日）を計算
-    int daysToSubtract = firstDay.weekday % 7 - widget.settings.startOfWeek % 7;
-    if (daysToSubtract < 0) {
-      daysToSubtract += 7;
-    }
-    DateTime calendarStart = firstDay.subtract(Duration(days: daysToSubtract));
-
-    // カレンダーの終了日（lastDayを含む週の最後の日）を計算
-    int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - lastDay.weekday % 7;
-    if (daysToAdd < 0) {
-      daysToAdd += 7;
-    }
-    DateTime calendarEnd = lastDay.add(Duration(days: daysToAdd));
-
-    // 週ごとの日付リストを生成
-    _weeks = [];
-    DateTime currentDate = calendarStart;
-    while (currentDate.isBefore(calendarEnd) || currentDate.isAtSameMomentAs(calendarEnd)) {
-      List<DateTime> week = [];
-      for (int i = 0; i < 7; i++) {
-        week.add(currentDate.add(Duration(days: i)));
+    // 初期表示の年月を通知
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_weeks.isNotEmpty) {
+        widget.onVisibleMonthChanged(_weeks.first.first);
       }
-      _weeks.add(week);
-      currentDate = currentDate.add(const Duration(days: 7));
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // スクロールリスナー
+  void _scrollListener() {
+    // スクロール位置が一番上（過去側）に近づいたら、さらに過去の週を読み込む
+    if (_scrollController.position.pixels < _scrollController.position.minScrollExtent + 200) {
+      _loadMoreWeeks();
     }
+
+    // 現在一番上に表示されている週の年月をAppBarに通知
+    if (_scrollController.hasClients) {
+        final topWeekIndex = (_scrollController.offset / (_scrollController.position.maxScrollExtent / _weeks.length)).floor();
+        if (topWeekIndex >= 0 && topWeekIndex < _weeks.length) {
+            widget.onVisibleMonthChanged(_weeks.elementAt(topWeekIndex).first);
+        }
+    }
+  }
+
+  // 初期表示の6週間を生成する
+  void _generateInitialWeeks() {
+    final now = DateTime.now();
+    // 今月の最終日を取得
+    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+
+    // lastDayOfMonthを含む週の最初の日を計算
+    int daysToSubtract = lastDayOfMonth.weekday % 7 - widget.settings.startOfWeek % 7;
+    if (daysToSubtract < 0) daysToSubtract += 7;
+    DateTime currentWeekStart = lastDayOfMonth.subtract(Duration(days: daysToSubtract));
+
+    // そこから遡って6週間分のデータを生成
+    for (int i = 0; i < 6; i++) {
+      List<DateTime> week = [];
+      for (int j = 0; j < 7; j++) {
+        week.add(currentWeekStart.add(Duration(days: j)));
+      }
+      _weeks.addFirst(week); // 過去の週をリストの先頭に追加
+      currentWeekStart = currentWeekStart.subtract(const Duration(days: 7));
+    }
+  }
+
+  // 過去の週データを4週間分追加する
+  void _loadMoreWeeks() {
+    if (_weeks.isEmpty) return;
+    DateTime oldestWeekStart = _weeks.first.first;
+
+    // さらに過去の4週間を追加
+    for (int i = 0; i < 4; i++) {
+      oldestWeekStart = oldestWeekStart.subtract(const Duration(days: 7));
+      List<DateTime> week = [];
+      for (int j = 0; j < 7; j++) {
+        week.add(oldestWeekStart.add(Duration(days: j)));
+      }
+      _weeks.addFirst(week);
+    }
+    setState(() {});
   }
 
   // 曜日のヘッダーを構築する
   Widget _buildDayHeaders() {
-      // 英語の曜日名をリストで定義
       final dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-
-      // 週の開始曜日に合わせてリストを回転
       if (widget.settings.startOfWeek == DateTime.monday) {
-          dayNames.add(dayNames.removeAt(0)); // 日曜日をリストの最後に移動
+          dayNames.add(dayNames.removeAt(0));
       }
-
       return Row(
           children: dayNames.map((day) => Expanded(
               child: Center(
@@ -104,23 +123,41 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_weeks.isEmpty) {
-      return const Center(child: Text("No dates to display."));
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildDayHeaders(),
-        const SizedBox(height: 8),
-        ..._weeks.map((week) => WeekRowWidget(
-          weekDates: week,
-          displayMonth: _displayMonth,
-          items: widget.items,
-          records: widget.records,
-          settings: widget.settings,
-        )).toList(),
-      ],
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification is ScrollStartNotification) {
+          setState(() { _isScrolling = true; });
+        } else if (scrollNotification is ScrollEndNotification) {
+          setState(() { _isScrolling = false; });
+        }
+        return true;
+      },
+      child: Column(
+        children: [
+          _buildDayHeaders(),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              // 初期状態より未来（下）にはスクロールできないようにする
+              physics: const ClampingScrollPhysics(),
+              itemCount: _weeks.length,
+              itemBuilder: (context, index) {
+                final week = _weeks.elementAt(index);
+                return WeekRowWidget(
+                  weekDates: week,
+                  // スクロール中は今月を意識しないため、一番上の週の月を基準月とする
+                  displayMonth: _isScrolling ? week.first : DateTime.now(),
+                  items: widget.items,
+                  records: widget.records,
+                  settings: widget.settings,
+                  isScrolling: _isScrolling,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

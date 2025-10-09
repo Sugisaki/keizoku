@@ -10,6 +10,7 @@ class DayCellWidget extends StatelessWidget {
   final List<CalendarItem> items;
   final List<int> recordIds;
   final CalendarSettings settings;
+  final bool isScrolling; // スクロール中かどうかのフラグ
 
   const DayCellWidget({
     super.key,
@@ -18,10 +19,14 @@ class DayCellWidget extends StatelessWidget {
     required this.items,
     required this.recordIds,
     required this.settings,
+    this.isScrolling = false, // デフォルトはfalse
   });
 
   @override
   Widget build(BuildContext context) {
+    // スクロール中はすべて黒、それ以外は当月かどうかで色を分ける
+    final Color dateColor = isScrolling ? Colors.black : (isThisMonth ? Colors.black : Colors.grey);
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300, width: 0.5),
@@ -37,7 +42,7 @@ class DayCellWidget extends StatelessWidget {
                 '${date.day}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: isThisMonth ? Colors.black : Colors.grey,
+                  color: dateColor, // 動的に色を変更
                 ),
               ),
             ),
@@ -55,18 +60,12 @@ class DayCellWidget extends StatelessWidget {
 
   // 3x3のアイコン用グリッドを構築する
   Widget _buildIconGrid() {
-    // IDとグリッド位置のマッピング
-    // GridViewは左上から右下へindexを振るので、仕様に合わせる
-    // 7 8 9
-    // 1 2 3
-    // 4 5 6
     const idToIndexMap = {
       7: 0, 8: 1, 9: 2,
       1: 3, 2: 4, 3: 5,
       4: 6, 5: 7, 6: 8,
     };
 
-    // 9個のWidgetのリストを作成し、対応するIDのアイコンで埋める
     List<Widget> gridChildren = List.generate(9, (index) {
       final targetId = idToIndexMap.entries.firstWhere((entry) => entry.value == index, orElse: () => const MapEntry(-1, -1)).key;
 
@@ -74,23 +73,23 @@ class DayCellWidget extends StatelessWidget {
         try {
           final item = items.firstWhere((item) => item.id == targetId);
           return Opacity(
-            opacity: 0.5, // 仕様通り半透明にする
+            opacity: 0.5,
             child: Icon(
               item.getEffectiveIcon(),
               color: item.getEffectiveColor(settings),
-              size: 12, // サイズは調整
+              size: 12,
             ),
           );
         } catch (e) {
-          return const SizedBox.shrink(); // itemが見つからない場合
+          return const SizedBox.shrink();
         }
       }
-      return const SizedBox.shrink(); // 記録がないセルは空
+      return const SizedBox.shrink();
     });
 
     return GridView.count(
       crossAxisCount: 3,
-      physics: const NeverScrollableScrollPhysics(), // GridView自体はスクロールさせない
+      physics: const NeverScrollableScrollPhysics(),
       children: gridChildren,
     );
   }
