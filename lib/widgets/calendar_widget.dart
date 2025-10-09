@@ -138,39 +138,44 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollStartNotification) {
-          setState(() { _isScrolling = true; });
-        } else if (scrollNotification is ScrollEndNotification) {
-          setState(() { _isScrolling = false; });
-        }
-        return true;
-      },
-      child: Column(
-        children: [
-          _buildDayHeaders(),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              physics: const ClampingScrollPhysics(),
-              itemCount: _weeks.length,
-              itemBuilder: (context, index) {
-                final week = _weeks[index];
-                return WeekRowWidget(
-                  weekDates: week,
-                  displayMonth: _isScrolling ? week.first : widget.displayMonth, // 修正
-                  items: widget.items,
-                  records: widget.records,
-                  settings: widget.settings,
-                  isScrolling: _isScrolling,
-                );
-              },
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        print("[DEBUG] CalendarWidget received constraints: $constraints");
+        return NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollStartNotification) {
+              setState(() { _isScrolling = true; });
+            } else if (scrollNotification is ScrollEndNotification) {
+              setState(() { _isScrolling = false; });
+            }
+            return true;
+          },
+          child: Column(
+            children: [
+              _buildDayHeaders(),
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  physics: const ClampingScrollPhysics(),
+                  itemCount: _weeks.length,
+                  itemBuilder: (context, index) {
+                    final week = _weeks[index];
+                    return WeekRowWidget(
+                      weekDates: week,
+                      displayMonth: _isScrolling ? week.first : widget.displayMonth,
+                      items: widget.items,
+                      records: widget.records,
+                      settings: widget.settings,
+                      isScrolling: _isScrolling,
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

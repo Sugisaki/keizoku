@@ -41,10 +41,9 @@ void main() {
       ),
     );
 
-    // 1フレーム描画を進める
-    await tester.pump();
+    // 非同期処理（loadData）とUIの更新が完了するのを待つ
+    await tester.pumpAndSettle();
 
-    // AppBarのタイトルは動的なのでテストせず、
     // カレンダーの基本的な要素（曜日のヘッダー）が表示されることだけを確認する
     expect(find.text('SUN'), findsOneWidget);
     expect(find.text('MON'), findsOneWidget);

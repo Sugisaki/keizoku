@@ -54,16 +54,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  DateTime _displayMonth = DateTime.now();
+  DateTime? _displayMonth; // Nullableに変更
 
   // CalendarWidgetから表示月が変更されたときに呼び出されるコールバック
   void _handleVisibleMonthChanged(DateTime date) {
-    // スクロールによる頻繁なUI更新を防ぐため、年月が実際に変更された場合のみ更新
-    if (date.year != _displayMonth.year || date.month != _displayMonth.month) {
-      setState(() {
-        _displayMonth = date;
-      });
-    }
+    // build中にsetStateが呼ばれるのを防ぐため、フレームの描画後に実行する
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && (_displayMonth == null || date.year != _displayMonth!.year || date.month != _displayMonth!.month)) {
+        setState(() {
+          _displayMonth = date;
+        });
+      }
+    });
   }
 
   @override
@@ -91,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // タイトルをスクロールに応じて動的に変更
-        title: Text(DateFormat('yyyy年 M月').format(_displayMonth)),
+        title: Text(_displayMonth == null ? '' : DateFormat('yyyy年 M月').format(_displayMonth!)),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -108,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: provider.items,
         records: provider.records,
         onVisibleMonthChanged: _handleVisibleMonthChanged,
-          displayMonth: _displayMonth,
+        displayMonth: _displayMonth ?? DateTime.now(), // nullの場合は仮の値を渡す
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
