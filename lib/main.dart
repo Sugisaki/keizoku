@@ -103,15 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        // 不要になったSingleChildScrollViewを削除し、コールバックを渡す
-        child: CalendarWidget(
-          settings: provider.settings,
-          items: provider.items,
-          records: provider.records,
-          onVisibleMonthChanged: _handleVisibleMonthChanged,
-        ),
+      body: CalendarWidget(
+        settings: provider.settings,
+        items: provider.items,
+        records: provider.records,
+        onVisibleMonthChanged: _handleVisibleMonthChanged,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),

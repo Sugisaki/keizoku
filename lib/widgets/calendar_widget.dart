@@ -38,11 +38,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
     // 初期スクロール位置の設定と、初期表示の年月の通知
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("[DEBUG] addPostFrameCallback triggered.");
       if (_scrollController.hasClients && _weeks.isNotEmpty) {
         // 初期表示の年月を「今月」に設定
         widget.onVisibleMonthChanged(DateTime.now());
+        final maxScroll = _scrollController.position.maxScrollExtent;
+        print("[DEBUG] Jumping to maxScrollExtent: $maxScroll");
         // リストの一番下（最新の週）までジャンプしてスクロール可能にする
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.jumpTo(maxScroll);
+        print("[DEBUG] Jumped to bottom.");
+      } else {
+        print("[DEBUG] ScrollController not attached or weeks empty in addPostFrameCallback.");
       }
     });
   }
@@ -56,6 +62,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   // スクロールリスナー
   void _scrollListener() {
+    print("[DEBUG] Scroll listener: Pixels: ${_scrollController.position.pixels}, Min: ${_scrollController.position.minScrollExtent}, Max: ${_scrollController.position.maxScrollExtent}");
     // スクロール位置が一番上（過去側）に近づいたら、さらに過去の週を読み込む
     if (_scrollController.position.pixels < _scrollController.position.minScrollExtent + 200) {
       _loadMoreWeeks();
@@ -72,6 +79,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   // 初期表示の6週間を生成する
   void _generateInitialWeeks() {
+    print("[DEBUG] Generating initial weeks...");
     final now = DateTime.now();
     // 今月の最終日を取得
     final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
@@ -90,10 +98,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       _weeks.addFirst(week); // 過去の週をリストの先頭に追加
       currentWeekStart = currentWeekStart.subtract(const Duration(days: 7));
     }
+    print("[DEBUG] Initial weeks generated. Total weeks: ${_weeks.length}");
   }
 
   // 過去の週データを4週間分追加する
   void _loadMoreWeeks() {
+    print("[DEBUG] Loading more weeks...");
     if (_weeks.isEmpty) return;
     DateTime oldestWeekStart = _weeks.first.first;
 
@@ -107,6 +117,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       _weeks.addFirst(week);
     }
     setState(() {});
+    print("[DEBUG] More weeks loaded. Total weeks: ${_weeks.length}");
   }
 
   // 曜日のヘッダーを構築する
