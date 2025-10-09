@@ -17,25 +17,34 @@ class LocalRecordsRepository implements RecordsRepository {
 
   @override
   Future<CalendarRecords> loadRecords() async {
+    // 固定のテストデータを定義
+    final testData = {
+      DateTime(2024, 10, 9): [1],
+    };
+
     try {
       final file = await _localFile;
       if (!await file.exists()) {
-        return CalendarRecords(); // ファイルが存在しない場合は空のデータを返す
+        // ファイルが存在しない場合はテストデータのみを返す
+        return CalendarRecords(records: testData);
       }
 
       final contents = await file.readAsString();
       final json = jsonDecode(contents) as Map<String, dynamic>;
 
-      final records = json.map((key, value) {
+      final loadedRecords = json.map((key, value) {
         // JSONのキー(String)をDateTimeに変換
         return MapEntry(DateTime.parse(key), List<int>.from(value));
       });
 
-      return CalendarRecords(records: records);
+      // 読み込んだデータとテストデータをマージする (テストデータが優先される)
+      loadedRecords.addAll(testData);
+
+      return CalendarRecords(records: loadedRecords);
     } catch (e) {
-      // エラーが発生した場合は空のデータを返す
+      // エラーが発生した場合はテストデータのみを返す
       print('Error loading records: $e');
-      return CalendarRecords();
+      return CalendarRecords(records: testData);
     }
   }
 

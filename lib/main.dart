@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: provider.items,
         records: provider.records,
         onVisibleMonthChanged: _handleVisibleMonthChanged,
+          displayMonth: _displayMonth,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
