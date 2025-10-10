@@ -151,6 +151,16 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   final Set<int> _selectedItemIds = {};
 
   @override
+  void initState() {
+    super.initState();
+    // Providerから今日の記録を取得し、チェックボックスの初期状態に設定する
+    final provider = context.read<CalendarProvider>();
+    final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    final recordsForToday = provider.records.getRecordsForDay(today);
+    _selectedItemIds.addAll(recordsForToday);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = context.read<CalendarProvider>();
     final items = provider.items;
