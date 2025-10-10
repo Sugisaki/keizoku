@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/calendar_item.dart';
 import '../providers/calendar_provider.dart';
+import 'edit_item_screen.dart';
 
 // 設定画面のUI
 class SettingsScreen extends StatelessWidget {
@@ -8,9 +10,10 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Providerから現在の設定値を取得し、変更を監視
+    // Providerから現在の状態を取得し、変更を監視
     final provider = context.watch<CalendarProvider>();
     final currentStartOfWeek = provider.settings.startOfWeek;
+    final items = provider.items;
 
     return Scaffold(
       appBar: AppBar(
@@ -18,11 +21,11 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // 週の開始曜日設定
           ListTile(
             title: const Text('Start of the week'),
             subtitle: Text(currentStartOfWeek == DateTime.sunday ? 'Sunday' : 'Monday'),
             onTap: () {
-              // 曜日の選択ダイアログを表示
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -37,7 +40,6 @@ class SettingsScreen extends StatelessWidget {
                           groupValue: currentStartOfWeek,
                           onChanged: (int? value) {
                             if (value != null) {
-                              // Provider経由で設定を更新
                               context.read<CalendarProvider>().updateStartOfWeek(value);
                               Navigator.of(context).pop();
                             }
@@ -49,7 +51,6 @@ class SettingsScreen extends StatelessWidget {
                           groupValue: currentStartOfWeek,
                           onChanged: (int? value) {
                             if (value != null) {
-                              // Provider経由で設定を更新
                               context.read<CalendarProvider>().updateStartOfWeek(value);
                               Navigator.of(context).pop();
                             }
@@ -62,7 +63,38 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          // --- 他の設定項目もここに追加可能 ---
+          const Divider(),
+          // 事柄の管理セクション
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Manage Items',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 事柄リスト
+          ...items.map((item) {
+            return ListTile(
+              leading: Container(
+                width: 24,
+                height: 24,
+                color: item.getEffectiveColor(provider.settings),
+              ),
+              title: Text(item.name),
+              subtitle: Text('ID: ${item.id}'),
+              trailing: Icon(
+                item.isEnabled ? Icons.check_circle : Icons.cancel,
+                color: item.isEnabled ? Colors.green : Colors.grey,
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditItemScreen(item: item),
+                  ),
+                );
+              },
+            );
+          }).toList(),
         ],
       ),
     );

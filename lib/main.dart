@@ -12,18 +12,22 @@ import 'repositories/records_repository.dart';
 import 'screens/settings_screen.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
+import 'repositories/items_repository.dart'; // I corrected the import path
+import 'repositories/local/local_items_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
+  final itemsRepository = LocalItemsRepository(); // Instantiate it
 
   runApp(
     ChangeNotifierProvider(
       create: (context) => CalendarProvider(
         settingsRepository: settingsRepository,
         recordsRepository: recordsRepository,
+        itemsRepository: itemsRepository, // Pass it to the provider
       ),
       child: const MyApp(),
     ),

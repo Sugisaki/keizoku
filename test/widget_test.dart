@@ -5,8 +5,10 @@ import 'package:flutter_calendar_app/main.dart';
 import 'package:flutter_calendar_app/providers/calendar_provider.dart';
 import 'package:flutter_calendar_app/repositories/settings_repository.dart';
 import 'package:flutter_calendar_app/repositories/records_repository.dart';
+import 'package:flutter_calendar_app/repositories/items_repository.dart';
 import 'package:flutter_calendar_app/models/calendar_settings.dart';
 import 'package:flutter_calendar_app/models/calendar_records.dart';
+import 'package:flutter_calendar_app/models/calendar_item.dart';
 
 // --- テスト用のダミーリポジトリ ---
 class InMemorySettingsRepository implements SettingsRepository {
@@ -22,6 +24,13 @@ class InMemoryRecordsRepository implements RecordsRepository {
   @override
   Future<void> saveRecords(CalendarRecords records) async {}
 }
+
+class InMemoryItemsRepository implements ItemsRepository {
+  @override
+  Future<List<CalendarItem>> loadItems() async => List.generate(9, (i) => CalendarItem(id: i + 1, name: 'Item ${i + 1}'));
+  @override
+  Future<void> saveItems(List<CalendarItem> items) async {}
+}
 // --- ここまで ---
 
 void main() {
@@ -29,6 +38,7 @@ void main() {
     // ダミーリポジトリのインスタンスを作成
     final settingsRepository = InMemorySettingsRepository();
     final recordsRepository = InMemoryRecordsRepository();
+    final itemsRepository = InMemoryItemsRepository(); // 追加
 
     // Providerをウィジェットツリーのトップに配置してアプリをビルド
     await tester.pumpWidget(
@@ -36,6 +46,7 @@ void main() {
         create: (context) => CalendarProvider(
           settingsRepository: settingsRepository,
           recordsRepository: recordsRepository,
+          itemsRepository: itemsRepository, // 追加
         ),
         child: const MyApp(),
       ),

@@ -4,11 +4,13 @@ import '../models/calendar_item.dart';
 import '../models/calendar_records.dart';
 import '../repositories/settings_repository.dart';
 import '../repositories/records_repository.dart';
+import '../repositories/items_repository.dart';
 
 // アプリケーションの状態を管理するクラス
 class CalendarProvider extends ChangeNotifier {
   late final SettingsRepository _settingsRepository;
   late final RecordsRepository _recordsRepository;
+  late final ItemsRepository _itemsRepository;
 
   late CalendarSettings _settings;
   late List<CalendarItem> _items; // 事柄リスト
@@ -22,25 +24,16 @@ class CalendarProvider extends ChangeNotifier {
   CalendarProvider({
     required SettingsRepository settingsRepository,
     required RecordsRepository recordsRepository,
+    required ItemsRepository itemsRepository,
   }) {
     _settingsRepository = settingsRepository;
     _recordsRepository = recordsRepository;
+    _itemsRepository = itemsRepository;
 
     // 初期データで初期化
     _settings = CalendarSettings();
     _records = CalendarRecords();
-    // 事柄リストは当面固定データとする
-    _items = [
-      CalendarItem(id: 1, name: 'Work'),
-      CalendarItem(id: 2, name: 'Personal', itemColorHex: '#ff7f0e'),
-      CalendarItem(id: 3, name: 'Workout', icon: Icons.fitness_center),
-      CalendarItem(id: 9, name: 'Meeting', itemColorHex: '#d62728'),
-      CalendarItem(id: 4, name: 'Study'),
-      CalendarItem(id: 5, name: 'Hobby'),
-      CalendarItem(id: 6, name: 'Shopping'),
-      CalendarItem(id: 7, name: 'Health'),
-      CalendarItem(id: 8, name: 'Family'),
-    ];
+    _items = []; // 最初は空リスト
 
     // 永続化されたデータをロードする
     loadData();
@@ -50,13 +43,27 @@ class CalendarProvider extends ChangeNotifier {
   Future<void> loadData() async {
     _settings = await _settingsRepository.loadSettings();
     _records = await _recordsRepository.loadRecords();
+    _items = await _itemsRepository.loadItems(); // ItemsRepositoryから読み込む
     notifyListeners();
+  }
+
+  // 事柄を更新する
+  Future<void> updateItem(CalendarItem updatedItem) async {
+    final index = _items.indexWhere((item) => item.id == updatedItem.id);
+    if (index != -1) {
+      // リストの不変性を保つために新しいリストを作成
+      final newItems = List<CalendarItem>.from(_items);
+      newItems[index] = updatedItem;
+      _items = newItems;
+
+      await _itemsRepository.saveItems(_items);
+      notifyListeners();
+    }
   }
 
   // 今日の事柄の記録を追加/更新する
   Future<void> addRecordsForToday(List<int> itemIds) async {
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    // recordsのMapは不変(immutable)として扱うため、新しいMapを作成して更新する
     final newRecordsMap = Map<DateTime, List<int>>.from(_records.records);
 
     if (itemIds.isEmpty) {
