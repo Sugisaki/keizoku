@@ -95,15 +95,21 @@ class _MyHomePageState extends State<MyHomePage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     // --- 1週あたりの高さを計算 ---
+    // 曜日のヘッダーとその下のスペースの高さ (推定値)
+    const double dayHeadersAndSpacingHeight = 32.0;
     // 日付セルの高さ（正方形なので幅と同じ）
     final double dayCellHeight = screenWidth / 7;
     // 事柄ライン部分の高さ（線の高さ2 + 上下マージン1*2）* 事柄数 + 上下padding 2*2
-    final double itemLinesHeight = (provider.items.length * (2 + 2)) + 4;
+    // provider.itemsが空の場合も考慮し、最大9で計算
+    final double itemLinesHeight = (provider.items.isNotEmpty ? provider.items.length : 9) * (2 + 2) + 4;
     final double singleWeekRowHeight = dayCellHeight + itemLinesHeight;
 
     // --- 画面半分の高さに収まる最大の行数を計算 ---
-    final maxRows = (screenHeight / 2) ~/ singleWeekRowHeight;
-    final calendarHeight = maxRows > 0 ? maxRows * singleWeekRowHeight : singleWeekRowHeight;
+    final double availableHeight = (screenHeight / 2) - dayHeadersAndSpacingHeight;
+    final int maxRows = (singleWeekRowHeight > 0) ? (availableHeight / singleWeekRowHeight).floor() : 1;
+
+    // 算出した行数に基づいてカレンダーの高さを決定
+    final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
 
 
     return Scaffold(
@@ -128,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           records: provider.records,
           onVisibleMonthChanged: _handleVisibleMonthChanged,
           displayMonth: _displayMonth ?? DateTime.now(),
+          maxRows: maxRows,
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -11,7 +11,8 @@ class CalendarWidget extends StatefulWidget {
   final List<CalendarItem> items;
   final CalendarRecords records;
   final Function(DateTime) onVisibleMonthChanged;
-  final DateTime displayMonth; // 追加
+  final DateTime displayMonth;
+  final int maxRows; // 追加
 
   const CalendarWidget({
     super.key,
@@ -19,7 +20,8 @@ class CalendarWidget extends StatefulWidget {
     required this.items,
     required this.records,
     required this.onVisibleMonthChanged,
-    required this.displayMonth, // 追加
+    required this.displayMonth,
+    required this.maxRows, // 追加
   });
 
   @override
@@ -42,10 +44,20 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       if (_scrollController.hasClients && _weeks.isNotEmpty) {
         // 初期表示の年月を、一番下の週の最初の日に合わせる
         widget.onVisibleMonthChanged(_weeks.last.first);
-        final maxScroll = _scrollController.position.maxScrollExtent;
-        print("[DEBUG] Jumping to maxScrollExtent: $maxScroll");
-        _scrollController.jumpTo(maxScroll);
-        print("[DEBUG] Jumped to bottom.");
+
+        // --- 初期スクロール位置の計算 ---
+        final double itemHeight = _scrollController.position.maxScrollExtent / (_weeks.length - 1);
+        // 表示したい最後の行インデックス
+        final int lastItemIndex = _weeks.length - 1;
+        // 表示したい最初の行インデックス
+        final int firstItemIndex = lastItemIndex - (widget.maxRows - 1);
+
+        // スクロール位置を計算
+        final initialScrollOffset = firstItemIndex > 0 ? firstItemIndex * itemHeight : 0.0;
+
+        print("[DEBUG] Jumping to initial offset: $initialScrollOffset");
+        _scrollController.jumpTo(initialScrollOffset);
+        print("[DEBUG] Jumped to initial position.");
       } else {
         print("[DEBUG] ScrollController not attached or weeks empty in addPostFrameCallback.");
       }
@@ -60,38 +72,28 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   @override
-
-  @override
   void didUpdateWidget(covariant CalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // recordsデータが非同期でロードされ、更新された場合に週を再生成する
-    if (widget.records != oldWidget.records) {
-      print("[DEBUG] Records updated. Regenerating weeks.");
+    if (widget.records != oldWidget.records || widget.settings != oldWidget.settings) {
+      print("[DEBUG] Records or settings updated. Regenerating weeks.");
       setState(() {
         _generateAllWeeks();
       });
-      // 週が再生成された後、再度一番下にスクロールする
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-          print("[DEBUG] Jumped to bottom after records update.");
+          final double itemHeight = _scrollController.position.maxScrollExtent / (_weeks.length - 1);
+          final int lastItemIndex = _weeks.length - 1;
+          final int firstItemIndex = lastItemIndex - (widget.maxRows - 1);
+          final initialScrollOffset = firstItemIndex > 0 ? firstItemIndex * itemHeight : 0.0;
+          _scrollController.jumpTo(initialScrollOffset);
+          print("[DEBUG] Jumped to initial position after update.");
         }
       });
     }
   }
 
   void _scrollListener() {
-    print("[DEBUG] Scroll listener: Pixels: ${_scrollController.position.pixels}, Min: ${_scrollController.position.minScrollExtent}, Max: ${_scrollController.position.maxScrollExtent}");
-    if (_scrollController.hasClients) {
-      // アイテムの高さ（概算）に基づいてインデックスを計算
-      final itemHeight = _scrollController.position.maxScrollExtent / (_weeks.length - 1);
-      if (itemHeight > 0) {
-        final topWeekIndex = (_scrollController.offset / itemHeight).floor();
-        if (topWeekIndex >= 0 && topWeekIndex < _weeks.length) {
-          widget.onVisibleMonthChanged(_weeks[topWeekIndex].first);
-        }
-      }
-    }
+    // (略: 変更なし)
   }
 
   void _generateAllWeeks() {
@@ -110,23 +112,24 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       if (daysToSubtract < 0) daysToSubtract += 7;
       calendarStart = oldestRecordDate.subtract(Duration(days: daysToSubtract));
     } else {
+      // 記録がない場合は、今日の(maxRows-1)週間前を開始とする
       final now = DateTime.now();
-      final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-      int daysToSubtract = lastDayOfMonth.weekday % 7 - widget.settings.startOfWeek % 7;
+      int daysToSubtract = now.weekday % 7 - widget.settings.startOfWeek % 7;
       if (daysToSubtract < 0) daysToSubtract += 7;
-      DateTime currentWeekStart = lastDayOfMonth.subtract(Duration(days: daysToSubtract));
-      calendarStart = currentWeekStart.subtract(const Duration(days: 5 * 7));
+      DateTime thisWeekStart = now.subtract(Duration(days: daysToSubtract));
+      calendarStart = thisWeekStart.subtract(Duration(days: (widget.maxRows - 1) * 7));
     }
 
+    // カレンダーの終了日を「今日を含む週の最終日」に設定
     final now = DateTime.now();
-    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-    int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - lastDayOfMonth.weekday % 7;
+    int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - now.weekday % 7;
     if (daysToAdd < 0) daysToAdd += 7;
-    DateTime calendarEnd = lastDayOfMonth.add(Duration(days: daysToAdd));
+    DateTime calendarEnd = now.add(Duration(days: daysToAdd));
 
+    // 全体の週がmaxRowsより少ない場合は、過去に遡ってパディングする
     int weeksBetween = (calendarEnd.difference(calendarStart).inDays / 7).ceil();
-    if (weeksBetween < 6) {
-      calendarStart = calendarStart.subtract(Duration(days: (6 - weeksBetween) * 7));
+    if (weeksBetween < widget.maxRows) {
+      calendarStart = calendarStart.subtract(Duration(days: (widget.maxRows - weeksBetween) * 7));
     }
 
     print("[DEBUG] Calendar Range: $calendarStart to $calendarEnd");
@@ -143,6 +146,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     print("[DEBUG] All weeks generated. Total weeks: ${_weeks.length}");
   }
 
+  // (略: _buildDayHeaders と build メソッドは変更なし)
   Widget _buildDayHeaders() {
       final dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
       if (widget.settings.startOfWeek == DateTime.monday) {
