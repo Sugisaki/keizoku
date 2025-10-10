@@ -54,11 +54,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  DateTime? _displayMonth; // Nullableに変更
+  DateTime? _displayMonth;
 
-  // CalendarWidgetから表示月が変更されたときに呼び出されるコールバック
   void _handleVisibleMonthChanged(DateTime date) {
-    // build中にsetStateが呼ばれるのを防ぐため、フレームの描画後に実行する
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && (_displayMonth == null || date.year != _displayMonth!.year || date.month != _displayMonth!.month)) {
         setState(() {
@@ -89,10 +87,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CalendarProvider>();
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // --- 1週あたりの高さを計算 ---
+    // 日付セルの高さ（正方形なので幅と同じ）
+    final double dayCellHeight = screenWidth / 7;
+    // 事柄ライン部分の高さ（線の高さ2 + 上下マージン1*2）* 事柄数 + 上下padding 2*2
+    final double itemLinesHeight = (provider.items.length * (2 + 2)) + 4;
+    final double singleWeekRowHeight = dayCellHeight + itemLinesHeight;
+
+    // --- 画面半分の高さに収まる最大の行数を計算 ---
+    final maxRows = (screenHeight / 2) ~/ singleWeekRowHeight;
+    final calendarHeight = maxRows > 0 ? maxRows * singleWeekRowHeight : singleWeekRowHeight;
+
 
     return Scaffold(
       appBar: AppBar(
-        // タイトルをスクロールに応じて動的に変更
         title: Text(_displayMonth == null ? '' : DateFormat('yyyy年 M月').format(_displayMonth!)),
         actions: [
           IconButton(
@@ -106,13 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
+        height: calendarHeight,
         child: CalendarWidget(
           settings: provider.settings,
           items: provider.items,
           records: provider.records,
           onVisibleMonthChanged: _handleVisibleMonthChanged,
-          displayMonth: _displayMonth ?? DateTime.now(), // nullの場合は仮の値を渡す
+          displayMonth: _displayMonth ?? DateTime.now(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
