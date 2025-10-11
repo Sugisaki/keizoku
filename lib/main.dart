@@ -12,7 +12,7 @@ import 'repositories/records_repository.dart';
 import 'screens/settings_screen.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
-import 'repositories/items_repository.dart'; // I corrected the import path
+import 'repositories/items_repository.dart';
 import 'repositories/local/local_items_repository.dart';
 
 void main() async {
@@ -20,14 +20,14 @@ void main() async {
 
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
-  final itemsRepository = LocalItemsRepository(); // Instantiate it
+  final itemsRepository = LocalItemsRepository();
 
   runApp(
     ChangeNotifierProvider(
       create: (context) => CalendarProvider(
         settingsRepository: settingsRepository,
         recordsRepository: recordsRepository,
-        itemsRepository: itemsRepository, // Pass it to the provider
+        itemsRepository: itemsRepository,
       ),
       child: const MyApp(),
     ),
@@ -91,26 +91,38 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CalendarProvider>();
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    // --- 1週あたりの高さを計算 ---
-    // 曜日のヘッダーとその下のスペースの高さ (推定値)
-    const double dayHeadersAndSpacingHeight = 32.0;
-    // 日付セルの高さ（正方形なので幅と同じ）
-    final double dayCellHeight = screenWidth / 7;
-    // 事柄ライン部分の高さ（線の高さ2 + 上下マージン1*2）* 事柄数 + 上下padding 2*2
-    // provider.itemsが空の場合も考慮し、最大9で計算
-    final double itemLinesHeight = (provider.items.isNotEmpty ? provider.items.length : 9) * (2 + 2) + 4;
-    final double singleWeekRowHeight = dayCellHeight + itemLinesHeight;
+    Widget bodyWidget;
+    // provider.itemsが空の間はローディングインジケータを表示
+    if (provider.items.isEmpty) {
+      bodyWidget = const Center(child: CircularProgressIndicator());
+    } else {
+      // データロード後に高さ計算とカレンダー描画を行う
+      final screenHeight = MediaQuery.of(context).size.height;
+      final screenWidth = MediaQuery.of(context).size.width;
 
-    // --- 画面半分の高さに収まる最大の行数を計算 ---
-    final double availableHeight = (screenHeight / 2) - dayHeadersAndSpacingHeight;
-    final int maxRows = (singleWeekRowHeight > 0) ? (availableHeight / singleWeekRowHeight).floor() : 1;
+      const double dayHeadersAndSpacingHeight = 32.0;
+      final double dayCellHeight = screenWidth / 7;
+      final double itemLinesHeight = (provider.items.length * (2 + 2)) + 4;
+      final double singleWeekRowHeight = dayCellHeight + itemLinesHeight;
 
-    // 算出した行数に基づいてカレンダーの高さを決定
-    final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
+      final double availableHeight = (screenHeight / 2) - dayHeadersAndSpacingHeight;
+      final int maxRows = (singleWeekRowHeight > 0) ? (availableHeight / singleWeekRowHeight).floor() : 1;
 
+      final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
+
+      bodyWidget = SizedBox(
+        height: calendarHeight,
+        child: CalendarWidget(
+          settings: provider.settings,
+          items: provider.items,
+          records: provider.records,
+          onVisibleMonthChanged: _handleVisibleMonthChanged,
+          displayMonth: _displayMonth ?? DateTime.now(),
+          maxRows: maxRows,
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -126,17 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: SizedBox(
-        height: calendarHeight,
-        child: CalendarWidget(
-          settings: provider.settings,
-          items: provider.items,
-          records: provider.records,
-          onVisibleMonthChanged: _handleVisibleMonthChanged,
-          displayMonth: _displayMonth ?? DateTime.now(),
-          maxRows: maxRows,
-        ),
-      ),
+      body: bodyWidget,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
         tooltip: 'Add Record',
@@ -160,7 +162,6 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   @override
   void initState() {
     super.initState();
-    // Providerから今日の記録を取得し、チェックボックスの初期状態に設定する
     final provider = context.read<CalendarProvider>();
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     final recordsForToday = provider.records.getRecordsForDay(today);

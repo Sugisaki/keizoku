@@ -42,21 +42,19 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       print("[DEBUG] addPostFrameCallback triggered.");
       if (_scrollController.hasClients && _weeks.isNotEmpty) {
-        // 初期表示の年月を、一番下の週の最初の日に合わせる
         widget.onVisibleMonthChanged(_weeks.last.first);
 
-        // --- 初期スクロール位置の計算 ---
-        final double itemHeight = _scrollController.position.maxScrollExtent / (_weeks.length - 1);
-        // 表示したい最後の行インデックス
-        final int lastItemIndex = _weeks.length - 1;
-        // 表示したい最初の行インデックス
-        final int firstItemIndex = lastItemIndex - (widget.maxRows - 1);
+        // LayoutBuilderから得られる正確な高さ情報を使って計算する
+        final RenderBox renderBox = context.findRenderObject() as RenderBox;
+        final listViewHeight = renderBox.size.height - 32.0; // ヘッダーとスペースの高さを引く
 
-        // スクロール位置を計算
-        final initialScrollOffset = firstItemIndex > 0 ? firstItemIndex * itemHeight : 0.0;
+        final double totalContentHeight = (_weeks.length / widget.maxRows) * listViewHeight;
+        final initialScrollOffset = totalContentHeight - listViewHeight;
 
         print("[DEBUG] Jumping to initial offset: $initialScrollOffset");
-        _scrollController.jumpTo(initialScrollOffset);
+        if (initialScrollOffset > 0) {
+          _scrollController.jumpTo(initialScrollOffset);
+        }
         print("[DEBUG] Jumped to initial position.");
       } else {
         print("[DEBUG] ScrollController not attached or weeks empty in addPostFrameCallback.");
