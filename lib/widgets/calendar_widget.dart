@@ -5,7 +5,6 @@ import '../models/calendar_records.dart';
 import '../models/calendar_settings.dart';
 import 'week_row_widget.dart';
 
-// カレンダー全体を管理・表示するメインのウィジェット
 class CalendarWidget extends StatefulWidget {
   final CalendarSettings settings;
   final List<CalendarItem> items;
@@ -60,6 +59,53 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     }
   }
 
+  void _generateAllWeeks() {
+    print("[DEBUG] Generating all weeks...");
+    _weeks.clear();
+
+    DateTime? oldestRecordDate;
+    if (widget.records.records.isNotEmpty) {
+      final sortedDates = widget.records.records.keys.toList()..sort();
+      oldestRecordDate = sortedDates.first;
+    }
+
+    DateTime calendarStart;
+    if (oldestRecordDate != null) {
+      int daysToSubtract = oldestRecordDate.weekday % 7 - widget.settings.startOfWeek % 7;
+      if (daysToSubtract < 0) daysToSubtract += 7;
+      calendarStart = oldestRecordDate.subtract(Duration(days: daysToSubtract));
+    } else {
+      final now = DateTime.now();
+      int daysToSubtract = now.weekday % 7 - widget.settings.startOfWeek % 7;
+      if (daysToSubtract < 0) daysToSubtract += 7;
+      DateTime thisWeekStart = now.subtract(Duration(days: daysToSubtract));
+      calendarStart = thisWeekStart.subtract(Duration(days: (widget.maxRows - 1) * 7));
+    }
+
+    final now = DateTime.now();
+    int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - now.weekday % 7;
+    if (daysToAdd < 0) daysToAdd += 7;
+    DateTime calendarEnd = now.add(Duration(days: daysToAdd));
+
+    int weeksBetween = (calendarEnd.difference(calendarStart).inDays / 7).ceil();
+    if (weeksBetween < widget.maxRows) {
+      calendarStart = calendarStart.subtract(Duration(days: (widget.maxRows - weeksBetween) * 7));
+    }
+
+    print("[DEBUG] Calendar Range: $calendarStart to $calendarEnd");
+
+    DateTime currentDate = calendarStart;
+    while (currentDate.isBefore(calendarEnd)) {
+      List<DateTime> week = [];
+      for (int i = 0; i < 7; i++) {
+        week.add(currentDate.add(Duration(days: i)));
+      }
+      _weeks.add(week);
+      currentDate = currentDate.add(const Duration(days: 7));
+    }
+    print("[DEBUG] All weeks generated. Total weeks: ${_weeks.length}");
+  }
+
   void _scrollListener() {
     print("[DEBUG] Scroll listener: Pixels: ${_scrollController.position.pixels}, Min: ${_scrollController.position.minScrollExtent}, Max: ${_scrollController.position.maxScrollExtent}");
     if (_scrollController.hasClients) {
@@ -71,10 +117,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         }
       }
     }
-  }
-
-  void _generateAllWeeks() {
-    // ... (generate all weeks logic is correct and remains unchanged)
   }
 
   Widget _buildDayHeaders() {
@@ -110,7 +152,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               _scrollController.jumpTo(initialScrollOffset);
 
               Future.delayed(const Duration(milliseconds: 50), () {
-                widget.onVisibleMonthChanged(_weeks[firstItemIndex].first);
+                if(firstItemIndex >= 0 && firstItemIndex < _weeks.length) {
+                  widget.onVisibleMonthChanged(_weeks[firstItemIndex].first);
+                }
               });
 
               print("[DEBUG] Jumped to initial position.");
