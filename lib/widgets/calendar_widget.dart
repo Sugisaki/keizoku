@@ -63,39 +63,25 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     print("[DEBUG] Generating all weeks...");
     _weeks.clear();
 
-    DateTime? oldestRecordDate;
-    if (widget.records.records.isNotEmpty) {
-      final sortedDates = widget.records.records.keys.toList()..sort();
-      oldestRecordDate = sortedDates.first;
-    }
-
-    DateTime calendarStart;
-    if (oldestRecordDate != null) {
-      int daysToSubtract = oldestRecordDate.weekday % 7 - widget.settings.startOfWeek % 7;
-      if (daysToSubtract < 0) daysToSubtract += 7;
-      calendarStart = oldestRecordDate.subtract(Duration(days: daysToSubtract));
-    } else {
-      final now = DateTime.now();
-      int daysToSubtract = now.weekday % 7 - widget.settings.startOfWeek % 7;
-      if (daysToSubtract < 0) daysToSubtract += 7;
-      DateTime thisWeekStart = now.subtract(Duration(days: daysToSubtract));
-      calendarStart = thisWeekStart.subtract(Duration(days: (widget.maxRows - 1) * 7));
-    }
+    const int weeksToGenerate = 26; // 過去6ヶ月分 (約26週)
 
     final now = DateTime.now();
+    // 「今日を含む週」の最終日を計算
     int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - now.weekday % 7;
     if (daysToAdd < 0) daysToAdd += 7;
     DateTime calendarEnd = now.add(Duration(days: daysToAdd));
 
-    int weeksBetween = (calendarEnd.difference(calendarStart).inDays / 7).ceil();
-    if (weeksBetween < widget.maxRows) {
-      calendarStart = calendarStart.subtract(Duration(days: (widget.maxRows - weeksBetween) * 7));
-    }
+    // カレンダーの開始日を計算 (終了日から遡る)
+    DateTime calendarStart = calendarEnd.subtract(Duration(days: (weeksToGenerate * 7) - 1));
+    // 週の開始曜日に合わせる
+    int startDaysToSubtract = calendarStart.weekday % 7 - widget.settings.startOfWeek % 7;
+    if (startDaysToSubtract < 0) startDaysToSubtract += 7;
+    calendarStart = calendarStart.subtract(Duration(days: startDaysToSubtract));
 
     print("[DEBUG] Calendar Range: $calendarStart to $calendarEnd");
 
     DateTime currentDate = calendarStart;
-    while (currentDate.isBefore(calendarEnd)) {
+    while (currentDate.isBefore(calendarEnd) || currentDate.isAtSameMomentAs(calendarEnd)) {
       List<DateTime> week = [];
       for (int i = 0; i < 7; i++) {
         week.add(currentDate.add(Duration(days: i)));
