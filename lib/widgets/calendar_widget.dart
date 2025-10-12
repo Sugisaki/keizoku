@@ -130,22 +130,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         if (!_initialScrollCompleted && _weeks.isNotEmpty) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_scrollController.hasClients) {
-              final double listViewHeight = constraints.maxHeight - 32.0;
-              final double itemHeight = listViewHeight / widget.maxRows;
-              final int lastItemIndex = _weeks.length - 1;
-              final int firstItemIndex = lastItemIndex - (widget.maxRows - 1);
-              final initialScrollOffset = firstItemIndex > 0 ? firstItemIndex * itemHeight : 0.0;
+              final maxScroll = _scrollController.position.maxScrollExtent;
+              print("[DEBUG] Jumping to maxScrollExtent: $maxScroll");
+              _scrollController.jumpTo(maxScroll);
 
-              print("[DEBUG] Jumping to initial offset: $initialScrollOffset (itemHeight: $itemHeight)");
-              _scrollController.jumpTo(initialScrollOffset);
+              // 一番下の週の月を通知
+              widget.onVisibleMonthChanged(_weeks.last.first);
 
-              Future.delayed(const Duration(milliseconds: 50), () {
-                if(firstItemIndex >= 0 && firstItemIndex < _weeks.length) {
-                  widget.onVisibleMonthChanged(_weeks[firstItemIndex].first);
-                }
-              });
-
-              print("[DEBUG] Jumped to initial position.");
+              print("[DEBUG] Jumped to bottom.");
               _initialScrollCompleted = true;
             }
           });
