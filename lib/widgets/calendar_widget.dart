@@ -125,6 +125,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       builder: (context, constraints) {
         print("[DEBUG] CalendarWidget received constraints: $constraints");
 
+        // `jumpTo`ロジックを削除し、常に一番上から表示されるようにする
+        // ただし、一番上に表示される月の通知は初回描画時に行う
         if (!_initialScrollCompleted && _weeks.isNotEmpty) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_scrollController.hasClients) {
