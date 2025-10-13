@@ -32,7 +32,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   final List<List<DateTime>> _weeks = [];
   bool _isScrolling = false;
   bool _initialScrollCompleted = false;
-  bool _isLoading = false; // Add this line
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -67,14 +67,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     const int weeksToGenerate = 26; // 過去6ヶ月分 (約26週)
 
     final now = DateTime.now();
-    // 「今日を含む週」の最終日を計算
     int daysToAdd = (widget.settings.startOfWeek % 7 + 6) - now.weekday % 7;
     if (daysToAdd < 0) daysToAdd += 7;
     DateTime calendarEnd = now.add(Duration(days: daysToAdd));
 
-    // カレンダーの開始日を計算 (終了日から遡る)
     DateTime calendarStart = calendarEnd.subtract(Duration(days: (weeksToGenerate * 7) - 1));
-    // 週の開始曜日に合わせる
     int startDaysToSubtract = calendarStart.weekday % 7 - widget.settings.startOfWeek % 7;
     if (startDaysToSubtract < 0) startDaysToSubtract += 7;
     calendarStart = calendarStart.subtract(Duration(days: startDaysToSubtract));
@@ -94,7 +91,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   void _scrollListener() {
-    // スクロール位置が一番上に達したら、さらに過去の週を読み込む
     if (!_isLoading && _scrollController.position.pixels == _scrollController.position.minScrollExtent) {
       _loadMorePastWeeks();
     }
@@ -111,13 +107,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   Future<void> _loadMorePastWeeks() async {
+    if (_isLoading) return;
     setState(() {
       _isLoading = true;
     });
 
     print("[DEBUG] Loading more past weeks...");
     final oldestWeekStart = _weeks.first.first;
-    const int weeksToGenerate = 26; // 6ヶ月分
+    const int weeksToGenerate = 26;
 
     DateTime newCalendarStart = oldestWeekStart.subtract(Duration(days: (weeksToGenerate * 7)));
     int startDaysToSubtract = newCalendarStart.weekday % 7 - widget.settings.startOfWeek % 7;
@@ -135,18 +132,23 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       currentDate = currentDate.add(const Duration(days: 7));
     }
 
-    // 現在のスクロール位置を保持
-    final currentOffset = _scrollController.offset;
-    final double addedHeight = newWeeks.length * (_scrollController.position.maxScrollExtent / (_weeks.length -1));
+    final double oldMaxScrollExtent = _scrollController.position.maxScrollExtent;
+    final int oldLength = _weeks.length;
 
     setState(() {
       _weeks.insertAll(0, newWeeks);
       _isLoading = false;
     });
 
-    // スクロール位置を調整
-    _scrollController.jumpTo(currentOffset + addedHeight);
-    print("[DEBUG] More weeks loaded. Total weeks: ${_weeks.length}");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        final double estimatedItemHeight = (oldLength > 1) ? oldMaxScrollExtent / (oldLength - 1) : 0.0;
+        final double addedHeight = newWeeks.length * estimatedItemHeight;
+
+        _scrollController.jumpTo(addedHeight);
+        print("[DEBUG] More weeks loaded. Total weeks: ${_weeks.length}");
+      }
+    });
   }
 
   Widget _buildDayHeaders() {
