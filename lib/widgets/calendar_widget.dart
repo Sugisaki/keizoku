@@ -32,6 +32,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   final List<List<DateTime>> _weeks = [];
   bool _isScrolling = false;
   bool _initialScrollCompleted = false;
+  bool _isLoading = false; // Add this line
 
   @override
   void initState() {
@@ -93,9 +94,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   void _scrollListener() {
-    print("[DEBUG] Scroll listener: Pixels: ${_scrollController.position.pixels}, Min: ${_scrollController.position.minScrollExtent}, Max: ${_scrollController.position.maxScrollExtent}");
+    // スクロール位置が一番上に達したら、さらに過去の週を読み込む
+    if (!_isLoading && _scrollController.position.pixels == _scrollController.position.minScrollExtent) {
+      _loadMorePastWeeks();
+    }
+
     if (_scrollController.hasClients) {
-      final itemHeight = _scrollController.position.maxScrollExtent / (_weeks.length - 1);
+      final itemHeight = _scrollController.position.maxScrollExtent > 0 ? _scrollController.position.maxScrollExtent / (_weeks.length - 1) : 0.0;
       if (itemHeight > 0) {
         final topWeekIndex = (_scrollController.offset / itemHeight).floor();
         if (topWeekIndex >= 0 && topWeekIndex < _weeks.length) {
@@ -103,6 +108,45 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         }
       }
     }
+  }
+
+  Future<void> _loadMorePastWeeks() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    print("[DEBUG] Loading more past weeks...");
+    final oldestWeekStart = _weeks.first.first;
+    const int weeksToGenerate = 26; // 6ヶ月分
+
+    DateTime newCalendarStart = oldestWeekStart.subtract(Duration(days: (weeksToGenerate * 7)));
+    int startDaysToSubtract = newCalendarStart.weekday % 7 - widget.settings.startOfWeek % 7;
+    if (startDaysToSubtract < 0) startDaysToSubtract += 7;
+    newCalendarStart = newCalendarStart.subtract(Duration(days: startDaysToSubtract));
+
+    final List<List<DateTime>> newWeeks = [];
+    DateTime currentDate = newCalendarStart;
+    while (currentDate.isBefore(oldestWeekStart)) {
+      List<DateTime> week = [];
+      for (int i = 0; i < 7; i++) {
+        week.add(currentDate.add(Duration(days: i)));
+      }
+      newWeeks.add(week);
+      currentDate = currentDate.add(const Duration(days: 7));
+    }
+
+    // 現在のスクロール位置を保持
+    final currentOffset = _scrollController.offset;
+    final double addedHeight = newWeeks.length * (_scrollController.position.maxScrollExtent / (_weeks.length -1));
+
+    setState(() {
+      _weeks.insertAll(0, newWeeks);
+      _isLoading = false;
+    });
+
+    // スクロール位置を調整
+    _scrollController.jumpTo(currentOffset + addedHeight);
+    print("[DEBUG] More weeks loaded. Total weeks: ${_weeks.length}");
   }
 
   Widget _buildDayHeaders() {
@@ -125,8 +169,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       builder: (context, constraints) {
         print("[DEBUG] CalendarWidget received constraints: $constraints");
 
-        // `jumpTo`ロジックを削除し、常に一番上から表示されるようにする
-        // ただし、一番上に表示される月の通知は初回描画時に行う
         if (!_initialScrollCompleted && _weeks.isNotEmpty) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_scrollController.hasClients) {
@@ -134,7 +176,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               print("[DEBUG] Jumping to maxScrollExtent: $maxScroll");
               _scrollController.jumpTo(maxScroll);
 
-              // 一番下の週の月を通知
               widget.onVisibleMonthChanged(_weeks.last.first);
 
               print("[DEBUG] Jumped to bottom.");
