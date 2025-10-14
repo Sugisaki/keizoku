@@ -320,6 +320,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'العربية'**
   String get arabic;
+
+  /// Title for the Add Record dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Add Record for Today'**
+  String get addRecordTitle;
+
+  /// Text for the Cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelButton;
+
+  /// Text for the Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveButton;
+
+  /// Title for the continuous records table
+  ///
+  /// In en, this message translates to:
+  /// **'Continuous Records'**
+  String get continuousRecords;
+
+  /// Column header for item name
+  ///
+  /// In en, this message translates to:
+  /// **'Item Name'**
+  String get itemName;
+
+  /// Column header for continuous months
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get continuousMonths;
+
+  /// Column header for continuous weeks
+  ///
+  /// In en, this message translates to:
+  /// **'Weeks'**
+  String get continuousWeeks;
+
+  /// Column header for continuous days
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get continuousDays;
+
+  /// Short label for days
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get dayShort;
+
+  /// Short label for weeks
+  ///
+  /// In en, this message translates to:
+  /// **'Weeks'**
+  String get weekShort;
+
+  /// Short label for months
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get monthShort;
 }
 
 class _AppLocalizationsDelegate

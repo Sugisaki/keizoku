@@ -107,8 +107,41 @@ class AppLocalizationsHi extends AppLocalizations {
   String get indonesian => 'Bahasa Indonesia';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => 'पुर्तगाली';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => 'अरबी';
+
+  @override
+  String get addRecordTitle => 'आज का रिकॉर्ड जोड़ें';
+
+  @override
+  String get cancelButton => 'रद्द करें';
+
+  @override
+  String get saveButton => 'सहेजें';
+
+  @override
+  String get continuousRecords => 'लगातार रिकॉर्ड';
+
+  @override
+  String get itemName => 'आइटम का नाम';
+
+  @override
+  String get continuousMonths => 'लगातार महीने';
+
+  @override
+  String get continuousWeeks => 'लगातार सप्ताह';
+
+  @override
+  String get continuousDays => 'लगातार दिन';
+
+  @override
+  String get dayShort => 'दिन';
+
+  @override
+  String get weekShort => 'सप्ताह';
+
+  @override
+  String get monthShort => 'माह';
 }

@@ -101,14 +101,47 @@ class AppLocalizationsPt extends AppLocalizations {
   String get spanish => 'Español';
 
   @override
-  String get hindi => 'हिन्दी';
+  String get hindi => 'Hindi';
 
   @override
-  String get indonesian => 'Bahasa Indonesia';
+  String get indonesian => 'Indonésio';
 
   @override
   String get portuguese => 'Português';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => 'Árabe';
+
+  @override
+  String get addRecordTitle => 'Adicionar Registro para Hoje';
+
+  @override
+  String get cancelButton => 'Cancelar';
+
+  @override
+  String get saveButton => 'Salvar';
+
+  @override
+  String get continuousRecords => 'Registros Contínuos';
+
+  @override
+  String get itemName => 'Nome do Item';
+
+  @override
+  String get continuousMonths => 'Meses Contínuos';
+
+  @override
+  String get continuousWeeks => 'Semanas Contínuas';
+
+  @override
+  String get continuousDays => 'Dias Contínuos';
+
+  @override
+  String get dayShort => 'Dias';
+
+  @override
+  String get weekShort => 'Sem';
+
+  @override
+  String get monthShort => 'Meses';
 }

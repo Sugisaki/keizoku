@@ -32,6 +32,50 @@
   "spanish": "Español",
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
-  "portuguese": "Português",
-  "arabic": "العربية"
+  "portuguese": "البرتغالية",
+  "arabic": "العربية",
+  "addRecordTitle": "إضافة سجل اليوم",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "إلغاء",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "حفظ",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "السجلات المستمرة",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "اسم العنصر",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "أشهر متتالية",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "أسابيع متتالية",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "أيام متتالية",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "يوم",
+  "@dayShort": {
+    "description": "Short label for day"
+  },
+  "weekShort": "أسبوع",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "شهر",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }

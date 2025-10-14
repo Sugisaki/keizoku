@@ -30,8 +30,52 @@
   "french": "Français",
   "german": "Deutsch",
   "spanish": "Español",
-  "hindi": "हिन्दी",
-  "indonesian": "Bahasa Indonesia",
-  "portuguese": "Português",
-  "arabic": "العربية"
+  "hindi": "印地语",
+  "indonesian": "印度尼西亚语",
+  "portuguese": "葡萄牙语",
+  "arabic": "阿拉伯语",
+  "addRecordTitle": "添加今日记录",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "取消",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "保存",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "连续记录",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "项目名称",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "连续月数",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "连续周数",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "连续天数",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "天数",
+  "@dayShort": {
+    "description": "Short label for day"
+  },
+  "weekShort": "周数",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "月数",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }

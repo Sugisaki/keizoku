@@ -32,6 +32,50 @@
   "spanish": "Español",
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
-  "portuguese": "Português",
-  "arabic": "العربية"
+  "portuguese": "पुर्तगाली",
+  "arabic": "अरबी",
+  "addRecordTitle": "आज का रिकॉर्ड जोड़ें",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "रद्द करें",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "सहेजें",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "लगातार रिकॉर्ड",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "आइटम का नाम",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "लगातार महीने",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "लगातार सप्ताह",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "लगातार दिन",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "दिन",
+  "@dayShort": {
+    "description": "Short label for day"
+  },
+  "weekShort": "सप्ताह",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "माह",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }

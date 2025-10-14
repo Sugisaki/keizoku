@@ -104,4 +104,117 @@ class CalendarProvider extends ChangeNotifier {
     await _languageRepository.saveLanguageSettings(_languageSettings);
     notifyListeners();
   }
+
+  // 指定された日に特定の項目が記録されているかチェック
+  bool _hasRecordOnDay(DateTime date, int itemId) {
+    final recordsForDay = _records.getRecordsForDay(date);
+    return recordsForDay.contains(itemId);
+  }
+
+  // 連続日数を計算
+  int calculateContinuousDays(int itemId) {
+    int totalContinuousDays = _calculatePastContinuousDays(itemId);
+    DateTime today = DateTime.now();
+    today = DateTime(today.year, today.month, today.day);
+    if (_hasRecordOnDay(today, itemId)) {
+      totalContinuousDays++;
+    }
+    return totalContinuousDays;
+  }
+
+  // 過去連続日数を計算（昨日から遡る）
+  int _calculatePastContinuousDays(int itemId) {
+    int pastContinuousDays = 0;
+    DateTime currentDate = DateTime.now().subtract(const Duration(days: 1)); // 昨日から開始
+    currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day); // 時刻をリセット
+
+    while (true) {
+      if (_hasRecordOnDay(currentDate, itemId)) {
+        pastContinuousDays++;
+      } else {
+        break;
+      }
+      currentDate = currentDate.subtract(const Duration(days: 1));
+    }
+    return pastContinuousDays;
+  }
+
+  // 連続週数を計算
+  int calculateContinuousWeeks(int itemId) {
+    int totalContinuousWeeks = _calculatePastContinuousWeeks(itemId);
+    DateTime thisWeek = DateTime.now();
+    if (_hasRecordInWeek(thisWeek, itemId)) {
+      totalContinuousWeeks++;
+    }
+    return totalContinuousWeeks;
+  }
+
+  // 過去連続週数を計算（先週から遡る）
+  int _calculatePastContinuousWeeks(int itemId) {
+    int pastContinuousWeeks = 0;
+    DateTime currentDate = DateTime.now().subtract(const Duration(days: 7)); // 先週から開始
+    currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day); // 時刻をリセット
+
+    while (true) {
+      if (_hasRecordInWeek(currentDate, itemId)) {
+        pastContinuousWeeks++;
+      } else {
+        break;
+      }
+      currentDate = currentDate.subtract(const Duration(days: 7));
+    }
+    return pastContinuousWeeks;
+  }
+
+  // 指定された週に特定の項目が記録されているかチェック
+  bool _hasRecordInWeek(DateTime dateInWeek, int itemId) {
+    DateTime startOfWeek = dateInWeek.subtract(Duration(days: dateInWeek.weekday - 1)); // 月曜日を週の始まりとする
+    for (int i = 0; i < 7; i++) {
+      if (_hasRecordOnDay(startOfWeek.add(Duration(days: i)), itemId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 連続月数を計算
+  int calculateContinuousMonths(int itemId) {
+    int totalContinuousMonths = _calculatePastContinuousMonths(itemId);
+    DateTime thisMonth = DateTime.now();
+    thisMonth = DateTime(thisMonth.year, thisMonth.month, 1);
+    if (_hasRecordInMonth(thisMonth, itemId)) {
+      totalContinuousMonths++;
+    }
+    return totalContinuousMonths;
+  }
+
+  // 過去連続月数を計算（先月から遡る）
+  int _calculatePastContinuousMonths(int itemId) {
+    int pastContinuousMonths = 0;
+    DateTime currentDate = DateTime.now();
+    currentDate = DateTime(currentDate.year, currentDate.month - 1, 1); // 先月から開始
+
+    while (true) {
+      if (_hasRecordInMonth(currentDate, itemId)) {
+        pastContinuousMonths++;
+      } else {
+        break;
+      }
+      currentDate = DateTime(currentDate.year, currentDate.month - 1, 1); // 前の月の初めに移動
+    }
+    return pastContinuousMonths;
+  }
+
+  // 指定された月に特定の項目が記録されているかチェック
+  bool _hasRecordInMonth(DateTime dateInMonth, int itemId) {
+    final startOfMonth = DateTime(dateInMonth.year, dateInMonth.month, 1);
+    final endOfMonth = DateTime(dateInMonth.year, dateInMonth.month + 1, 0);
+
+    for (var date = startOfMonth; date.isBefore(endOfMonth.add(const Duration(days: 1))); date = date.add(const Duration(days: 1))) {
+      if (_hasRecordOnDay(date, itemId)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

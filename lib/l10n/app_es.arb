@@ -33,5 +33,49 @@
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
   "portuguese": "Português",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "addRecordTitle": "Añadir registro para hoy",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "Cancelar",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "Guardar",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "Registros continuos",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "Nombre del elemento",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "Meses continuos",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "Semanas continuas",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "Días continuos",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "Días",
+  "@dayShort": {
+    "description": "Short label for days"
+  },
+  "weekShort": "Sem",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "Meses",
+  "@monthShort": {
+    "description": "Short label for months"
+  }
 }

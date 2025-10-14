@@ -33,5 +33,49 @@
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
   "portuguese": "Português",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "addRecordTitle": "Ajouter un enregistrement pour aujourd'hui",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "Annuler",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "Enregistrer",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "Enregistrements continus",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "Nom de l'élément",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "Mois consécutifs",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "Semaines consécutives",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "Jours consécutifs",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "Jours",
+  "@dayShort": {
+    "description": "Short label for days"
+  },
+  "weekShort": "Sem",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "Mois",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }

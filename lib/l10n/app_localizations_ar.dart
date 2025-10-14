@@ -107,8 +107,41 @@ class AppLocalizationsAr extends AppLocalizations {
   String get indonesian => 'Bahasa Indonesia';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => 'البرتغالية';
 
   @override
   String get arabic => 'العربية';
+
+  @override
+  String get addRecordTitle => 'إضافة سجل اليوم';
+
+  @override
+  String get cancelButton => 'إلغاء';
+
+  @override
+  String get saveButton => 'حفظ';
+
+  @override
+  String get continuousRecords => 'السجلات المستمرة';
+
+  @override
+  String get itemName => 'اسم العنصر';
+
+  @override
+  String get continuousMonths => 'أشهر متتالية';
+
+  @override
+  String get continuousWeeks => 'أسابيع متتالية';
+
+  @override
+  String get continuousDays => 'أيام متتالية';
+
+  @override
+  String get dayShort => 'يوم';
+
+  @override
+  String get weekShort => 'أسبوع';
+
+  @override
+  String get monthShort => 'شهر';
 }

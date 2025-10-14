@@ -139,6 +139,50 @@
     "description": "Portuguese language name"
   },
   "arabic": "العربية",
+  "addRecordTitle": "Add Record for Today",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "Continuous Records",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "Item Name",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "Months",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "Weeks",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "Days",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "Days",
+  "@dayShort": {
+    "description": "Short label for days"
+  },
+  "weekShort": "Weeks",
+  "@weekShort": {
+    "description": "Short label for weeks"
+  },
+  "monthShort": "Months",
+  "@monthShort": {
+    "description": "Short label for months"
+  },
   "@arabic": {
     "description": "Arabic language name"
   }

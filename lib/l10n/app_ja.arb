@@ -33,5 +33,49 @@
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
   "portuguese": "Português",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "addRecordTitle": "今日の記録を追加",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "キャンセル",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "保存",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "連続記録",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "項目名",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "連続月数",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "連続週数",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "連続日数",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "日数",
+  "@dayShort": {
+    "description": "Short label for day"
+  },
+  "weekShort": "週数",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "月数",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }

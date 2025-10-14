@@ -107,8 +107,41 @@ class AppLocalizationsId extends AppLocalizations {
   String get indonesian => 'Bahasa Indonesia';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => 'Portugis';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => 'Arab';
+
+  @override
+  String get addRecordTitle => 'Tambahkan Catatan Hari Ini';
+
+  @override
+  String get cancelButton => 'Batal';
+
+  @override
+  String get saveButton => 'Simpan';
+
+  @override
+  String get continuousRecords => 'Catatan Berkelanjutan';
+
+  @override
+  String get itemName => 'Nama Item';
+
+  @override
+  String get continuousMonths => 'Bulan Berkelanjutan';
+
+  @override
+  String get continuousWeeks => 'Minggu Berkelanjutan';
+
+  @override
+  String get continuousDays => 'Hari Berkelanjutan';
+
+  @override
+  String get dayShort => 'Hari';
+
+  @override
+  String get weekShort => 'Minggu';
+
+  @override
+  String get monthShort => 'Bulan';
 }

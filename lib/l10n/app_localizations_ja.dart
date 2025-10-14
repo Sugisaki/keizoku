@@ -111,4 +111,37 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get arabic => 'العربية';
+
+  @override
+  String get addRecordTitle => '今日の記録を追加';
+
+  @override
+  String get cancelButton => 'キャンセル';
+
+  @override
+  String get saveButton => '保存';
+
+  @override
+  String get continuousRecords => '連続記録';
+
+  @override
+  String get itemName => '項目名';
+
+  @override
+  String get continuousMonths => '連続月数';
+
+  @override
+  String get continuousWeeks => '連続週数';
+
+  @override
+  String get continuousDays => '連続日数';
+
+  @override
+  String get dayShort => '日数';
+
+  @override
+  String get weekShort => '週数';
+
+  @override
+  String get monthShort => '月数';
 }

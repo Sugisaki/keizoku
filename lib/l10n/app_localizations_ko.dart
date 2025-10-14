@@ -107,8 +107,41 @@ class AppLocalizationsKo extends AppLocalizations {
   String get indonesian => 'Bahasa Indonesia';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => '포르투갈어';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => '아랍어';
+
+  @override
+  String get addRecordTitle => '오늘 기록 추가';
+
+  @override
+  String get cancelButton => '취소';
+
+  @override
+  String get saveButton => '저장';
+
+  @override
+  String get continuousRecords => '연속 기록';
+
+  @override
+  String get itemName => '항목 이름';
+
+  @override
+  String get continuousMonths => '연속 월';
+
+  @override
+  String get continuousWeeks => '연속 주';
+
+  @override
+  String get continuousDays => '연속 일';
+
+  @override
+  String get dayShort => '일';
+
+  @override
+  String get weekShort => '주';
+
+  @override
+  String get monthShort => '월';
 }

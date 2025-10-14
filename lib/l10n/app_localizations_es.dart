@@ -111,4 +111,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get arabic => 'العربية';
+
+  @override
+  String get addRecordTitle => 'Añadir registro para hoy';
+
+  @override
+  String get cancelButton => 'Cancelar';
+
+  @override
+  String get saveButton => 'Guardar';
+
+  @override
+  String get continuousRecords => 'Registros continuos';
+
+  @override
+  String get itemName => 'Nombre del elemento';
+
+  @override
+  String get continuousMonths => 'Meses continuos';
+
+  @override
+  String get continuousWeeks => 'Semanas continuas';
+
+  @override
+  String get continuousDays => 'Días continuos';
+
+  @override
+  String get dayShort => 'Días';
+
+  @override
+  String get weekShort => 'Sem';
+
+  @override
+  String get monthShort => 'Meses';
 }

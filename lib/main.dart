@@ -247,7 +247,55 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: bodyWidget,
+      body: Column(
+        children: [
+          bodyWidget,
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              AppLocalizations.of(context)!.continuousRecords,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: DataTable(
+                columnSpacing: 12,
+                horizontalMargin: 12,
+                columns: [
+                  DataColumn(label: Text(AppLocalizations.of(context)!.itemName)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.dayShort), numeric: true),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.weekShort), numeric: true),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.monthShort), numeric: true),
+                ],
+                rows: provider.items.where((item) => item.isEnabled).map((item) {
+                  final continuousMonths = provider.calculateContinuousMonths(item.id);
+                  final continuousWeeks = provider.calculateContinuousWeeks(item.id);
+                  final continuousDays = provider.calculateContinuousDays(item.id);
+
+                  return DataRow(cells: [
+                    DataCell(
+                      Container(
+                        color: item.getEffectiveColor(provider.settings),
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          item.name,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    DataCell(Text(continuousDays > 0 ? continuousDays.toString() : '')),
+                    DataCell(Text(continuousWeeks > 0 ? continuousWeeks.toString() : '')),
+                    DataCell(Text(continuousMonths > 0 ? continuousMonths.toString() : '')),
+                  ]);
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
         tooltip: 'Add Record',
@@ -279,13 +327,14 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   @override
   Widget build(BuildContext context) {
     final provider = context.read<CalendarProvider>();
+    final localizations = AppLocalizations.of(context)!;
     final items = provider.items;
 
     return AlertDialog(
-      title: const Text('Add Record for Today'),
+      title: Text(localizations.addRecordTitle),
       content: SingleChildScrollView(
         child: ListBody(
-          children: items.map((item) {
+          children: items.where((item) => item.isEnabled).map((item) {
             final isSelected = _selectedItemIds.contains(item.id);
             return CheckboxListTile(
               title: Text(item.name),
@@ -305,13 +354,13 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Cancel'),
+          child: Text(localizations.cancelButton),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: const Text('Save'),
+          child: Text(localizations.saveButton),
           onPressed: () {
             provider.addRecordsForToday(_selectedItemIds.toList());
             Navigator.of(context).pop();

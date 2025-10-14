@@ -101,16 +101,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String get spanish => 'Español';
 
   @override
-  String get hindi => 'हिन्दी';
+  String get hindi => '印地语';
 
   @override
-  String get indonesian => 'Bahasa Indonesia';
+  String get indonesian => '印度尼西亚语';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => '葡萄牙语';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => '阿拉伯语';
+
+  @override
+  String get addRecordTitle => '添加今日记录';
+
+  @override
+  String get cancelButton => '取消';
+
+  @override
+  String get saveButton => '保存';
+
+  @override
+  String get continuousRecords => '连续记录';
+
+  @override
+  String get itemName => '项目名称';
+
+  @override
+  String get continuousMonths => '连续月数';
+
+  @override
+  String get continuousWeeks => '连续周数';
+
+  @override
+  String get continuousDays => '连续天数';
+
+  @override
+  String get dayShort => '天数';
+
+  @override
+  String get weekShort => '周数';
+
+  @override
+  String get monthShort => '月数';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -210,14 +243,47 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get spanish => 'Español';
 
   @override
-  String get hindi => 'हिन्दी';
+  String get hindi => '印地語';
 
   @override
-  String get indonesian => 'Bahasa Indonesia';
+  String get indonesian => '印度尼西亞語';
 
   @override
-  String get portuguese => 'Português';
+  String get portuguese => '葡萄牙語';
 
   @override
-  String get arabic => 'العربية';
+  String get arabic => '阿拉伯語';
+
+  @override
+  String get addRecordTitle => '新增今日記錄';
+
+  @override
+  String get cancelButton => '取消';
+
+  @override
+  String get saveButton => '儲存';
+
+  @override
+  String get continuousRecords => '連續記錄';
+
+  @override
+  String get itemName => '項目名稱';
+
+  @override
+  String get continuousMonths => '連續月數';
+
+  @override
+  String get continuousWeeks => '連續週數';
+
+  @override
+  String get continuousDays => '連續天數';
+
+  @override
+  String get dayShort => '天數';
+
+  @override
+  String get weekShort => '週數';
+
+  @override
+  String get monthShort => '月數';
 }

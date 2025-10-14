@@ -32,6 +32,50 @@
   "spanish": "Español",
   "hindi": "हिन्दी",
   "indonesian": "Bahasa Indonesia",
-  "portuguese": "Português",
-  "arabic": "العربية"
+  "portuguese": "Portugis",
+  "arabic": "Arab",
+  "addRecordTitle": "Tambahkan Catatan Hari Ini",
+  "@addRecordTitle": {
+    "description": "Title for the Add Record dialog"
+  },
+  "cancelButton": "Batal",
+  "@cancelButton": {
+    "description": "Text for the Cancel button"
+  },
+  "saveButton": "Simpan",
+  "@saveButton": {
+    "description": "Text for the Save button"
+  },
+  "continuousRecords": "Catatan Berkelanjutan",
+  "@continuousRecords": {
+    "description": "Title for the continuous records table"
+  },
+  "itemName": "Nama Item",
+  "@itemName": {
+    "description": "Column header for item name"
+  },
+  "continuousMonths": "Bulan Berkelanjutan",
+  "@continuousMonths": {
+    "description": "Column header for continuous months"
+  },
+  "continuousWeeks": "Minggu Berkelanjutan",
+  "@continuousWeeks": {
+    "description": "Column header for continuous weeks"
+  },
+  "continuousDays": "Hari Berkelanjutan",
+  "@continuousDays": {
+    "description": "Column header for continuous days"
+  },
+  "dayShort": "Hari",
+  "@dayShort": {
+    "description": "Short label for day"
+  },
+  "weekShort": "Minggu",
+  "@weekShort": {
+    "description": "Short label for week"
+  },
+  "monthShort": "Bulan",
+  "@monthShort": {
+    "description": "Short label for month"
+  }
 }
