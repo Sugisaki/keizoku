@@ -68,7 +68,7 @@ class WeekRowWidget extends StatelessWidget {
           return Container(
             height: 2, // 線の太さ
             margin: const EdgeInsets.symmetric(vertical: 1.0), // 線と線の間のマージン
-            color: hasRecordInWeek ? item.getEffectiveColor(settings) : settings.disabledItemColor,
+            color: item.isEnabled ? (hasRecordInWeek ? item.getEffectiveColor(settings) : settings.disabledItemColor) : Colors.transparent,
           );
         }).toList(),
       ),

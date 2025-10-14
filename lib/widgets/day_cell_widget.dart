@@ -76,7 +76,7 @@ class DayCellWidget extends StatelessWidget {
         try {
           final item = items.firstWhere((item) => item.id == targetId);
           return Opacity(
-            opacity: 0.5,
+            opacity: item.isEnabled ? 0.5 : 0.0,
             child: Icon(
               item.getEffectiveIcon(),
               color: item.getEffectiveColor(settings),
