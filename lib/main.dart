@@ -126,6 +126,25 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Map<CalendarItem, int> _getMonthlyRecordSummary(DateTime month, CalendarProvider provider) {
+    final Map<CalendarItem, int> monthlySummary = {};
+    final startOfMonth = DateTime(month.year, month.month, 1);
+    final endOfMonth = DateTime(month.year, month.month + 1, 0);
+
+    for (var date = startOfMonth; date.isBefore(endOfMonth.add(const Duration(days: 1))); date = date.add(const Duration(days: 1))) {
+      final recordIdsForDay = provider.records.getRecordsForDay(date);
+      for (final recordId in recordIdsForDay) {
+        try {
+          final item = provider.items.firstWhere((item) => item.id == recordId);
+          monthlySummary[item] = (monthlySummary[item] ?? 0) + 1;
+        } catch (e) {
+          // Item not found, skip
+        }
+      }
+    }
+    return monthlySummary;
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CalendarProvider>();
@@ -186,7 +205,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!)),
+        title: Row(
+          children: [
+            Text(_displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!)),
+            const SizedBox(width: 8),
+            if (_displayMonth != null) ..._getMonthlyRecordSummary(_displayMonth!, provider).entries.where((entry) => entry.key.isEnabled).map((entry) {
+              final item = entry.key;
+              final count = entry.value;
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  Opacity(
+                    opacity: 0.7, // 半透明
+                    child: Icon(
+                      item.getEffectiveIcon(),
+                      color: item.getEffectiveColor(provider.settings),
+                      size: 24, // アイコンサイズを調整
+                    ),
+                  ),
+                  Text(
+                    count.toString(),
+                    style: const TextStyle(
+                      color: Color(0xFFFFFFFF),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14, // フォントサイズを調整
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -208,7 +257,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// （AddRecordDialogの実装は変更なし）
 class AddRecordDialog extends StatefulWidget {
   const AddRecordDialog({super.key});
 
