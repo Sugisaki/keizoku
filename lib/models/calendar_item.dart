@@ -8,6 +8,7 @@ class CalendarItem {
   final String? itemColorHex; // 有効色
   final IconData? icon;
   final bool isEnabled; // 有効/無効フラグ
+  final int order; // 表示順
 
   CalendarItem({
     required this.id,
@@ -15,7 +16,8 @@ class CalendarItem {
     this.itemColorHex,
     this.icon,
     this.isEnabled = true, // デフォルトは有効
-  });
+    int? order, // orderが指定されない場合はidを使用
+  }) : order = order ?? id;
 
   // 事柄の有効色を取得する。無効の場合は無効色を返す。
   Color getEffectiveColor(CalendarSettings settings) {
@@ -41,6 +43,7 @@ class CalendarItem {
     String? name,
     String? itemColorHex,
     bool? isEnabled,
+    int? order,
   }) {
     return CalendarItem(
       id: id,
@@ -48,6 +51,7 @@ class CalendarItem {
       itemColorHex: itemColorHex ?? this.itemColorHex,
       icon: icon, // アイコンは変更しない想定
       isEnabled: isEnabled ?? this.isEnabled,
+      order: order ?? this.order,
     );
   }
 
@@ -58,6 +62,7 @@ class CalendarItem {
       'name': name,
       'itemColorHex': itemColorHex,
       'isEnabled': isEnabled,
+      'order': order,
     };
   }
 
@@ -68,6 +73,7 @@ class CalendarItem {
       name: json['name'],
       itemColorHex: json['itemColorHex'],
       isEnabled: json['isEnabled'] ?? true,
+      order: json['order'] ?? json['id'], // orderがなければidをデフォルトとする
       // IconDataはJSONで直接表現できないため、ここでは固定値またはnullとする
       // 必要であれば、codePointとfontFamilyを保存するなどの工夫が必要
       icon: Icons.circle,

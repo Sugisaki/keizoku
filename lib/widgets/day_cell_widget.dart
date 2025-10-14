@@ -63,32 +63,35 @@ class DayCellWidget extends StatelessWidget {
   // 3x3のアイコン用グリッドを構築する
   Widget _buildIconGrid() {
     final iconSize = cellWidth / 4;
-    const idToIndexMap = {
+    const orderToIndexMap = {
       7: 0, 8: 1, 9: 2,
       1: 3, 2: 4, 3: 5,
       4: 6, 5: 7, 6: 8,
     };
 
-    List<Widget> gridChildren = List.generate(9, (index) {
-      final targetId = idToIndexMap.entries.firstWhere((entry) => entry.value == index, orElse: () => const MapEntry(-1, -1)).key;
+    final relevantItems = items
+        .where((item) => recordIds.contains(item.id) && item.isEnabled)
+        .toList();
 
-      if (recordIds.contains(targetId)) {
-        try {
-          final item = items.firstWhere((item) => item.id == targetId);
-          return Opacity(
-            opacity: item.isEnabled ? 0.5 : 0.0,
+    relevantItems.sort((a, b) => a.order.compareTo(b.order));
+
+    List<Widget> gridChildren = List.generate(9, (_) => const SizedBox.shrink());
+
+    for (var item in relevantItems) {
+      if (orderToIndexMap.containsKey(item.id)) {
+        final gridIndex = orderToIndexMap[item.id]!;
+        if (gridIndex >= 0 && gridIndex < 9) {
+          gridChildren[gridIndex] = Opacity(
+            opacity: 0.5,
             child: Icon(
               item.getEffectiveIcon(),
               color: item.getEffectiveColor(settings),
               size: iconSize,
             ),
           );
-        } catch (e) {
-          return const SizedBox.shrink();
         }
       }
-      return const SizedBox.shrink();
-    });
+    }
 
     return GridView.count(
       crossAxisCount: 3,

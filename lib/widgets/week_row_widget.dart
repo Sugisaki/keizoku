@@ -56,10 +56,13 @@ class WeekRowWidget extends StatelessWidget {
 
   // 週の下に表示する事柄の線を構築する
   Widget _buildItemLines() {
+    final sortedItems = List<CalendarItem>.from(items);
+    sortedItems.sort((a, b) => a.order.compareTo(b.order));
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: Column(
-        children: items.map((item) {
+        children: sortedItems.map((item) {
           // この週にこの事柄の記録が1件でもあるかチェック
           final bool hasRecordInWeek = weekDates.any((day) {
             return records.getRecordsForDay(day).contains(item.id);

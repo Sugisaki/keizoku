@@ -63,16 +63,44 @@ class CalendarProvider extends ChangeNotifier {
 
   // 事柄を更新する
   Future<void> updateItem(CalendarItem updatedItem) async {
-    final index = _items.indexWhere((item) => item.id == updatedItem.id);
+    // 1. _itemsリスト内でupdatedItemを更新
+    List<CalendarItem> allItems = List.from(_items);
+    final index = allItems.indexWhere((item) => item.id == updatedItem.id);
     if (index != -1) {
-      // リストの不変性を保つために新しいリストを作成
-      final newItems = List<CalendarItem>.from(_items);
-      newItems[index] = updatedItem;
-      _items = newItems;
-
-      await _itemsRepository.saveItems(_items);
-      notifyListeners();
+      allItems[index] = updatedItem;
+    } else {
+      allItems.add(updatedItem);
     }
+
+    // 2. 有効なアイテムと無効なアイテムを分離
+    List<CalendarItem> enabled = allItems.where((item) => item.isEnabled).toList();
+    List<CalendarItem> disabled = allItems.where((item) => !item.isEnabled).toList();
+
+    // 3. 有効なアイテムをユーザーが設定したorderを尊重しつつソート
+    //    - updatedItemが有効な場合のみ処理
+    if (updatedItem.isEnabled) {
+      // updatedItemをenabledリストから一旦削除（もし存在すれば）
+      enabled.removeWhere((item) => item.id == updatedItem.id);
+
+      // ユーザーが設定したorderを有効な範囲に調整
+      int desiredOrder = updatedItem.order;
+      if (desiredOrder < 1) desiredOrder = 1;
+      if (desiredOrder > enabled.length + 1) desiredOrder = enabled.length + 1;
+
+      // desiredOrderの位置にupdatedItemを挿入
+      enabled.insert(desiredOrder - 1, updatedItem);
+    }
+
+    // 4. 有効なアイテムのorderを1から連番で再割り当て
+    for (int i = 0; i < enabled.length; i++) {
+      enabled[i] = enabled[i].copyWith(order: i + 1);
+    }
+
+    // 5. 最終的な_itemsリストを再構築（有効なアイテムをorder順に、その後無効なアイテム）
+    _items = [...enabled, ...disabled];
+
+    await _itemsRepository.saveItems(_items);
+    notifyListeners();
   }
 
   // 今日の事柄の記録を追加/更新する
@@ -105,7 +133,7 @@ class CalendarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 指定された日に特定の項目が記録されているかチェック
+  // 指定された日に特定の事柄が記録されているかチェック
   bool _hasRecordOnDay(DateTime date, int itemId) {
     final recordsForDay = _records.getRecordsForDay(date);
     return recordsForDay.contains(itemId);
@@ -166,7 +194,7 @@ class CalendarProvider extends ChangeNotifier {
     return pastContinuousWeeks;
   }
 
-  // 指定された週に特定の項目が記録されているかチェック
+  // 指定された週に特定の事柄が記録されているかチェック
   bool _hasRecordInWeek(DateTime dateInWeek, int itemId) {
     DateTime startOfWeek = dateInWeek.subtract(Duration(days: dateInWeek.weekday - 1)); // 月曜日を週の始まりとする
     for (int i = 0; i < 7; i++) {
@@ -205,7 +233,7 @@ class CalendarProvider extends ChangeNotifier {
     return pastContinuousMonths;
   }
 
-  // 指定された月に特定の項目が記録されているかチェック
+  // 指定された月に特定の事柄が記録されているかチェック
   bool _hasRecordInMonth(DateTime dateInMonth, int itemId) {
     final startOfMonth = DateTime(dateInMonth.year, dateInMonth.month, 1);
     final endOfMonth = DateTime(dateInMonth.year, dateInMonth.month + 1, 0);
