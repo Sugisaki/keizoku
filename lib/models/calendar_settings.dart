@@ -13,7 +13,7 @@ class CalendarSettings {
 
   CalendarSettings({
     Map<String, Color>? itemColorPalette,
-    this.disabledItemColor = const Color(0xFF7f7f7f), // デフォルトはグレー
+    this.disabledItemColor = const Color(0xFFcccccc), // 無効色はグレー
     this.startOfWeek = DateTime.sunday, // デフォルトは日曜日
   }) : itemColorPalette = itemColorPalette ?? _defaultColorPalette;
 

@@ -20,9 +20,15 @@ class LocalRecordsRepository implements RecordsRepository {
     // 固定のテストデータを定義
     final testData = {
       DateTime(2024, 10, 9): [1],
-          DateTime(2025, 9, 9): [7,8],
-          DateTime(2025, 10, 3): [2,4,6],
-          DateTime(2025, 10, 9): [1,3,5],
+      DateTime(2024, 10, 10): [2],
+      DateTime(2024, 10, 11): [3],
+
+      DateTime(2025, 9, 1): [1,2,3],
+      DateTime(2025, 9, 4): [1,2,3,4,5,6],
+      DateTime(2025, 9, 7): [1,2,3,4,5,6,7,8,9],
+
+      DateTime(2025, 10, 3): [2,4,6],
+      DateTime(2025, 10, 9): [1,3,5],
     };
 
     try {

@@ -11,7 +11,8 @@ class WeekRowWidget extends StatelessWidget {
   final List<CalendarItem> items;
   final CalendarRecords records;
   final CalendarSettings settings;
-  final bool isScrolling; // 追加
+  final bool isScrolling;
+  final double cellWidth;
 
   const WeekRowWidget({
     super.key,
@@ -20,7 +21,8 @@ class WeekRowWidget extends StatelessWidget {
     required this.items,
     required this.records,
     required this.settings,
-    this.isScrolling = false, // 追加
+    this.isScrolling = false,
+    required this.cellWidth,
   });
 
   @override
@@ -39,7 +41,8 @@ class WeekRowWidget extends StatelessWidget {
                   items: items,
                   recordIds: records.getRecordsForDay(date),
                   settings: settings,
-                  isScrolling: isScrolling, // isScrollingを渡す
+                  isScrolling: isScrolling,
+                  cellWidth: cellWidth,
                 ),
               ),
             );

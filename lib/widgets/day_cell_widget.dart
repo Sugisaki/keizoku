@@ -10,7 +10,8 @@ class DayCellWidget extends StatelessWidget {
   final List<CalendarItem> items;
   final List<int> recordIds;
   final CalendarSettings settings;
-  final bool isScrolling; // スクロール中かどうかのフラグ
+  final bool isScrolling;
+  final double cellWidth;
 
   const DayCellWidget({
     super.key,
@@ -19,7 +20,8 @@ class DayCellWidget extends StatelessWidget {
     required this.items,
     required this.recordIds,
     required this.settings,
-    this.isScrolling = false, // デフォルトはfalse
+    this.isScrolling = false,
+    required this.cellWidth,
   });
 
   @override
@@ -60,6 +62,7 @@ class DayCellWidget extends StatelessWidget {
 
   // 3x3のアイコン用グリッドを構築する
   Widget _buildIconGrid() {
+    final iconSize = cellWidth / 4;
     const idToIndexMap = {
       7: 0, 8: 1, 9: 2,
       1: 3, 2: 4, 3: 5,
@@ -77,7 +80,7 @@ class DayCellWidget extends StatelessWidget {
             child: Icon(
               item.getEffectiveIcon(),
               color: item.getEffectiveColor(settings),
-              size: 12,
+              size: iconSize,
             ),
           );
         } catch (e) {

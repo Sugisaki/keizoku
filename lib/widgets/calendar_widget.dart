@@ -253,6 +253,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       records: widget.records,
                       settings: widget.settings,
                       isScrolling: _isScrolling,
+                      cellWidth: constraints.maxWidth / 7,
                     );
                   },
                 ),
