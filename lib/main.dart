@@ -59,6 +59,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   DateTime? _displayMonth;
+  final CalendarWidgetController _calendarController = CalendarWidgetController();
 
   void _handleVisibleMonthChanged(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -111,16 +112,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
       final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
 
-      bodyWidget = SizedBox(
-        height: calendarHeight,
-        child: CalendarWidget(
-          settings: provider.settings,
-          items: provider.items,
-          records: provider.records,
-          onVisibleMonthChanged: _handleVisibleMonthChanged,
-          displayMonth: _displayMonth ?? DateTime.now(),
-          maxRows: maxRows,
-        ),
+      bodyWidget = Column(
+        children: [
+          SizedBox(
+            height: calendarHeight,
+            child: CalendarWidget(
+              settings: provider.settings,
+              items: provider.items,
+              records: provider.records,
+              onVisibleMonthChanged: _handleVisibleMonthChanged,
+              displayMonth: _displayMonth ?? DateTime.now(),
+              maxRows: maxRows,
+              controller: _calendarController,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _calendarController.scrollToBottom();
+                },
+                child: Text(
+                  '今日 ${DateFormat('M/d').format(DateTime.now())}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
       );
     }
 

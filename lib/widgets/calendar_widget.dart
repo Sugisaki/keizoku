@@ -12,6 +12,7 @@ class CalendarWidget extends StatefulWidget {
   final Function(DateTime) onVisibleMonthChanged;
   final DateTime displayMonth;
   final int maxRows;
+  final CalendarWidgetController? controller;
 
   const CalendarWidget({
     super.key,
@@ -21,10 +22,27 @@ class CalendarWidget extends StatefulWidget {
     required this.onVisibleMonthChanged,
     required this.displayMonth,
     required this.maxRows,
+    this.controller,
   });
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
+}
+
+class CalendarWidgetController {
+  _CalendarWidgetState? _state;
+
+  void _attach(_CalendarWidgetState state) {
+    _state = state;
+  }
+
+  void _detach() {
+    _state = null;
+  }
+
+  void scrollToBottom() {
+    _state?._scrollToBottom();
+  }
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
@@ -39,10 +57,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     super.initState();
     _generateAllWeeks();
     _scrollController.addListener(_scrollListener);
+    widget.controller?._attach(this);
   }
 
   @override
   void dispose() {
+    widget.controller?._detach();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
@@ -149,6 +169,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         print("[DEBUG] More weeks loaded. Total weeks: ${_weeks.length}");
       }
     });
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   Widget _buildDayHeaders() {
