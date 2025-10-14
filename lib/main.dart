@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'l10n/app_localizations.dart';
 
 import 'models/calendar_settings.dart';
 import 'models/calendar_item.dart';
 import 'models/calendar_records.dart';
+import 'models/language_settings.dart';
 import 'widgets/calendar_widget.dart';
 import 'providers/calendar_provider.dart';
 import 'repositories/settings_repository.dart';
@@ -14,6 +17,8 @@ import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
 import 'repositories/items_repository.dart';
 import 'repositories/local/local_items_repository.dart';
+import 'repositories/language_repository.dart';
+import 'repositories/local/local_language_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +26,7 @@ void main() async {
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
   final itemsRepository = LocalItemsRepository();
+  final languageRepository = LocalLanguageRepository();
 
   runApp(
     ChangeNotifierProvider(
@@ -28,6 +34,7 @@ void main() async {
         settingsRepository: settingsRepository,
         recordsRepository: recordsRepository,
         itemsRepository: itemsRepository,
+        languageRepository: languageRepository,
       ),
       child: const MyApp(),
     ),
@@ -39,13 +46,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Calendar App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MyHomePage(),
+    return Consumer<CalendarProvider>(
+      builder: (context, provider, child) {
+        // 選択された言語がnullの場合は、端末の言語に基づいてデフォルト言語を決定
+        final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+        final effectiveLocale = provider.languageSettings.selectedLocale ?? 
+                               LanguageSettings.getDefaultLocale(deviceLocale);
+        
+        return MaterialApp(
+          title: 'Calendar App',
+          locale: effectiveLocale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale('ja'),
+            Locale('zh'),
+            Locale('zh', 'TW'),
+            Locale('ko'),
+            Locale('fr'),
+            Locale('de'),
+            Locale('es'),
+            Locale('hi'),
+            Locale('id'),
+            Locale('pt'),
+            Locale('ar'),
+          ],
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: const MyHomePage(),
+        );
+      },
     );
   }
 }
@@ -136,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _calendarController.scrollToBottom();
                 },
                 child: Text(
-                  '今日 ${DateFormat('M/d').format(DateTime.now())}',
+                  AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -149,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_displayMonth == null ? '' : DateFormat('yyyy年 M月').format(_displayMonth!)),
+        title: Text(_displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!)),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

@@ -6,9 +6,11 @@ import 'package:flutter_calendar_app/providers/calendar_provider.dart';
 import 'package:flutter_calendar_app/repositories/settings_repository.dart';
 import 'package:flutter_calendar_app/repositories/records_repository.dart';
 import 'package:flutter_calendar_app/repositories/items_repository.dart';
+import 'package:flutter_calendar_app/repositories/language_repository.dart';
 import 'package:flutter_calendar_app/models/calendar_settings.dart';
 import 'package:flutter_calendar_app/models/calendar_records.dart';
 import 'package:flutter_calendar_app/models/calendar_item.dart';
+import 'package:flutter_calendar_app/models/language_settings.dart';
 
 // --- テスト用のダミーリポジトリ ---
 class InMemorySettingsRepository implements SettingsRepository {
@@ -31,6 +33,13 @@ class InMemoryItemsRepository implements ItemsRepository {
   @override
   Future<void> saveItems(List<CalendarItem> items) async {}
 }
+
+class InMemoryLanguageRepository implements LanguageRepository {
+  @override
+  Future<LanguageSettings> loadLanguageSettings() async => LanguageSettings(selectedLocale: const Locale('en'));
+  @override
+  Future<void> saveLanguageSettings(LanguageSettings settings) async {}
+}
 // --- ここまで ---
 
 void main() {
@@ -38,7 +47,8 @@ void main() {
     // ダミーリポジトリのインスタンスを作成
     final settingsRepository = InMemorySettingsRepository();
     final recordsRepository = InMemoryRecordsRepository();
-    final itemsRepository = InMemoryItemsRepository(); // 追加
+    final itemsRepository = InMemoryItemsRepository();
+    final languageRepository = InMemoryLanguageRepository();
 
     // Providerをウィジェットツリーのトップに配置してアプリをビルド
     await tester.pumpWidget(
@@ -46,7 +56,8 @@ void main() {
         create: (context) => CalendarProvider(
           settingsRepository: settingsRepository,
           recordsRepository: recordsRepository,
-          itemsRepository: itemsRepository, // 追加
+          itemsRepository: itemsRepository,
+          languageRepository: languageRepository,
         ),
         child: const MyApp(),
       ),
@@ -56,7 +67,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // カレンダーの基本的な要素（曜日のヘッダー）が表示されることだけを確認する
-    expect(find.text('SUN'), findsOneWidget);
-    expect(find.text('MON'), findsOneWidget);
+    expect(find.text('Sun'), findsOneWidget);
+    expect(find.text('Mon'), findsOneWidget);
   });
 }

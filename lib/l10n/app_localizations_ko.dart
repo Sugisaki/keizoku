@@ -1,0 +1,114 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Korean (`ko`).
+class AppLocalizationsKo extends AppLocalizations {
+  AppLocalizationsKo([String locale = 'ko']) : super(locale);
+
+  @override
+  String get appTitle => '달력 앱';
+
+  @override
+  String get today => '오늘';
+
+  @override
+  String todayButton(String date) {
+    return '오늘 $date';
+  }
+
+  @override
+  String get settings => '설정';
+
+  @override
+  String get weekStartsOn => '주 시작일';
+
+  @override
+  String get sunday => '일요일';
+
+  @override
+  String get monday => '월요일';
+
+  @override
+  String get tuesday => '화요일';
+
+  @override
+  String get wednesday => '수요일';
+
+  @override
+  String get thursday => '목요일';
+
+  @override
+  String get friday => '금요일';
+
+  @override
+  String get saturday => '토요일';
+
+  @override
+  String get sundayShort => '일';
+
+  @override
+  String get mondayShort => '월';
+
+  @override
+  String get tuesdayShort => '화';
+
+  @override
+  String get wednesdayShort => '수';
+
+  @override
+  String get thursdayShort => '목';
+
+  @override
+  String get fridayShort => '금';
+
+  @override
+  String get saturdayShort => '토';
+
+  @override
+  String get manageItems => '항목 관리';
+
+  @override
+  String get language => '언어';
+
+  @override
+  String get selectLanguage => '언어 선택';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get japanese => '日本語';
+
+  @override
+  String get chineseSimplified => '简体中文';
+
+  @override
+  String get chineseTraditional => '繁體中文';
+
+  @override
+  String get korean => '한국어';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get german => 'Deutsch';
+
+  @override
+  String get spanish => 'Español';
+
+  @override
+  String get hindi => 'हिन्दी';
+
+  @override
+  String get indonesian => 'Bahasa Indonesia';
+
+  @override
+  String get portuguese => 'Português';
+
+  @override
+  String get arabic => 'العربية';
+}

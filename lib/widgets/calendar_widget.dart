@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:collection';
+import '../l10n/app_localizations.dart';
 import '../models/calendar_item.dart';
 import '../models/calendar_records.dart';
 import '../models/calendar_settings.dart';
@@ -182,7 +183,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   Widget _buildDayHeaders() {
-      final dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      final localizations = AppLocalizations.of(context)!;
+      final dayNames = [
+        localizations.sundayShort,
+        localizations.mondayShort,
+        localizations.tuesdayShort,
+        localizations.wednesdayShort,
+        localizations.thursdayShort,
+        localizations.fridayShort,
+        localizations.saturdayShort,
+      ];
       if (widget.settings.startOfWeek == DateTime.monday) {
           dayNames.add(dayNames.removeAt(0));
       }

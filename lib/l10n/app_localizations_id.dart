@@ -1,0 +1,114 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Indonesian (`id`).
+class AppLocalizationsId extends AppLocalizations {
+  AppLocalizationsId([String locale = 'id']) : super(locale);
+
+  @override
+  String get appTitle => 'Aplikasi Kalender';
+
+  @override
+  String get today => 'Hari ini';
+
+  @override
+  String todayButton(String date) {
+    return 'Hari ini $date';
+  }
+
+  @override
+  String get settings => 'Pengaturan';
+
+  @override
+  String get weekStartsOn => 'Minggu dimulai pada';
+
+  @override
+  String get sunday => 'Minggu';
+
+  @override
+  String get monday => 'Senin';
+
+  @override
+  String get tuesday => 'Selasa';
+
+  @override
+  String get wednesday => 'Rabu';
+
+  @override
+  String get thursday => 'Kamis';
+
+  @override
+  String get friday => 'Jumat';
+
+  @override
+  String get saturday => 'Sabtu';
+
+  @override
+  String get sundayShort => 'Min';
+
+  @override
+  String get mondayShort => 'Sen';
+
+  @override
+  String get tuesdayShort => 'Sel';
+
+  @override
+  String get wednesdayShort => 'Rab';
+
+  @override
+  String get thursdayShort => 'Kam';
+
+  @override
+  String get fridayShort => 'Jum';
+
+  @override
+  String get saturdayShort => 'Sab';
+
+  @override
+  String get manageItems => 'Kelola item';
+
+  @override
+  String get language => 'Bahasa';
+
+  @override
+  String get selectLanguage => 'Pilih bahasa';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get japanese => '日本語';
+
+  @override
+  String get chineseSimplified => '简体中文';
+
+  @override
+  String get chineseTraditional => '繁體中文';
+
+  @override
+  String get korean => '한국어';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get german => 'Deutsch';
+
+  @override
+  String get spanish => 'Español';
+
+  @override
+  String get hindi => 'हिन्दी';
+
+  @override
+  String get indonesian => 'Bahasa Indonesia';
+
+  @override
+  String get portuguese => 'Português';
+
+  @override
+  String get arabic => 'العربية';
+}

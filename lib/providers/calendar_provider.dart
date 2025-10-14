@@ -2,38 +2,46 @@ import 'package:flutter/material.dart';
 import '../models/calendar_settings.dart';
 import '../models/calendar_item.dart';
 import '../models/calendar_records.dart';
+import '../models/language_settings.dart';
 import '../repositories/settings_repository.dart';
 import '../repositories/records_repository.dart';
 import '../repositories/items_repository.dart';
+import '../repositories/language_repository.dart';
 
 // アプリケーションの状態を管理するクラス
 class CalendarProvider extends ChangeNotifier {
   late final SettingsRepository _settingsRepository;
   late final RecordsRepository _recordsRepository;
   late final ItemsRepository _itemsRepository;
+  late final LanguageRepository _languageRepository;
 
   late CalendarSettings _settings;
   late List<CalendarItem> _items; // 事柄リスト
   late CalendarRecords _records;
+  late LanguageSettings _languageSettings;
 
   // 外部から状態を読み取るためのgetter
   CalendarSettings get settings => _settings;
   List<CalendarItem> get items => _items;
   CalendarRecords get records => _records;
+  LanguageSettings get languageSettings => _languageSettings;
 
   CalendarProvider({
     required SettingsRepository settingsRepository,
     required RecordsRepository recordsRepository,
     required ItemsRepository itemsRepository,
+    required LanguageRepository languageRepository,
   }) {
     _settingsRepository = settingsRepository;
     _recordsRepository = recordsRepository;
     _itemsRepository = itemsRepository;
+    _languageRepository = languageRepository;
 
     // 初期データで初期化
     _settings = CalendarSettings();
     _records = CalendarRecords();
     _items = []; // 最初は空リスト
+    _languageSettings = const LanguageSettings();
 
     // 永続化されたデータをロードする
     loadData();
@@ -44,7 +52,13 @@ class CalendarProvider extends ChangeNotifier {
     _settings = await _settingsRepository.loadSettings();
     _records = await _recordsRepository.loadRecords();
     _items = await _itemsRepository.loadItems(); // ItemsRepositoryから読み込む
+    _languageSettings = await _loadLanguageSettings();
     notifyListeners();
+  }
+
+  // 言語設定を読み込む
+  Future<LanguageSettings> _loadLanguageSettings() async {
+    return await _languageRepository.loadLanguageSettings();
   }
 
   // 事柄を更新する
@@ -81,6 +95,13 @@ class CalendarProvider extends ChangeNotifier {
   Future<void> updateStartOfWeek(int newStartOfWeek) async {
     _settings = _settings.copyWith(startOfWeek: newStartOfWeek);
     await _settingsRepository.saveSettings(_settings);
+    notifyListeners();
+  }
+
+  // 言語設定を変更する
+  Future<void> updateLanguage(Locale? newLocale) async {
+    _languageSettings = _languageSettings.copyWith(selectedLocale: newLocale);
+    await _languageRepository.saveLanguageSettings(_languageSettings);
     notifyListeners();
   }
 }

@@ -1,0 +1,145 @@
+{
+  "@@locale": "en",
+  "appTitle": "Calendar App",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Label for today button"
+  },
+  "todayButton": "Today {date}",
+  "@todayButton": {
+    "description": "Today button with date",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12/19"
+      }
+    }
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu label"
+  },
+  "weekStartsOn": "Week starts on",
+  "@weekStartsOn": {
+    "description": "Week start day setting label"
+  },
+  "sunday": "Sunday",
+  "@sunday": {
+    "description": "Sunday"
+  },
+  "monday": "Monday",
+  "@monday": {
+    "description": "Monday"
+  },
+  "tuesday": "Tuesday",
+  "@tuesday": {
+    "description": "Tuesday"
+  },
+  "wednesday": "Wednesday",
+  "@wednesday": {
+    "description": "Wednesday"
+  },
+  "thursday": "Thursday",
+  "@thursday": {
+    "description": "Thursday"
+  },
+  "friday": "Friday",
+  "@friday": {
+    "description": "Friday"
+  },
+  "saturday": "Saturday",
+  "@saturday": {
+    "description": "Saturday"
+  },
+  "sundayShort": "Sun",
+  "@sundayShort": {
+    "description": "Sunday abbreviation"
+  },
+  "mondayShort": "Mon",
+  "@mondayShort": {
+    "description": "Monday abbreviation"
+  },
+  "tuesdayShort": "Tue",
+  "@tuesdayShort": {
+    "description": "Tuesday abbreviation"
+  },
+  "wednesdayShort": "Wed",
+  "@wednesdayShort": {
+    "description": "Wednesday abbreviation"
+  },
+  "thursdayShort": "Thu",
+  "@thursdayShort": {
+    "description": "Thursday abbreviation"
+  },
+  "fridayShort": "Fri",
+  "@fridayShort": {
+    "description": "Friday abbreviation"
+  },
+  "saturdayShort": "Sat",
+  "@saturdayShort": {
+    "description": "Saturday abbreviation"
+  },
+  "manageItems": "Manage Items",
+  "@manageItems": {
+    "description": "Manage items section title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Select language dialog title"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language name"
+  },
+  "japanese": "日本語",
+  "@japanese": {
+    "description": "Japanese language name"
+  },
+  "chineseSimplified": "简体中文",
+  "@chineseSimplified": {
+    "description": "Chinese Simplified language name"
+  },
+  "chineseTraditional": "繁體中文",
+  "@chineseTraditional": {
+    "description": "Chinese Traditional language name"
+  },
+  "korean": "한국어",
+  "@korean": {
+    "description": "Korean language name"
+  },
+  "french": "Français",
+  "@french": {
+    "description": "French language name"
+  },
+  "german": "Deutsch",
+  "@german": {
+    "description": "German language name"
+  },
+  "spanish": "Español",
+  "@spanish": {
+    "description": "Spanish language name"
+  },
+  "hindi": "हिन्दी",
+  "@hindi": {
+    "description": "Hindi language name"
+  },
+  "indonesian": "Bahasa Indonesia",
+  "@indonesian": {
+    "description": "Indonesian language name"
+  },
+  "portuguese": "Português",
+  "@portuguese": {
+    "description": "Portuguese language name"
+  },
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language name"
+  }
+}
