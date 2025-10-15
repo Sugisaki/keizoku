@@ -205,37 +205,45 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        // タイトル欄、年月と事柄のアイコン
         title: Row(
           children: [
             Text(_displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!)),
             const SizedBox(width: 8),
-            if (_displayMonth != null) ..._getMonthlyRecordSummary(_displayMonth!, provider).entries.where((entry) => entry.key.isEnabled).map((entry) {
-              final item = entry.key;
-              final count = entry.value;
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  Opacity(
-                    opacity: 0.7, // 半透明
-                    child: Icon(
-                      item.getEffectiveIcon(),
-                      color: item.getEffectiveColor(provider.settings),
-                      size: 24, // アイコンサイズを調整
+            if (_displayMonth != null) ...() {
+              final sortedEntries = _getMonthlyRecordSummary(_displayMonth!, provider).entries
+                  .where((entry) => entry.key.isEnabled)
+                  .toList()
+                  ..sort((a, b) => a.key.order.compareTo(b.key.order));
+              return sortedEntries.map((entry) {
+                final item = entry.key;
+                final count = entry.value;
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Opacity(
+                      opacity: 0.7, // 半透明
+                      child: Icon(
+                        item.getEffectiveIcon(),
+                        color: item.getEffectiveColor(provider.settings),
+                        size: 24, // アイコンサイズを調整
+                      ),
                     ),
-                  ),
-                  Text(
-                    count.toString(),
-                    style: const TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14, // フォントサイズを調整
+                    Text(
+                      count.toString(),
+                      style: const TextStyle(
+                        color: Color(0xFFFFFFFF),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14, // フォントサイズを調整
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }).toList(),
+                  ],
+                );
+              }).toList();
+            }(),
           ],
         ),
+        // 設定ボタン
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -247,6 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+
       body: Column(
         children: [
           bodyWidget,
@@ -260,6 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: SingleChildScrollView(
+              // 連続記録の表
               child: DataTable(
                 columnSpacing: 12,
                 horizontalMargin: 12,
@@ -290,12 +300,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     DataCell(Text(continuousWeeks > 0 ? continuousWeeks.toString() : '')),
                     DataCell(Text(continuousMonths > 0 ? continuousMonths.toString() : '')),
                   ]);
-                }).toList(),
+                }).toList()
               ),
             ),
           ),
         ],
       ),
+      // 事柄の追加
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddRecordDialog(context),
         tooltip: 'Add Record',
