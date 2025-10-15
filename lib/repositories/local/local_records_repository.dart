@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/calendar_records.dart';
 import '../records_repository.dart';
@@ -15,54 +16,55 @@ class LocalRecordsRepository implements RecordsRepository {
     return File('$path/$_fileName');
   }
 
+  // 開発環境のテストファイルをアセットから読み込む
+  Future<String?> _loadTestAsset() async {
+    try {
+      final contents = await rootBundle.loadString('assets/test_calendar_records.json');
+      return contents;
+    } catch (e) {
+      // アセットファイルが存在しない場合は静かに失敗（通常の動作）
+      return null;
+    }
+  }
+
   @override
   Future<CalendarRecords> loadRecords() async {
-    // 固定のテストデータを定義
-    final testData = {
-      DateTime(2024, 10, 9): [1],
-      DateTime(2024, 10, 10): [2],
-      DateTime(2024, 10, 11): [3],
-
-      DateTime(2025, 9, 1): [1,2,3],
-      DateTime(2025, 9, 4): [1,2,3,4,5,6],
-      DateTime(2025, 9, 7): [1,2,3,4,5,6,7,8,9],
-
-      DateTime(2025, 10, 4): [1,3,5],
-      DateTime(2025, 10, 5): [1,3,5],
-      DateTime(2025, 10, 6): [3,5],
-      DateTime(2025, 10, 7): [1,3,5],
-      DateTime(2025, 10, 8): [1,3],
-      DateTime(2025, 10, 9): [1,3,5],
-      DateTime(2025, 10, 10): [1,3,5],
-      DateTime(2025, 10, 11): [1,3,5],
-      DateTime(2025, 10, 12): [1,3,5],
-      DateTime(2025, 10, 13): [1,3,5],
-
-    };
-
     try {
+      // 最終的にマージされるレコードのマップ
+      Map<DateTime, List<int>> finalRecords = {};
+
+      // 1. ローカルファイルからデータを読み込み
       final file = await _localFile;
-      if (!await file.exists()) {
-        // ファイルが存在しない場合はテストデータのみを返す
-        return CalendarRecords(records: testData);
+      if (await file.exists()) {
+        print('Loading data from local file');
+        final contents = await file.readAsString();
+        final json = jsonDecode(contents) as Map<String, dynamic>;
+        final localRecords = json.map((key, value) {
+          // JSONのキー(String)をDateTimeに変換
+          return MapEntry(DateTime.parse(key), List<int>.from(value));
+        });
+        // ローカルファイルのデータを追加
+        finalRecords.addAll(localRecords);
       }
 
-      final contents = await file.readAsString();
-      final json = jsonDecode(contents) as Map<String, dynamic>;
+      // 2. 開発環境のテストアセットからデータを読み込み
+      final testAssetContents = await _loadTestAsset();
+      if (testAssetContents != null) {
+        print('Loading test data from assets/test_calendar_records.json');
+        final json = jsonDecode(testAssetContents) as Map<String, dynamic>;
+        final testAssetRecords = json.map((key, value) {
+          // JSONのキー(String)をDateTimeに変換
+          return MapEntry(DateTime.parse(key), List<int>.from(value));
+        });
+        // アセットのテストデータを追加（最高優先度で上書き）
+        finalRecords.addAll(testAssetRecords);
+      }
 
-      final loadedRecords = json.map((key, value) {
-        // JSONのキー(String)をDateTimeに変換
-        return MapEntry(DateTime.parse(key), List<int>.from(value));
-      });
-
-      // 読み込んだデータとテストデータをマージする (テストデータが優先される)
-      loadedRecords.addAll(testData);
-
-      return CalendarRecords(records: loadedRecords);
+      return CalendarRecords(records: finalRecords);
     } catch (e) {
-      // エラーが発生した場合はテストデータのみを返す
-      print('Error loading records: $e');
-      return CalendarRecords(records: testData);
+      // エラーが発生した場合は空のレコードを返す
+      print('[ERROR] loading records: $e');
+      return CalendarRecords(records: {});
     }
   }
 

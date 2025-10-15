@@ -80,3 +80,6 @@ xcuserdata/
 # CocoaPods
 Pods/
 Podfile.lock
+
+# Development test data
+assets/test_calendar_records.json
