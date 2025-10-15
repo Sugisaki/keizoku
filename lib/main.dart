@@ -185,17 +185,29 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  _calendarController.scrollToBottom();
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _calendarController.scrollToBottom();
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                // 事柄の追加ボタン
+                IconButton(
+                  color: Colors.blue,
+                  onPressed: () => _showAddRecordDialog(context),
+                  icon: const Icon(Icons.add_circle_rounded),
+                  iconSize: 48,
+                  padding: const EdgeInsets.all(8),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 16),
@@ -374,12 +386,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-      ),
-      // 事柄の追加
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddRecordDialog(context),
-        tooltip: 'Add Record',
-        child: const Icon(Icons.add),
       ),
     );
   }
