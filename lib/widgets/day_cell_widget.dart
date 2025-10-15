@@ -60,7 +60,12 @@ class DayCellWidget extends StatelessWidget {
     );
   }
 
-  // 3x3のアイコン用グリッドを構築する
+  /*  事柄のアイコンを orderプロパティの値に従って適切な位置に配置する。
+         order   →  3x3のグリッドでの配置
+      [7][8][9]  →  [0][1][2]
+      [1][2][3]  →  [3][4][5]
+      [4][5][6]  →  [6][7][8]
+  */
   Widget _buildIconGrid() {
     final iconSize = cellWidth / 4;
     const orderToIndexMap = {
@@ -78,8 +83,8 @@ class DayCellWidget extends StatelessWidget {
     List<Widget> gridChildren = List.generate(9, (_) => const SizedBox.shrink());
 
     for (var item in relevantItems) {
-      if (orderToIndexMap.containsKey(item.id)) {
-        final gridIndex = orderToIndexMap[item.id]!;
+      if (orderToIndexMap.containsKey(item.order)) {
+        final gridIndex = orderToIndexMap[item.order]!;
         if (gridIndex >= 0 && gridIndex < 9) {
           gridChildren[gridIndex] = Opacity(
             opacity: 0.5,
