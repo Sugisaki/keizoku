@@ -270,37 +270,106 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: SingleChildScrollView(
               // 連続記録の表
-              child: DataTable(
-                columnSpacing: 12,
-                horizontalMargin: 12,
-                columns: [
-                  DataColumn(label: Text(AppLocalizations.of(context)!.itemName)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.dayShort), numeric: true),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.weekShort), numeric: true),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.monthShort), numeric: true),
-                ],
-                rows: provider.items.where((item) => item.isEnabled).map((item) {
-                  final continuousMonths = provider.calculateContinuousMonths(item.id);
-                  final continuousWeeks = provider.calculateContinuousWeeks(item.id);
-                  final continuousDays = provider.calculateContinuousDays(item.id);
-
-                  return DataRow(cells: [
-                    DataCell(
-                      Container(
-                        color: item.getEffectiveColor(provider.settings),
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          item.name,
-                          style: const TextStyle(color: Colors.white),
+              child: Column(
+                children: [
+                  // ヘッダー行
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Text(
+                            AppLocalizations.of(context)!.itemName,
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.dayShort,
+                            textAlign: TextAlign.right,
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.weekShort,
+                            textAlign: TextAlign.right,
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.monthShort,
+                            textAlign: TextAlign.right,
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    DataCell(Text(continuousDays > 0 ? continuousDays.toString() : '')),
-                    DataCell(Text(continuousWeeks > 0 ? continuousWeeks.toString() : '')),
-                    DataCell(Text(continuousMonths > 0 ? continuousMonths.toString() : '')),
-                  ]);
-                }).toList()
+                  ),
+                  // データ行
+                  ...provider.items.where((item) => item.isEnabled).map((item) {
+                    final continuousMonths = provider.calculateContinuousMonths(item.id);
+                    final continuousWeeks = provider.calculateContinuousWeeks(item.id);
+                    final continuousDays = provider.calculateContinuousDays(item.id);
+
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            color: item.getEffectiveColor(provider.settings),
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                continuousDays > 0 ? continuousDays.toString() : '',
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                continuousWeeks > 0 ? continuousWeeks.toString() : '',
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                continuousMonths > 0 ? continuousMonths.toString() : '',
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
               ),
             ),
           ),
