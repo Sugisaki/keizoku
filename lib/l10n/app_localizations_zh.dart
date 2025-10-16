@@ -144,6 +144,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get monthShort => '月数';
+
+  @override
+  String get editItem => '编辑';
+
+  @override
+  String get itemNameLabel => '名称';
+
+  @override
+  String get itemOrderLabel => '顺序';
+
+  @override
+  String get itemColorLabel => '颜色';
+
+  @override
+  String get itemEnabledLabel => '启用';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -286,4 +301,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get monthShort => '月數';
+
+  @override
+  String get editItem => '編輯';
+
+  @override
+  String get itemNameLabel => '名稱';
+
+  @override
+  String get itemOrderLabel => '順序';
+
+  @override
+  String get itemColorLabel => '顏色';
+
+  @override
+  String get itemEnabledLabel => '啟用';
 }

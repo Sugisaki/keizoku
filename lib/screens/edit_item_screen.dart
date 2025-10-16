@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../models/calendar_item.dart';
 import '../models/calendar_settings.dart';
 import '../providers/calendar_provider.dart';
@@ -41,33 +42,33 @@ class _EditItemScreenState extends State<EditItemScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit "${widget.item.name}"'),
+        title: Text(AppLocalizations.of(context)!.editItem),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           TextField(
             controller: _nameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.itemNameLabel,
+              border: const OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 16),
           TextField(
             controller: _orderController,
-            decoration: const InputDecoration(
-              labelText: 'Order',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.itemOrderLabel,
+              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String?>(
             value: _selectedColorHex,
-            decoration: const InputDecoration(
-              labelText: 'Color',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.itemColorLabel,
+              border: const OutlineInputBorder(),
             ),
             items: colorPalette.entries.map((entry) {
               return DropdownMenuItem<String?>(
@@ -93,7 +94,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
           ),
           const SizedBox(height: 16),
           SwitchListTile(
-            title: const Text('Enabled'),
+            title: Text(AppLocalizations.of(context)!.itemEnabledLabel),
             value: _isEnabled,
             onChanged: (bool value) {
               setState(() {
@@ -113,7 +114,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
               context.read<CalendarProvider>().updateItem(updatedItem);
               Navigator.of(context).pop();
             },
-            child: const Text('Save'),
+            child: Text(AppLocalizations.of(context)!.saveButton),
           ),
         ],
       ),

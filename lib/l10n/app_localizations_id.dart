@@ -144,4 +144,19 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get monthShort => 'Bulan';
+
+  @override
+  String get editItem => 'Edit';
+
+  @override
+  String get itemNameLabel => 'Nama';
+
+  @override
+  String get itemOrderLabel => 'Urutan';
+
+  @override
+  String get itemColorLabel => 'Warna';
+
+  @override
+  String get itemEnabledLabel => 'Aktif';
 }

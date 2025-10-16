@@ -74,8 +74,28 @@
   "@weekShort": {
     "description": "Short label for week"
   },
-  "monthShort": "شهر",
+  "monthShort": "شهور",
   "@monthShort": {
     "description": "Short label for month"
+  },
+  "editItem": "تحرير",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "الاسم",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "الترتيب",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "اللون",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "مفعل",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
   }
 }

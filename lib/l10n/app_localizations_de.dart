@@ -144,4 +144,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get monthShort => 'Mon';
+
+  @override
+  String get editItem => 'Bearbeiten';
+
+  @override
+  String get itemNameLabel => 'Name';
+
+  @override
+  String get itemOrderLabel => 'Reihenfolge';
+
+  @override
+  String get itemColorLabel => 'Farbe';
+
+  @override
+  String get itemEnabledLabel => 'Aktiviert';
 }

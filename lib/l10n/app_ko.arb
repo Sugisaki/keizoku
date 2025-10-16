@@ -77,5 +77,25 @@
   "monthShort": "월",
   "@monthShort": {
     "description": "Short label for month"
+  },
+  "editItem": "편집",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "이름",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "순서",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "색상",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "활성화",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
   }
 }

@@ -77,5 +77,25 @@
   "monthShort": "Meses",
   "@monthShort": {
     "description": "Short label for months"
+  },
+  "editItem": "Editar",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "Nombre",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "Orden",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "Color",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "Habilitado",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
   }
 }

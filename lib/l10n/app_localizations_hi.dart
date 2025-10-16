@@ -143,5 +143,20 @@ class AppLocalizationsHi extends AppLocalizations {
   String get weekShort => 'सप्ताह';
 
   @override
-  String get monthShort => 'माह';
+  String get monthShort => 'महीने';
+
+  @override
+  String get editItem => 'संपादित करें';
+
+  @override
+  String get itemNameLabel => 'नाम';
+
+  @override
+  String get itemOrderLabel => 'क्रम';
+
+  @override
+  String get itemColorLabel => 'रंग';
+
+  @override
+  String get itemEnabledLabel => 'सक्षम';
 }

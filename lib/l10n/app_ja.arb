@@ -77,5 +77,25 @@
   "monthShort": "月数",
   "@monthShort": {
     "description": "Short label for month"
+  },
+  "editItem": "編集",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "名称",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "順番",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "色",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "有効",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
   }
 }

@@ -144,4 +144,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get monthShort => '月数';
+
+  @override
+  String get editItem => '編集';
+
+  @override
+  String get itemNameLabel => '名称';
+
+  @override
+  String get itemOrderLabel => '順番';
+
+  @override
+  String get itemColorLabel => '色';
+
+  @override
+  String get itemEnabledLabel => '有効';
 }

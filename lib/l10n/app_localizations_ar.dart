@@ -143,5 +143,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weekShort => 'أسبوع';
 
   @override
-  String get monthShort => 'شهر';
+  String get monthShort => 'شهور';
+
+  @override
+  String get editItem => 'تحرير';
+
+  @override
+  String get itemNameLabel => 'الاسم';
+
+  @override
+  String get itemOrderLabel => 'الترتيب';
+
+  @override
+  String get itemColorLabel => 'اللون';
+
+  @override
+  String get itemEnabledLabel => 'مفعل';
 }

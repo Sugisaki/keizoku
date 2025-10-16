@@ -144,4 +144,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get monthShort => '월';
+
+  @override
+  String get editItem => '편집';
+
+  @override
+  String get itemNameLabel => '이름';
+
+  @override
+  String get itemOrderLabel => '순서';
+
+  @override
+  String get itemColorLabel => '색상';
+
+  @override
+  String get itemEnabledLabel => '활성화';
 }

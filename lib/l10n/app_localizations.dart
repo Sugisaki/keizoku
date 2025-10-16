@@ -386,6 +386,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Months'**
   String get monthShort;
+
+  /// Title for edit item screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editItem;
+
+  /// Label for item name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get itemNameLabel;
+
+  /// Label for item order field
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get itemOrderLabel;
+
+  /// Label for item color field
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get itemColorLabel;
+
+  /// Label for item enabled switch
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get itemEnabledLabel;
 }
 
 class _AppLocalizationsDelegate

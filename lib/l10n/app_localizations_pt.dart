@@ -144,4 +144,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get monthShort => 'Meses';
+
+  @override
+  String get editItem => 'Editar';
+
+  @override
+  String get itemNameLabel => 'Nome';
+
+  @override
+  String get itemOrderLabel => 'Ordem';
+
+  @override
+  String get itemColorLabel => 'Cor';
+
+  @override
+  String get itemEnabledLabel => 'Ativado';
 }

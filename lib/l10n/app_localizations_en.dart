@@ -144,4 +144,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthShort => 'Months';
+
+  @override
+  String get editItem => 'Edit';
+
+  @override
+  String get itemNameLabel => 'Name';
+
+  @override
+  String get itemOrderLabel => 'Order';
+
+  @override
+  String get itemColorLabel => 'Color';
+
+  @override
+  String get itemEnabledLabel => 'Enabled';
 }

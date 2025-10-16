@@ -74,8 +74,28 @@
   "@weekShort": {
     "description": "Short label for week"
   },
-  "monthShort": "माह",
+  "monthShort": "महीने",
   "@monthShort": {
     "description": "Short label for month"
+  },
+  "editItem": "संपादित करें",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "नाम",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "क्रम",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "रंग",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "सक्षम",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
   }
 }

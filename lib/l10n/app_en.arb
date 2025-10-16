@@ -183,6 +183,26 @@
   "@monthShort": {
     "description": "Short label for months"
   },
+  "editItem": "Edit",
+  "@editItem": {
+    "description": "Title for edit item screen"
+  },
+  "itemNameLabel": "Name",
+  "@itemNameLabel": {
+    "description": "Label for item name field"
+  },
+  "itemOrderLabel": "Order",
+  "@itemOrderLabel": {
+    "description": "Label for item order field"
+  },
+  "itemColorLabel": "Color",
+  "@itemColorLabel": {
+    "description": "Label for item color field"
+  },
+  "itemEnabledLabel": "Enabled",
+  "@itemEnabledLabel": {
+    "description": "Label for item enabled switch"
+  },
   "@arabic": {
     "description": "Arabic language name"
   }
