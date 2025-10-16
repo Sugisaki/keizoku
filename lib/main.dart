@@ -301,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: Text(
                             AppLocalizations.of(context)!.dayShort,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -310,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: Text(
                             AppLocalizations.of(context)!.weekShort,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -319,7 +319,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: Text(
                             AppLocalizations.of(context)!.monthShort,
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -334,13 +334,32 @@ class _MyHomePageState extends State<MyHomePage> {
                     final continuousWeeks = provider.calculateContinuousWeeks(item.id);
                     final continuousDays = provider.calculateContinuousDays(item.id);
 
+                    // 事柄名、日数、週数、月数の行
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: item.getEffectiveColor(provider.settings),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Row(
                         children: [
+                          // 事柄名
                           Container(
                             width: MediaQuery.of(context).size.width / 2,
-                            color: item.getEffectiveColor(provider.settings),
+                            decoration: BoxDecoration(
+                              color: item.getEffectiveColor(provider.settings),
+                              border: Border.all(
+                                color: item.getEffectiveColor(provider.settings),
+                                width: 2.0,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4),
+                                bottomLeft: Radius.circular(4),
+                              ),
+                            ),
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                             child: Text(
@@ -350,27 +369,30 @@ class _MyHomePageState extends State<MyHomePage> {
                               maxLines: 1,
                             ),
                           ),
+                          // 日数
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                               child: Text(
                                 continuousDays > 0 ? continuousDays.toString() : '',
                                 textAlign: TextAlign.right,
                               ),
                             ),
                           ),
+                          // 週数
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                               child: Text(
                                 continuousWeeks > 0 ? continuousWeeks.toString() : '',
                                 textAlign: TextAlign.right,
                               ),
                             ),
                           ),
+                          // 月数
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                               child: Text(
                                 continuousMonths > 0 ? continuousMonths.toString() : '',
                                 textAlign: TextAlign.right,
