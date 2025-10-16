@@ -420,6 +420,7 @@ class AddRecordDialog extends StatefulWidget {
   State<AddRecordDialog> createState() => _AddRecordDialogState();
 }
 
+/// 今日の記録の追加
 class _AddRecordDialogState extends State<AddRecordDialog> {
   final Set<int> _selectedItemIds = {};
 
@@ -445,6 +446,11 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
           children: items.where((item) => item.isEnabled).map((item) {
             final isSelected = _selectedItemIds.contains(item.id);
             return CheckboxListTile(
+              secondary: Container(
+                width: 24,
+                height: 24,
+                color: item.getEffectiveColor(provider.settings),
+              ),
               title: Text(item.name),
               value: isSelected,
               onChanged: (bool? value) {

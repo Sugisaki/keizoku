@@ -93,7 +93,6 @@ class SettingsScreen extends StatelessWidget {
                 color: item.getEffectiveColor(provider.settings),
               ),
               title: Text(item.name),
-              subtitle: Text('ID: ${item.id}'),
               trailing: Icon(
                 item.isEnabled ? Icons.check_circle : Icons.cancel,
                 color: item.isEnabled ? Colors.green : Colors.grey,
