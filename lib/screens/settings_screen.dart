@@ -95,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
               trailing: Icon(
-                item.isEnabled ? Icons.check_circle : Icons.cancel,
+                item.isEnabled ? Icons.check_circle : Icons.not_interested,
                 color: item.isEnabled ? Colors.green : Colors.grey,
               ),
               onTap: () {
