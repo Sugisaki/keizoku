@@ -139,6 +139,17 @@
     "description": "Portuguese language name"
   },
   "arabic": "العربية",
+  "colorBlue": "Blue",
+  "colorOrange": "Orange",
+  "colorGreen": "Green",
+  "colorRed": "Red",
+  "colorPurple": "Purple",
+  "colorBrown": "Brown",
+  "colorPink": "Pink",
+  "colorLimeGreen": "Lime Green",
+  "colorCyan": "Cyan",
+  "colorLightBlue": "Light Blue",
+  "colorLightOrange": "Light Orange",
   "addRecordTitle": "Add Record for Today",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

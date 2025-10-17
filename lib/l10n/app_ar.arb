@@ -34,6 +34,17 @@
   "indonesian": "Bahasa Indonesia",
   "portuguese": "البرتغالية",
   "arabic": "العربية",
+  "colorBlue": "أزرق",
+  "colorOrange": "برتقالي",
+  "colorGreen": "أخضر",
+  "colorRed": "أحمر",
+  "colorPurple": "بنفسجي",
+  "colorBrown": "بني",
+  "colorPink": "وردي",
+  "colorLimeGreen": "أخضر ليموني",
+  "colorCyan": "سماوي",
+  "colorLightBlue": "أزرق فاتح",
+  "colorLightOrange": "برتقالي فاتح",
   "addRecordTitle": "إضافة سجل اليوم",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

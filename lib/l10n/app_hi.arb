@@ -34,6 +34,17 @@
   "indonesian": "Bahasa Indonesia",
   "portuguese": "पुर्तगाली",
   "arabic": "अरबी",
+  "colorBlue": "नीला",
+  "colorOrange": "नारंगी",
+  "colorGreen": "हरा",
+  "colorRed": "लाल",
+  "colorPurple": "बैंगनी",
+  "colorBrown": "भूरा",
+  "colorPink": "गुलाबी",
+  "colorLimeGreen": "चूना हरा",
+  "colorCyan": "सियान",
+  "colorLightBlue": "हल्का नीला",
+  "colorLightOrange": "हल्का नारंगी",
   "addRecordTitle": "आज का रिकॉर्ड जोड़ें",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

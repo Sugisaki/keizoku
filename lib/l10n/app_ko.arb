@@ -34,6 +34,17 @@
   "indonesian": "Bahasa Indonesia",
   "portuguese": "포르투갈어",
   "arabic": "아랍어",
+  "colorBlue": "파란색",
+  "colorOrange": "주황색",
+  "colorGreen": "녹색",
+  "colorRed": "빨간색",
+  "colorPurple": "보라색",
+  "colorBrown": "갈색",
+  "colorPink": "분홍색",
+  "colorLimeGreen": "라임그린",
+  "colorCyan": "청색",
+  "colorLightBlue": "밝은 파랑",
+  "colorLightOrange": "밝은 오렌지",
   "addRecordTitle": "오늘 기록 추가",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

@@ -34,6 +34,17 @@
   "indonesian": "印度尼西亞語",
   "portuguese": "葡萄牙語",
   "arabic": "阿拉伯語",
+  "colorBlue": "藍色",
+  "colorOrange": "橙色",
+  "colorGreen": "綠色",
+  "colorRed": "紅色",
+  "colorPurple": "紫色",
+  "colorBrown": "棕色",
+  "colorPink": "粉色",
+  "colorLimeGreen": "黃綠色",
+  "colorCyan": "青色",
+  "colorLightBlue": "淺藍色",
+  "colorLightOrange": "淺橙色",
   "addRecordTitle": "新增今日記錄",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

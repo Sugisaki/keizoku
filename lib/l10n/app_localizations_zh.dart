@@ -113,6 +113,39 @@ class AppLocalizationsZh extends AppLocalizations {
   String get arabic => '阿拉伯语';
 
   @override
+  String get colorBlue => '蓝色';
+
+  @override
+  String get colorOrange => '橙色';
+
+  @override
+  String get colorGreen => '绿色';
+
+  @override
+  String get colorRed => '红色';
+
+  @override
+  String get colorPurple => '紫色';
+
+  @override
+  String get colorBrown => '棕色';
+
+  @override
+  String get colorPink => '粉色';
+
+  @override
+  String get colorLimeGreen => '黄绿色';
+
+  @override
+  String get colorCyan => '青色';
+
+  @override
+  String get colorLightBlue => '浅蓝色';
+
+  @override
+  String get colorLightOrange => '浅橙色';
+
+  @override
   String get addRecordTitle => '添加今日记录';
 
   @override
@@ -274,6 +307,39 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get arabic => '阿拉伯語';
+
+  @override
+  String get colorBlue => '藍色';
+
+  @override
+  String get colorOrange => '橙色';
+
+  @override
+  String get colorGreen => '綠色';
+
+  @override
+  String get colorRed => '紅色';
+
+  @override
+  String get colorPurple => '紫色';
+
+  @override
+  String get colorBrown => '棕色';
+
+  @override
+  String get colorPink => '粉色';
+
+  @override
+  String get colorLimeGreen => '黃綠色';
+
+  @override
+  String get colorCyan => '青色';
+
+  @override
+  String get colorLightBlue => '淺藍色';
+
+  @override
+  String get colorLightOrange => '淺橙色';
 
   @override
   String get addRecordTitle => '新增今日記錄';

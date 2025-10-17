@@ -113,6 +113,39 @@ class AppLocalizationsHi extends AppLocalizations {
   String get arabic => 'अरबी';
 
   @override
+  String get colorBlue => 'नीला';
+
+  @override
+  String get colorOrange => 'नारंगी';
+
+  @override
+  String get colorGreen => 'हरा';
+
+  @override
+  String get colorRed => 'लाल';
+
+  @override
+  String get colorPurple => 'बैंगनी';
+
+  @override
+  String get colorBrown => 'भूरा';
+
+  @override
+  String get colorPink => 'गुलाबी';
+
+  @override
+  String get colorLimeGreen => 'चूना हरा';
+
+  @override
+  String get colorCyan => 'सियान';
+
+  @override
+  String get colorLightBlue => 'हल्का नीला';
+
+  @override
+  String get colorLightOrange => 'हल्का नारंगी';
+
+  @override
   String get addRecordTitle => 'आज का रिकॉर्ड जोड़ें';
 
   @override

@@ -113,6 +113,39 @@ class AppLocalizationsKo extends AppLocalizations {
   String get arabic => '아랍어';
 
   @override
+  String get colorBlue => '파란색';
+
+  @override
+  String get colorOrange => '주황색';
+
+  @override
+  String get colorGreen => '녹색';
+
+  @override
+  String get colorRed => '빨간색';
+
+  @override
+  String get colorPurple => '보라색';
+
+  @override
+  String get colorBrown => '갈색';
+
+  @override
+  String get colorPink => '분홍색';
+
+  @override
+  String get colorLimeGreen => '라임그린';
+
+  @override
+  String get colorCyan => '청색';
+
+  @override
+  String get colorLightBlue => '밝은 파랑';
+
+  @override
+  String get colorLightOrange => '밝은 오렌지';
+
+  @override
   String get addRecordTitle => '오늘 기록 추가';
 
   @override

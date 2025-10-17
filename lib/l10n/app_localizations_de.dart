@@ -113,6 +113,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get arabic => 'العربية';
 
   @override
+  String get colorBlue => 'Blau';
+
+  @override
+  String get colorOrange => 'Orange';
+
+  @override
+  String get colorGreen => 'Grün';
+
+  @override
+  String get colorRed => 'Rot';
+
+  @override
+  String get colorPurple => 'Lila';
+
+  @override
+  String get colorBrown => 'Braun';
+
+  @override
+  String get colorPink => 'Rosa';
+
+  @override
+  String get colorLimeGreen => 'Limettengrün';
+
+  @override
+  String get colorCyan => 'Cyan';
+
+  @override
+  String get colorLightBlue => 'Hellblau';
+
+  @override
+  String get colorLightOrange => 'Hellorange';
+
+  @override
   String get addRecordTitle => 'Eintrag für heute hinzufügen';
 
   @override

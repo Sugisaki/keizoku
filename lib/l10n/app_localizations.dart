@@ -321,6 +321,72 @@ abstract class AppLocalizations {
   /// **'العربية'**
   String get arabic;
 
+  /// No description provided for @colorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get colorBlue;
+
+  /// No description provided for @colorOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get colorOrange;
+
+  /// No description provided for @colorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get colorGreen;
+
+  /// No description provided for @colorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get colorRed;
+
+  /// No description provided for @colorPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get colorPurple;
+
+  /// No description provided for @colorBrown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get colorBrown;
+
+  /// No description provided for @colorPink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get colorPink;
+
+  /// No description provided for @colorLimeGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Lime Green'**
+  String get colorLimeGreen;
+
+  /// No description provided for @colorCyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get colorCyan;
+
+  /// No description provided for @colorLightBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Blue'**
+  String get colorLightBlue;
+
+  /// No description provided for @colorLightOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Orange'**
+  String get colorLightOrange;
+
   /// Title for the Add Record dialog
   ///
   /// In en, this message translates to:

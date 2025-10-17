@@ -34,6 +34,17 @@
   "indonesian": "Bahasa Indonesia",
   "portuguese": "Português",
   "arabic": "العربية",
+  "colorBlue": "Azul",
+  "colorOrange": "Naranja",
+  "colorGreen": "Verde",
+  "colorRed": "Rojo",
+  "colorPurple": "Púrpura",
+  "colorBrown": "Marrón",
+  "colorPink": "Rosa",
+  "colorLimeGreen": "Verde lima",
+  "colorCyan": "Cian",
+  "colorLightBlue": "Azul claro",
+  "colorLightOrange": "Naranja claro",
   "addRecordTitle": "Añadir registro para hoy",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

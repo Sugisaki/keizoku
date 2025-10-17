@@ -113,6 +113,39 @@ class AppLocalizationsJa extends AppLocalizations {
   String get arabic => 'العربية';
 
   @override
+  String get colorBlue => 'ブルー';
+
+  @override
+  String get colorOrange => 'オレンジ';
+
+  @override
+  String get colorGreen => 'グリーン';
+
+  @override
+  String get colorRed => 'レッド';
+
+  @override
+  String get colorPurple => 'パープル';
+
+  @override
+  String get colorBrown => 'ブラウン';
+
+  @override
+  String get colorPink => 'ピンク';
+
+  @override
+  String get colorLimeGreen => '黄緑';
+
+  @override
+  String get colorCyan => 'シアン';
+
+  @override
+  String get colorLightBlue => '薄ブルー';
+
+  @override
+  String get colorLightOrange => '薄オレンジ';
+
+  @override
   String get addRecordTitle => '今日の記録を追加';
 
   @override

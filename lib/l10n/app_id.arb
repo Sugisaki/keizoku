@@ -34,6 +34,17 @@
   "indonesian": "Bahasa Indonesia",
   "portuguese": "Portugis",
   "arabic": "Arab",
+  "colorBlue": "Biru",
+  "colorOrange": "Oranye",
+  "colorGreen": "Hijau",
+  "colorRed": "Merah",
+  "colorPurple": "Ungu",
+  "colorBrown": "Coklat",
+  "colorPink": "Merah Muda",
+  "colorLimeGreen": "Hijau Limau",
+  "colorCyan": "Sian",
+  "colorLightBlue": "Biru Muda",
+  "colorLightOrange": "Oranye Muda",
   "addRecordTitle": "Tambahkan Catatan Hari Ini",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"

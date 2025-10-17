@@ -113,6 +113,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get arabic => 'Arab';
 
   @override
+  String get colorBlue => 'Biru';
+
+  @override
+  String get colorOrange => 'Oranye';
+
+  @override
+  String get colorGreen => 'Hijau';
+
+  @override
+  String get colorRed => 'Merah';
+
+  @override
+  String get colorPurple => 'Ungu';
+
+  @override
+  String get colorBrown => 'Coklat';
+
+  @override
+  String get colorPink => 'Merah Muda';
+
+  @override
+  String get colorLimeGreen => 'Hijau Limau';
+
+  @override
+  String get colorCyan => 'Sian';
+
+  @override
+  String get colorLightBlue => 'Biru Muda';
+
+  @override
+  String get colorLightOrange => 'Oranye Muda';
+
+  @override
   String get addRecordTitle => 'Tambahkan Catatan Hari Ini';
 
   @override

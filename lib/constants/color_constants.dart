@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 class ColorConstants {
   /// デフォルトカラーパレット（11色）
   static final Map<String, Color> defaultColorPalette = {
-    '#1f77b4': const Color(0xFF1F77B4), // ブルー
-    '#ff7f0e': const Color(0xFFFF7F0E), // オレンジ
-    '#2ca02c': const Color(0xFF2CA02C), // グリーン
-    '#d62728': const Color(0xFFD62728), // レッド
-    '#9467bd': const Color(0xFF9467BD), // パープル
-    '#8c564b': const Color(0xFF8C564B), // ブラウン
-    '#e377c2': const Color(0xFFE377C2), // ピンク
-    '#bcbd22': const Color(0xFFBCBD22), // 黄緑
-    '#17becf': const Color(0xFF17BECF), // シアン
-    '#aec7e8': const Color(0xFFAEC7E8), // 薄ブルー
-    '#ffbb78': const Color(0xFFFFBB78), // 薄オレンジ
+    '#1f77b4': const Color(0xFF1F77B4), // Blue
+    '#ff7f0e': const Color(0xFFFF7F0E), // Orange
+    '#2ca02c': const Color(0xFF2CA02C), // Green
+    '#d62728': const Color(0xFFD62728), // Red
+    '#9467bd': const Color(0xFF9467BD), // Purple
+    '#8c564b': const Color(0xFF8C564B), // Brown
+    '#e377c2': const Color(0xFFE377C2), // Pink
+    '#bcbd22': const Color(0xFFBCBD22), // Lime Green
+    '#17becf': const Color(0xFF17BECF), // Cyan
+    '#aec7e8': const Color(0xFFAEC7E8), // Light Blue
+    '#ffbb78': const Color(0xFFFFBB78), // Light Orange
   };
 
   /// カラーパレットのキーのみのリスト（順序保持）
