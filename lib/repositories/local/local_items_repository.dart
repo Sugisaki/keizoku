@@ -24,19 +24,19 @@ class LocalItemsRepository implements ItemsRepository {
          final defaultItems = List.generate(9, (i) {
           final colorHex = ColorConstants.getDefaultColorForId(i + 1);
           if (i == 0) {
-            // id=1の事柄のみ有効で名前は「最初の項目」
+            // id=1の事柄のみ有効で名前は「新規項目1」
             return CalendarItem(
               id: i + 1, 
-              name: '最初の項目', 
+              name: '新規項目${i + 1}', 
               isEnabled: true, 
               order: 1,
               itemColorHex: colorHex,
             );
           } else {
-            // その他の事柄は無効で名前は空文字
+            // その他の事柄は無効で名前は「新規項目+id」
             return CalendarItem(
               id: i + 1, 
-              name: '', 
+              name: '新規項目${i + 1}', 
               isEnabled: false, 
               order: i + 1,
               itemColorHex: colorHex,
@@ -58,19 +58,19 @@ class LocalItemsRepository implements ItemsRepository {
       return List.generate(9, (i) {
         final colorHex = ColorConstants.getDefaultColorForId(i + 1);
         if (i == 0) {
-          // id=1の事柄のみ有効で名前は「最初の項目」
+          // id=1の事柄のみ有効で名前は「新規項目1」
           return CalendarItem(
             id: i + 1, 
-            name: '最初の項目', 
+            name: '新規項目${i + 1}', 
             isEnabled: true, 
             order: 1,
             itemColorHex: colorHex,
           );
         } else {
-          // その他の事柄は無効で名前は空文字
+          // その他の事柄は無効で名前は「新規項目+id」
           return CalendarItem(
             id: i + 1, 
-            name: '', 
+            name: '新規項目${i + 1}', 
             isEnabled: false, 
             order: i + 1,
             itemColorHex: colorHex,
