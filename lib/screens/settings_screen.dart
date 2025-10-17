@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
@@ -92,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
                 height: 24,
                 color: item.getEffectiveColor(provider.settings),
               ),
-              title: Text(item.name),
+              title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
               trailing: Icon(
                 item.isEnabled ? Icons.check_circle : Icons.cancel,
                 color: item.isEnabled ? Colors.green : Colors.grey,

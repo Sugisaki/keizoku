@@ -8,6 +8,10 @@ import '../records_repository.dart';
 // JSONファイルを使用して記録を永続化するクラス
 class LocalRecordsRepository implements RecordsRepository {
   static const String _fileName = 'calendar_records.json';
+  // 開発環境のテストファイルがロードされているかどうかを示すフラグ
+  bool _isUsingTestAsset = false;
+  // 開発環境のテストファイルがロードされているかどうかを取得する
+  bool get isUsingTestAsset => _isUsingTestAsset;
 
   // ファイルへのパスを取得する
   Future<File> get _localFile async {
@@ -51,6 +55,8 @@ class LocalRecordsRepository implements RecordsRepository {
       final testAssetContents = await _loadTestAsset();
       if (testAssetContents != null) {
         print('Loading test data from assets/test_calendar_records.json');
+        // テストアセットがロードされていることを示すフラグを設定
+        _isUsingTestAsset = true;
         final json = jsonDecode(testAssetContents) as Map<String, dynamic>;
         final testAssetRecords = json.map((key, value) {
           // JSONのキー(String)をDateTimeに変換
@@ -70,6 +76,11 @@ class LocalRecordsRepository implements RecordsRepository {
 
   @override
   Future<void> saveRecords(CalendarRecords records) async {
+    // 開発環境のテストファイルがロードされている場合は保存処理を行わない
+    if (_isUsingTestAsset) {
+      print('[WARN] テストファイルがあるので保存処理はしていません');
+      return;
+    }
     try {
       final file = await _localFile;
 
