@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../constants/color_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../models/calendar_item.dart';
 import '../models/language_settings.dart';
@@ -36,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // 週の開始曜日設定
           ListTile(
             title: Text(localizations.weekStartsOn),
-            subtitle: Text(currentStartOfWeek == DateTime.sunday ? localizations.sunday : localizations.monday),
+            subtitle: Text(currentStartOfWeek == ColorConstants.sundayStartOfWeek ? localizations.sunday : localizations.monday),
             onTap: () {
               showDialog(
                 context: context,
@@ -48,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: <Widget>[
                         RadioListTile<int>(
                           title: Text(localizations.sunday),
-                          value: DateTime.sunday,
+                          value: ColorConstants.sundayStartOfWeek,
                           groupValue: currentStartOfWeek,
                           onChanged: (int? value) {
                             if (value != null) {
@@ -59,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         RadioListTile<int>(
                           title: Text(localizations.monday),
-                          value: DateTime.monday,
+                          value: ColorConstants.mondayStartOfWeek,
                           groupValue: currentStartOfWeek,
                           onChanged: (int? value) {
                             if (value != null) {

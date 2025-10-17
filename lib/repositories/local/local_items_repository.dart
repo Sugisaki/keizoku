@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../../constants/color_constants.dart';
 import '../../models/calendar_item.dart';
 import '../items_repository.dart';
 
@@ -20,7 +21,28 @@ class LocalItemsRepository implements ItemsRepository {
       final file = await _localFile;
       if (!await file.exists()) {
         // ファイルが存在しない場合は、9つのデフォルト事柄を生成して返す
-        final defaultItems = List.generate(9, (i) => CalendarItem(id: i + 1, name: 'Item ${i + 1}'));
+         final defaultItems = List.generate(9, (i) {
+          final colorHex = ColorConstants.getDefaultColorForId(i + 1);
+          if (i == 0) {
+            // id=1の事柄のみ有効で名前は「最初の項目」
+            return CalendarItem(
+              id: i + 1, 
+              name: '最初の項目', 
+              isEnabled: true, 
+              order: 1,
+              itemColorHex: colorHex,
+            );
+          } else {
+            // その他の事柄は無効で名前は空文字
+            return CalendarItem(
+              id: i + 1, 
+              name: '', 
+              isEnabled: false, 
+              order: i + 1,
+              itemColorHex: colorHex,
+            );
+          }
+        });
         // デフォルトデータをファイルに保存しておく
         await saveItems(defaultItems);
         return defaultItems;
@@ -33,7 +55,28 @@ class LocalItemsRepository implements ItemsRepository {
     } catch (e) {
       print('Error loading items: $e');
       // エラー時もデフォルトデータを返す
-      return List.generate(9, (i) => CalendarItem(id: i + 1, name: 'Item ${i + 1}'));
+      return List.generate(9, (i) {
+        final colorHex = ColorConstants.getDefaultColorForId(i + 1);
+        if (i == 0) {
+          // id=1の事柄のみ有効で名前は「最初の項目」
+          return CalendarItem(
+            id: i + 1, 
+            name: '最初の項目', 
+            isEnabled: true, 
+            order: 1,
+            itemColorHex: colorHex,
+          );
+        } else {
+          // その他の事柄は無効で名前は空文字
+          return CalendarItem(
+            id: i + 1, 
+            name: '', 
+            isEnabled: false, 
+            order: i + 1,
+            itemColorHex: colorHex,
+          );
+        }
+      });
     }
   }
 

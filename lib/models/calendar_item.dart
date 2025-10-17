@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './calendar_settings.dart';
+import '../constants/color_constants.dart';
+import 'calendar_settings.dart';
 
 // 事柄を管理するクラス
 class CalendarItem {
@@ -27,10 +28,9 @@ class CalendarItem {
     if (itemColorHex != null && settings.itemColorPalette.containsKey(itemColorHex)) {
       return settings.itemColorPalette[itemColorHex]!;
     }
-    // デフォルト色を決定
-    final colors = settings.itemColorPalette.values.toList();
-    final index = (id - 1) % colors.length;
-    return colors[index];
+    // デフォルト色を決定（共通定数を使用）
+    final defaultColorHex = ColorConstants.getDefaultColorForId(id);
+    return settings.itemColorPalette[defaultColorHex] ?? settings.disabledItemColor;
   }
 
   // アイコンを取得する。指定がなければデフォルトアイコンを返す。

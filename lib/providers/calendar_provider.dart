@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/color_constants.dart';
 import '../models/calendar_settings.dart';
 import '../models/calendar_item.dart';
 import '../models/calendar_records.dart';
@@ -213,7 +214,7 @@ class CalendarProvider extends ChangeNotifier {
   bool _hasRecordInWeek(DateTime dateInWeek, int itemId) {
     // 設定された週の開始曜日を考慮して週の開始日を計算
     int daysFromStartOfWeek;
-    if (_settings.startOfWeek == DateTime.sunday) {
+    if (_settings.startOfWeek == ColorConstants.sundayStartOfWeek) {
       // 日曜始まりの場合: 日曜=0, 月曜=1, ..., 土曜=6
       daysFromStartOfWeek = dateInWeek.weekday % 7;
     } else {
