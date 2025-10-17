@@ -162,4 +162,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => 'Ubah Urutan Tampilan';
+
+  @override
+  String get newItem => 'Item Baru';
 }

@@ -101,5 +101,9 @@
   "changeDisplayOrder": "Anzeigereihenfolge ändern",
   "@changeDisplayOrder": {
     "description": "Button text for changing display order"
+  },
+  "newItem": "Neues Element",
+  "@newItem": {
+    "description": "Default name for new items"
   }
 }

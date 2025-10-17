@@ -101,5 +101,9 @@
   "changeDisplayOrder": "تغيير ترتيب العرض",
   "@changeDisplayOrder": {
     "description": "Button text for changing display order"
+  },
+  "newItem": "عنصر جديد",
+  "@newItem": {
+    "description": "Default name for new items"
   }
 }

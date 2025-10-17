@@ -162,4 +162,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => 'प्रदर्शन क्रम बदलें';
+
+  @override
+  String get newItem => 'नया आइटम';
 }

@@ -101,5 +101,9 @@
   "changeDisplayOrder": "Ubah Urutan Tampilan",
   "@changeDisplayOrder": {
     "description": "Button text for changing display order"
+  },
+  "newItem": "Item Baru",
+  "@newItem": {
+    "description": "Default name for new items"
   }
 }

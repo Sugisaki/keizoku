@@ -54,4 +54,12 @@ class ColorConstants {
   static Color getDisabledColor() {
     return Color(int.parse(disabledColor.substring(1), radix: 16) + 0xFF000000);
   }
+
+  /// デフォルト事柄名を生成（多言語対応のためのテンプレート）
+  /// [newItemText] 多言語化された「新規項目」テキスト
+  /// [id] 事柄のID
+  /// 戻り値: 「新規項目{id}」形式の文字列
+  static String getDefaultItemName(String newItemText, int id) {
+    return '$newItemText$id';
+  }
 }

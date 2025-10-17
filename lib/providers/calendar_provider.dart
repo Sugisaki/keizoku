@@ -119,6 +119,53 @@ class CalendarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 初期事柄の名前を多言語化された名前に更新
+  Future<void> updateDefaultItemNames(String newItemText) async {
+    bool hasChanges = false;
+    List<CalendarItem> updatedItems = [];
+    
+    for (CalendarItem item in _items) {
+      // デフォルト名パターン（新規項目{数字} または New Item{数字} など）をチェック
+      final expectedDefaultName = ColorConstants.getDefaultItemName(newItemText, item.id);
+      
+      // 現在の名前がデフォルトパターンのいずれかと一致するかチェック
+      final isDefaultName = _isDefaultItemName(item.name, item.id);
+      
+      if (isDefaultName && item.name != expectedDefaultName) {
+        updatedItems.add(item.copyWith(name: expectedDefaultName));
+        hasChanges = true;
+      } else {
+        updatedItems.add(item);
+      }
+    }
+    
+    if (hasChanges) {
+      _items = updatedItems;
+      await _itemsRepository.saveItems(_items);
+      notifyListeners();
+    }
+  }
+
+  // デフォルト名かどうかを判定するヘルパーメソッド
+  bool _isDefaultItemName(String name, int id) {
+    // 各言語でのデフォルト名パターンをチェック
+    final patterns = [
+      '新規項目$id',      // 日本語
+      'New Item$id',      // 英語
+      '新建项目$id',      // 中国語簡体字
+      '新建項目$id',      // 中国語繁体字
+      '새 항목$id',       // 韓国語
+      'Nouvel élément$id', // フランス語
+      'Neues Element$id', // ドイツ語
+      'Nuevo elemento$id', // スペイン語
+      'नया आइटम$id',       // ヒンディー語
+      'Item Baru$id',     // インドネシア語
+      'Novo Item$id',     // ポルトガル語
+      'عنصر جديد$id',        // アラビア語
+    ];
+    return patterns.contains(name);
+  }
+
   // 今日の事柄の記録を追加/更新する
   Future<void> addRecordsForToday(List<int> itemIds) async {
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);

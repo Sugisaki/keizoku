@@ -162,4 +162,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => 'Modifier l\'ordre d\'affichage';
+
+  @override
+  String get newItem => 'Nouvel élément';
 }

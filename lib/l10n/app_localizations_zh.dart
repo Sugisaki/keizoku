@@ -162,6 +162,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => '更改显示顺序';
+
+  @override
+  String get newItem => '新建项目';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -322,4 +325,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get changeDisplayOrder => '更改顯示順序';
+
+  @override
+  String get newItem => '新建項目';
 }

@@ -162,4 +162,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => 'تغيير ترتيب العرض';
+
+  @override
+  String get newItem => 'عنصر جديد';
 }

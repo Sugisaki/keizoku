@@ -422,6 +422,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Display Order'**
   String get changeDisplayOrder;
+
+  /// Default name for new items
+  ///
+  /// In en, this message translates to:
+  /// **'New Item'**
+  String get newItem;
 }
 
 class _AppLocalizationsDelegate

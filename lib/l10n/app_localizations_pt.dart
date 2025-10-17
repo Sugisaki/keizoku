@@ -162,4 +162,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => 'Alterar Ordem de Exibição';
+
+  @override
+  String get newItem => 'Novo Item';
 }

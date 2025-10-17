@@ -101,5 +101,9 @@
   "changeDisplayOrder": "更改顯示順序",
   "@changeDisplayOrder": {
     "description": "Button text for changing display order"
+  },
+  "newItem": "新建項目",
+  "@newItem": {
+    "description": "Default name for new items"
   }
 }

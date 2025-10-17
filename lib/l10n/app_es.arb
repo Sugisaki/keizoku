@@ -101,5 +101,9 @@
   "changeDisplayOrder": "Cambiar orden de visualización",
   "@changeDisplayOrder": {
     "description": "Button text for changing display order"
+  },
+  "newItem": "Nuevo elemento",
+  "@newItem": {
+    "description": "Default name for new items"
   }
 }

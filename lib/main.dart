@@ -111,7 +111,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CalendarProvider>(context, listen: false).loadData();
+    final provider = Provider.of<CalendarProvider>(context, listen: false);
+    provider.loadData().then((_) {
+      // データロード後に現在の言語に応じてデフォルト事柄名を更新
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          final localizations = AppLocalizations.of(context);
+          if (localizations != null) {
+            provider.updateDefaultItemNames(localizations.newItem);
+          }
+        }
+      });
+    });
   }
 
   void _showAddRecordDialog(BuildContext context) {

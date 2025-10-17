@@ -162,4 +162,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get changeDisplayOrder => '表示順番を変更';
+
+  @override
+  String get newItem => '新規項目';
 }
