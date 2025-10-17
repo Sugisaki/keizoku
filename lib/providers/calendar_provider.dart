@@ -196,7 +196,16 @@ class CalendarProvider extends ChangeNotifier {
 
   // 指定された週に特定の事柄が記録されているかチェック
   bool _hasRecordInWeek(DateTime dateInWeek, int itemId) {
-    DateTime startOfWeek = dateInWeek.subtract(Duration(days: dateInWeek.weekday - 1)); // 月曜日を週の始まりとする
+    // 設定された週の開始曜日を考慮して週の開始日を計算
+    int daysFromStartOfWeek;
+    if (_settings.startOfWeek == DateTime.sunday) {
+      // 日曜始まりの場合: 日曜=0, 月曜=1, ..., 土曜=6
+      daysFromStartOfWeek = dateInWeek.weekday % 7;
+    } else {
+      // 月曜始まりの場合: 月曜=0, 火曜=1, ..., 日曜=6
+      daysFromStartOfWeek = dateInWeek.weekday - 1;
+    }
+    DateTime startOfWeek = dateInWeek.subtract(Duration(days: daysFromStartOfWeek));
     for (int i = 0; i < 7; i++) {
       if (_hasRecordOnDay(startOfWeek.add(Duration(days: i)), itemId)) {
         return true;
