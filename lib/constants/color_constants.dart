@@ -5,34 +5,22 @@ import 'package:flutter/material.dart';
 /// 事柄の有効色を設定するのに使える色をMapで定義
 class ColorConstants {
   /// デフォルトカラーパレット（11色）
-  static const Map<String, String> defaultColorPalette = {
-    '#1f77b4': '#1f77b4', // ブルー
-    '#ff7f0e': '#ff7f0e', // オレンジ
-    '#2ca02c': '#2ca02c', // グリーン
-    '#d62728': '#d62728', // レッド
-    '#9467bd': '#9467bd', // パープル
-    '#8c564b': '#8c564b', // ブラウン
-    '#e377c2': '#e377c2', // ピンク
-    '#bcbd22': '#bcbd22', // 黄緑
-    '#17becf': '#17becf', // シアン
-    '#aec7e8': '#aec7e8', // 薄ブルー
-    '#ffbb78': '#ffbb78', // 薄オレンジ
+  static final Map<String, Color> defaultColorPalette = {
+    '#1f77b4': const Color(0xFF1F77B4), // ブルー
+    '#ff7f0e': const Color(0xFFFF7F0E), // オレンジ
+    '#2ca02c': const Color(0xFF2CA02C), // グリーン
+    '#d62728': const Color(0xFFD62728), // レッド
+    '#9467bd': const Color(0xFF9467BD), // パープル
+    '#8c564b': const Color(0xFF8C564B), // ブラウン
+    '#e377c2': const Color(0xFFE377C2), // ピンク
+    '#bcbd22': const Color(0xFFBCBD22), // 黄緑
+    '#17becf': const Color(0xFF17BECF), // シアン
+    '#aec7e8': const Color(0xFFAEC7E8), // 薄ブルー
+    '#ffbb78': const Color(0xFFFFBB78), // 薄オレンジ
   };
 
   /// カラーパレットのキーのみのリスト（順序保持）
-  static const List<String> colorKeys = [
-    '#1f77b4', // ブルー
-    '#ff7f0e', // オレンジ
-    '#2ca02c', // グリーン
-    '#d62728', // レッド
-    '#9467bd', // パープル
-    '#8c564b', // ブラウン
-    '#e377c2', // ピンク
-    '#bcbd22', // 黄緑
-    '#17becf', // シアン
-    '#aec7e8', // 薄ブルー
-    '#ffbb78', // 薄オレンジ
-  ];
+  static final List<String> colorKeys = defaultColorPalette.keys.toList();
 
   /// 項目の無効色（デフォルト）
   static const String disabledColor = '#cccccc'; // グレー
@@ -44,9 +32,10 @@ class ColorConstants {
 
   /// IDに基づいてデフォルト色を取得
   /// [id] 事柄のID（1～9）
-  /// 戻り値: 対応する色のHEXコード
-  static String getDefaultColorForId(int id) {
-    return colorKeys[(id - 1) % colorKeys.length];
+  /// 戻り値: 対応する色
+  static Color getDefaultColorForId(int id) {
+    final hexCode = colorKeys[(id - 1) % colorKeys.length];
+    return defaultColorPalette[hexCode]!;
   }
 
   /// 無効色をColorオブジェクトとして取得

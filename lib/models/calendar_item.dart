@@ -29,8 +29,7 @@ class CalendarItem {
       return settings.itemColorPalette[itemColorHex]!;
     }
     // デフォルト色を決定（共通定数を使用）
-    final defaultColorHex = ColorConstants.getDefaultColorForId(id);
-    return settings.itemColorPalette[defaultColorHex] ?? settings.disabledItemColor;
+    return ColorConstants.getDefaultColorForId(id);
   }
 
   // アイコンを取得する。指定がなければデフォルトアイコンを返す。

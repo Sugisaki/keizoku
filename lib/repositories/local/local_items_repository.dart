@@ -20,9 +20,9 @@ class LocalItemsRepository implements ItemsRepository {
     try {
       final file = await _localFile;
       if (!await file.exists()) {
-        // ファイルが存在しない場合は、9つのデフォルト事柄を生成して返す
+         // ファイルが存在しない場合は、9つのデフォルト事柄を生成して返す
          final defaultItems = List.generate(9, (i) {
-          final colorHex = ColorConstants.getDefaultColorForId(i + 1);
+          final colorHex = ColorConstants.colorKeys[(i + 1 - 1) % ColorConstants.colorKeys.length];
           if (i == 0) {
             // id=1の事柄のみ有効で名前は「新規項目1」
             return CalendarItem(
@@ -55,8 +55,8 @@ class LocalItemsRepository implements ItemsRepository {
     } catch (e) {
       print('Error loading items: $e');
       // エラー時もデフォルトデータを返す
-      return List.generate(9, (i) {
-        final colorHex = ColorConstants.getDefaultColorForId(i + 1);
+       return List.generate(9, (i) {
+        final colorHex = ColorConstants.colorKeys[(i + 1 - 1) % ColorConstants.colorKeys.length];
         if (i == 0) {
           // id=1の事柄のみ有効で名前は「新規項目1」
           return CalendarItem(

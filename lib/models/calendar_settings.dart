@@ -20,10 +20,7 @@ class CalendarSettings {
        disabledItemColor = disabledItemColor ?? ColorConstants.getDisabledColor();
 
   // デフォルトの有効色パレット（共通定数から生成）
-  static final Map<String, Color> _defaultColorPalette = {
-    for (String colorHex in ColorConstants.colorKeys)
-      colorHex: Color(int.parse(colorHex.substring(1), radix: 16) + 0xFF000000)
-  };
+  static final Map<String, Color> _defaultColorPalette = ColorConstants.defaultColorPalette;
 
   // 状態の更新を容易にするためのcopyWithメソッド
   CalendarSettings copyWith({
