@@ -8,8 +8,16 @@ import '../providers/calendar_provider.dart';
 import 'edit_item_screen.dart';
 
 // 設定画面のUI
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _isReorderMode = false;
+  List<CalendarItem>? _reorderableItems;
 
   @override
   Widget build(BuildContext context) {
@@ -86,30 +94,127 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           // 事柄リスト
-          ...items.map((item) {
-            return ListTile(
+          if (_isReorderMode)
+            ..._buildReorderableList(provider, localizations)
+          else
+            ...items.map((item) {
+              return ListTile(
+                leading: Container(
+                  width: 24,
+                  height: 24,
+                  color: item.getEffectiveColor(provider.settings),
+                ),
+                title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
+                trailing: Icon(
+                  item.isEnabled ? Icons.check_circle : Icons.not_interested,
+                  color: item.isEnabled ? Colors.green : Colors.grey,
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditItemScreen(item: item),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          
+          // 並べ替えモードのボタン
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _isReorderMode 
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _cancelReorder,
+                      child: Text(localizations.cancelButton),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _saveReorder(provider),
+                      child: Text(localizations.saveButton),
+                    ),
+                  ],
+                )
+              : ElevatedButton(
+                  onPressed: _startReorderMode,
+                  child: Text(localizations.changeDisplayOrder),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 並べ替えモードを開始
+  void _startReorderMode() {
+    final provider = context.read<CalendarProvider>();
+    setState(() {
+      _isReorderMode = true;
+      // 有効な事柄のみを並べ替え対象とする
+      _reorderableItems = provider.items.where((item) => item.isEnabled).toList();
+    });
+  }
+
+  // 並べ替えをキャンセル
+  void _cancelReorder() {
+    setState(() {
+      _isReorderMode = false;
+      _reorderableItems = null;
+    });
+  }
+
+  // 並べ替えを保存
+  Future<void> _saveReorder(CalendarProvider provider) async {
+    if (_reorderableItems != null) {
+      // 有効な事柄の並べ替え結果と無効な事柄を結合
+      final disabledItems = provider.items.where((item) => !item.isEnabled).toList();
+      final allItems = [..._reorderableItems!, ...disabledItems];
+      await provider.reorderItems(allItems);
+    }
+    setState(() {
+      _isReorderMode = false;
+      _reorderableItems = null;
+    });
+  }
+
+  // 並べ替え可能なリストを構築
+  List<Widget> _buildReorderableList(CalendarProvider provider, AppLocalizations localizations) {
+    if (_reorderableItems == null) return [];
+    
+    return [
+      ReorderableListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        buildDefaultDragHandles: false, // デフォルトのドラッグハンドルを無効化
+        itemCount: _reorderableItems!.length,
+        onReorder: (oldIndex, newIndex) {
+          setState(() {
+            if (newIndex > oldIndex) {
+              newIndex -= 1;
+            }
+            final item = _reorderableItems!.removeAt(oldIndex);
+            _reorderableItems!.insert(newIndex, item);
+          });
+        },
+        itemBuilder: (context, index) {
+          final item = _reorderableItems![index];
+          return ReorderableDragStartListener(
+            key: ValueKey(item.id),
+            index: index,
+            child: ListTile(
               leading: Container(
                 width: 24,
                 height: 24,
                 color: item.getEffectiveColor(provider.settings),
               ),
               title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
-              trailing: Icon(
-                item.isEnabled ? Icons.check_circle : Icons.not_interested,
-                color: item.isEnabled ? Colors.green : Colors.grey,
-              ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => EditItemScreen(item: item),
-                  ),
-                );
-              },
-            );
-          }).toList(),
-        ],
+              trailing: const Icon(Icons.drag_handle),
+            ),
+          );
+        },
       ),
-    );
+    ];
   }
 
   String _getCurrentLanguageName(Locale? selectedLocale, AppLocalizations localizations) {

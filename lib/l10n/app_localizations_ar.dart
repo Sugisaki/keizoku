@@ -159,4 +159,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => 'مفعل';
+
+  @override
+  String get changeDisplayOrder => 'تغيير ترتيب العرض';
 }

@@ -97,5 +97,9 @@
   "itemEnabledLabel": "有効",
   "@itemEnabledLabel": {
     "description": "Label for item enabled switch"
+  },
+  "changeDisplayOrder": "表示順番を変更",
+  "@changeDisplayOrder": {
+    "description": "Button text for changing display order"
   }
 }

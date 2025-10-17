@@ -159,4 +159,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => 'सक्षम';
+
+  @override
+  String get changeDisplayOrder => 'प्रदर्शन क्रम बदलें';
 }

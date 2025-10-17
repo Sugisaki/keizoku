@@ -97,5 +97,9 @@
   "itemEnabledLabel": "启用",
   "@itemEnabledLabel": {
     "description": "Label for item enabled switch"
+  },
+  "changeDisplayOrder": "更改显示顺序",
+  "@changeDisplayOrder": {
+    "description": "Button text for changing display order"
   }
 }

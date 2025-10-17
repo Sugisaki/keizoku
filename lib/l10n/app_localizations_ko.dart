@@ -159,4 +159,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => '활성화';
+
+  @override
+  String get changeDisplayOrder => '표시 순서 변경';
 }

@@ -159,4 +159,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => 'Habilitado';
+
+  @override
+  String get changeDisplayOrder => 'Cambiar orden de visualización';
 }

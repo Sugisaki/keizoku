@@ -203,6 +203,10 @@
   "@itemEnabledLabel": {
     "description": "Label for item enabled switch"
   },
+  "changeDisplayOrder": "Change Display Order",
+  "@changeDisplayOrder": {
+    "description": "Button text for changing display order"
+  },
   "@arabic": {
     "description": "Arabic language name"
   }

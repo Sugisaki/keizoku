@@ -159,4 +159,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => '有効';
+
+  @override
+  String get changeDisplayOrder => '表示順番を変更';
 }

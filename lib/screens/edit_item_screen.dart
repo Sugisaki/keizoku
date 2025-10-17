@@ -16,7 +16,6 @@ class EditItemScreen extends StatefulWidget {
 
 class _EditItemScreenState extends State<EditItemScreen> {
   late TextEditingController _nameController;
-  late TextEditingController _orderController;
   late String? _selectedColorHex;
   late bool _isEnabled;
 
@@ -24,7 +23,6 @@ class _EditItemScreenState extends State<EditItemScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.item.name);
-    _orderController = TextEditingController(text: widget.item.order.toString());
     _selectedColorHex = widget.item.itemColorHex;
     _isEnabled = widget.item.isEnabled;
   }
@@ -32,7 +30,6 @@ class _EditItemScreenState extends State<EditItemScreen> {
   @override
   void dispose() {
     _nameController.dispose();
-    _orderController.dispose();
     super.dispose();
   }
 
@@ -53,15 +50,6 @@ class _EditItemScreenState extends State<EditItemScreen> {
               labelText: AppLocalizations.of(context)!.itemNameLabel,
               border: const OutlineInputBorder(),
             ),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _orderController,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.itemOrderLabel,
-              border: const OutlineInputBorder(),
-            ),
-            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String?>(
@@ -109,7 +97,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                 name: _nameController.text,
                 itemColorHex: _selectedColorHex,
                 isEnabled: _isEnabled,
-                order: int.tryParse(_orderController.text) ?? widget.item.order,
+                // orderは変更せず元の値を保持
               );
               context.read<CalendarProvider>().updateItem(updatedItem);
               Navigator.of(context).pop();

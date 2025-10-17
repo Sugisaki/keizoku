@@ -416,6 +416,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enabled'**
   String get itemEnabledLabel;
+
+  /// Button text for changing display order
+  ///
+  /// In en, this message translates to:
+  /// **'Change Display Order'**
+  String get changeDisplayOrder;
 }
 
 class _AppLocalizationsDelegate

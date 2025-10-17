@@ -103,6 +103,21 @@ class CalendarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 事柄の順序を並べ替える
+  Future<void> reorderItems(List<CalendarItem> reorderedItems) async {
+    // 有効なアイテムのorderを1から連番で再割り当て
+    List<CalendarItem> enabled = reorderedItems.where((item) => item.isEnabled).toList();
+    List<CalendarItem> disabled = reorderedItems.where((item) => !item.isEnabled).toList();
+    
+    for (int i = 0; i < enabled.length; i++) {
+      enabled[i] = enabled[i].copyWith(order: i + 1);
+    }
+    //
+    _items = [...enabled, ...disabled];
+    await _itemsRepository.saveItems(_items);
+    notifyListeners();
+  }
+
   // 今日の事柄の記録を追加/更新する
   Future<void> addRecordsForToday(List<int> itemIds) async {
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);

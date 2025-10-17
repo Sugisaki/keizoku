@@ -97,5 +97,9 @@
   "itemEnabledLabel": "सक्षम",
   "@itemEnabledLabel": {
     "description": "Label for item enabled switch"
+  },
+  "changeDisplayOrder": "प्रदर्शन क्रम बदलें",
+  "@changeDisplayOrder": {
+    "description": "Button text for changing display order"
   }
 }

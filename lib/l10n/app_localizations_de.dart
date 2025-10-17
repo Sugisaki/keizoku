@@ -159,4 +159,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get itemEnabledLabel => 'Aktiviert';
+
+  @override
+  String get changeDisplayOrder => 'Anzeigereihenfolge ändern';
 }
