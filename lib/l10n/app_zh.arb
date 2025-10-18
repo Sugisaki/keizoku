@@ -116,5 +116,6 @@
   "newItem": "新建项目",
   "@newItem": {
     "description": "Default name for new items"
-  }
+  },
+  "okButton": "OK"
 }

@@ -435,6 +435,7 @@ class AddRecordDialog extends StatefulWidget {
 /// 今日の記録の追加
 class _AddRecordDialogState extends State<AddRecordDialog> {
   final Set<int> _selectedItemIds = {};
+  int? _lastSelectedItemId;
 
   @override
   void initState() {
@@ -469,8 +470,13 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
                 setState(() {
                   if (value == true) {
                     _selectedItemIds.add(item.id);
+                    _lastSelectedItemId = item.id; // 最後に選択された事柄を記録
                   } else {
                     _selectedItemIds.remove(item.id);
+                    // 最後に選択された事柄が解除された場合はクリア
+                    if (_lastSelectedItemId == item.id) {
+                      _lastSelectedItemId = null;
+                    }
                   }
                 });
               },
@@ -479,19 +485,45 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
         ),
       ),
       actions: <Widget>[
-        TextButton(
-          child: Text(localizations.cancelButton),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+  TextButton(
+            child: Text(AppLocalizations.of(context)!.okButton),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         TextButton(
           child: Text(localizations.saveButton),
-          onPressed: () {
-            provider.addRecordsForToday(_selectedItemIds.toList());
-            Navigator.of(context).pop();
-            _showCongratulationsDialog(context); // Call the new dialog
-          },
+            onPressed: () {
+              // チェックボックスを最後に有効にした事柄の色、または
+              // チェックボックスが有効になっている最初の事柄の色を取得
+              Color? itemColor;
+              if (_selectedItemIds.isNotEmpty) {
+                // 最後に選択された事柄の色を取得
+                if (_lastSelectedItemId != null && _selectedItemIds.contains(_lastSelectedItemId)) {
+                  try {
+                    final item = items.firstWhere((item) => item.id == _lastSelectedItemId);
+                    itemColor = item.getEffectiveColor(provider.settings);
+                  } catch (e) {
+                    // アイテムが見つからない場合は他の選択された事柄の色を使用
+                    itemColor = null;
+                  }
+                }
+                // 最後に選択された事柄が見つからない場合は、最初の選択された事柄の色を使用
+                if (itemColor == null) {
+                  final firstItemId = _selectedItemIds.first;
+                  try {
+                    final item = items.firstWhere((item) => item.id == firstItemId);
+                    itemColor = item.getEffectiveColor(provider.settings);
+                  } catch (e) {
+                    // アイテムが見つからない場合は色指定なし
+                    itemColor = null;
+                  }
+                }
+              }
+              provider.addRecordsForToday(_selectedItemIds.toList());
+              Navigator.of(context).pop();
+              _showCongratulationsDialog(context, color: itemColor); // Call the new dialog with color
+            },
         ),
       ],
     );
@@ -499,7 +531,7 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
 }
 
 // おめでとうダイアログ
-void _showCongratulationsDialog(BuildContext context) {
+void _showCongratulationsDialog(BuildContext context, {Color? color}) {
   showDialog(
     context: context,
     builder: (BuildContext dialogContext) {
@@ -513,14 +545,25 @@ void _showCongratulationsDialog(BuildContext context) {
               repeat: false,
               width: 150,
               height: 150,
+              delegates: color != null
+                  ? LottieDelegates(
+                      values: [
+                        // アニメーションの色を指定された色に変更
+                        ValueDelegate.color(
+                          const ['**'],
+                          value: color,
+                        ),
+                      ],
+                    )
+                  : null,
             ),
             const SizedBox(height: 20),
             Text(AppLocalizations.of(dialogContext)!.recordSavedSuccessfully),
           ],
         ),
         actions: <Widget>[
-          TextButton(
-            child: Text('OK'),
+  TextButton(
+            child: Text(AppLocalizations.of(dialogContext)!.okButton),
             onPressed: () {
               Navigator.of(dialogContext).pop();
             },

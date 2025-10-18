@@ -116,5 +116,6 @@
   "newItem": "Nouvel élément",
   "@newItem": {
     "description": "Default name for new items"
-  }
+  },
+  "okButton": "OK"
 }

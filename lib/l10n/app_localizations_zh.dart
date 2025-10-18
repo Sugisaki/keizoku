@@ -204,6 +204,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get recordSavedSuccessfully => 'Record saved successfully!';
+
+  @override
+  String get okButton => 'OK';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -400,4 +403,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get newItem => '新建項目';
+
+  @override
+  String get okButton => 'OK';
 }

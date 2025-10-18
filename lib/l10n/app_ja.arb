@@ -118,5 +118,6 @@
     "description": "Default name for new items"
   },
   "congratulations": "おめでとう",
-  "recordSavedSuccessfully": "記録が正常に保存されました！"
+  "recordSavedSuccessfully": "記録が正常に保存されました！",
+  "okButton": "OK"
 }

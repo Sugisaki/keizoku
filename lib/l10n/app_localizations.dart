@@ -506,6 +506,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Record saved successfully!'**
   String get recordSavedSuccessfully;
+
+  /// No description provided for @okButton.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get okButton;
 }
 
 class _AppLocalizationsDelegate

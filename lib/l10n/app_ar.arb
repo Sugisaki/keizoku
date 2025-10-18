@@ -116,5 +116,6 @@
   "newItem": "عنصر جديد",
   "@newItem": {
     "description": "Default name for new items"
-  }
+  },
+  "okButton": "OK"
 }

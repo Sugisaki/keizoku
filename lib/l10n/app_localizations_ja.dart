@@ -204,4 +204,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get recordSavedSuccessfully => '記録が正常に保存されました！';
+
+  @override
+  String get okButton => 'OK';
 }

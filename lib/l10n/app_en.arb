@@ -226,5 +226,6 @@
     "description": "Arabic language name"
   },
   "congratulations": "Congratulations!",
-  "recordSavedSuccessfully": "Record saved successfully!"
+  "recordSavedSuccessfully": "Record saved successfully!",
+  "okButton": "OK"
 }

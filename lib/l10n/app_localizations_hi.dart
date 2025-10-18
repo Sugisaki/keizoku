@@ -204,4 +204,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get recordSavedSuccessfully => 'Record saved successfully!';
+
+  @override
+  String get okButton => 'OK';
 }
