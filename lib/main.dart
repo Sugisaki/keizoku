@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 
@@ -489,9 +490,43 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
           onPressed: () {
             provider.addRecordsForToday(_selectedItemIds.toList());
             Navigator.of(context).pop();
+            _showCongratulationsDialog(context); // Call the new dialog
           },
         ),
       ],
     );
   }
+}
+
+// おめでとうダイアログ
+void _showCongratulationsDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(AppLocalizations.of(dialogContext)!.congratulations),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/success_lottie.json', // Lottieアニメーション、成功
+              repeat: false,
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(height: 20),
+            Text(AppLocalizations.of(dialogContext)!.recordSavedSuccessfully),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

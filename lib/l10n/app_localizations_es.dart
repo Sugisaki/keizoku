@@ -198,4 +198,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get newItem => 'Nuevo elemento';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

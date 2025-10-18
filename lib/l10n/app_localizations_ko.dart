@@ -198,4 +198,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get newItem => '새 항목';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

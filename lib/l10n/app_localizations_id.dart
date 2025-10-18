@@ -198,4 +198,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get newItem => 'Item Baru';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

@@ -198,4 +198,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newItem => 'New Item';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

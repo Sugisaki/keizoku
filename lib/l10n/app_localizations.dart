@@ -494,6 +494,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Item'**
   String get newItem;
+
+  /// No description provided for @congratulations.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations!'**
+  String get congratulations;
+
+  /// No description provided for @recordSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Record saved successfully!'**
+  String get recordSavedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

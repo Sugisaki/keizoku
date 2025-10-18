@@ -198,4 +198,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get newItem => 'عنصر جديد';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

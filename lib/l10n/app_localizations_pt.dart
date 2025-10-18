@@ -198,4 +198,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newItem => 'Novo Item';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

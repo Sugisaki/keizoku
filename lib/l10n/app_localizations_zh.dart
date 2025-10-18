@@ -198,6 +198,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get newItem => '新建项目';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).

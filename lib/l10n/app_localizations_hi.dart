@@ -198,4 +198,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get newItem => 'नया आइटम';
+
+  @override
+  String get congratulations => 'Congratulations!';
+
+  @override
+  String get recordSavedSuccessfully => 'Record saved successfully!';
 }

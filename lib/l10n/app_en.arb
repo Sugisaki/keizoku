@@ -224,5 +224,7 @@
   },
   "@arabic": {
     "description": "Arabic language name"
-  }
+  },
+  "congratulations": "Congratulations!",
+  "recordSavedSuccessfully": "Record saved successfully!"
 }

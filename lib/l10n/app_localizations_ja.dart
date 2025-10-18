@@ -198,4 +198,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get newItem => '新規項目';
+
+  @override
+  String get congratulations => 'おめでとう';
+
+  @override
+  String get recordSavedSuccessfully => '記録が正常に保存されました！';
 }
