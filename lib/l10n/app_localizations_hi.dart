@@ -200,11 +200,30 @@ class AppLocalizationsHi extends AppLocalizations {
   String get newItem => 'नया आइटम';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'बधाई हो!';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully => 'रिकॉर्ड सफलतापूर्वक सहेजा गया!';
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => 'पुष्टि';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return 'क्या आप $itemName के लिए एक रिकॉर्ड जोड़ना चाहते हैं?';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return 'क्या आप $itemName के लिए रिकॉर्ड हटाना चाहते हैं?';
+  }
+
+  @override
+  String get yesButton => 'हाँ';
+
+  @override
+  String get noButton => 'नहीं';
 }

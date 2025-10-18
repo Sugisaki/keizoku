@@ -117,5 +117,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
-  "okButton": "OK"
+  "okButton": "OK",
+  "confirmation": "确认",
+  "addRecordConfirmation": "您要为 {itemName} 添加记录吗？",
+  "removeRecordConfirmation": "您要删除 {itemName} 的记录吗？",
+  "yesButton": "是",
+  "noButton": "否",
+  "congratulations": "恭喜",
+  "recordSavedSuccessfully": "记录已成功保存！"
 }

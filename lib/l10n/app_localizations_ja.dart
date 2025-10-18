@@ -207,4 +207,23 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => '確認';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return '$itemNameの記録を追加しますか？';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return '$itemNameの記録を削除しますか？';
+  }
+
+  @override
+  String get yesButton => 'はい';
+
+  @override
+  String get noButton => 'いいえ';
 }

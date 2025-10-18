@@ -207,4 +207,23 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => '확인';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return '$itemName에 대한 기록을 추가하시겠습니까?';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return '$itemName에 대한 기록을 삭제하시겠습니까?';
+  }
+
+  @override
+  String get yesButton => '예';
+
+  @override
+  String get noButton => '아니오';
 }

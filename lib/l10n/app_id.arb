@@ -117,5 +117,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
-  "okButton": "OK"
+  "okButton": "OK",
+  "confirmation": "Konfirmasi",
+  "addRecordConfirmation": "Apakah Anda ingin menambahkan catatan untuk {itemName}?",
+  "removeRecordConfirmation": "Apakah Anda ingin menghapus catatan untuk {itemName}?",
+  "yesButton": "Ya",
+  "noButton": "Tidak",
+  "congratulations": "Selamat!",
+  "recordSavedSuccessfully": "Rekaman berhasil disimpan!"
 }

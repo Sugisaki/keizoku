@@ -200,11 +200,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get newItem => 'Nouvel élément';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'Félicitations !';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully =>
+      'Enregistrement sauvegardé avec succès !';
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => 'Confirmation';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return 'Voulez-vous ajouter un enregistrement pour $itemName ?';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return 'Voulez-vous supprimer l\'enregistrement pour $itemName ?';
+  }
+
+  @override
+  String get yesButton => 'Oui';
+
+  @override
+  String get noButton => 'Non';
 }

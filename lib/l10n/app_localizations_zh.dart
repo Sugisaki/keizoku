@@ -200,13 +200,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get newItem => '新建项目';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => '恭喜';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully => '记录已成功保存！';
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => '确认';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return '您要为 $itemName 添加记录吗？';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return '您要删除 $itemName 的记录吗？';
+  }
+
+  @override
+  String get yesButton => '是';
+
+  @override
+  String get noButton => '否';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -405,5 +424,30 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get newItem => '新建項目';
 
   @override
+  String get congratulations => '恭喜';
+
+  @override
+  String get recordSavedSuccessfully => '記錄已成功保存';
+
+  @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => '確認';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return '您要為 $itemName 新增記錄嗎？';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return '您要刪除 $itemName 的記錄嗎？';
+  }
+
+  @override
+  String get yesButton => '是';
+
+  @override
+  String get noButton => '否';
 }

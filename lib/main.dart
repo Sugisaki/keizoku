@@ -436,6 +436,7 @@ class AddRecordDialog extends StatefulWidget {
 class _AddRecordDialogState extends State<AddRecordDialog> {
   final Set<int> _selectedItemIds = {};
   int? _lastSelectedItemId;
+  bool _isSaving = false; // 保存状態を管理
 
   @override
   void initState() {
@@ -444,6 +445,91 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
     final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     final recordsForToday = provider.records.getRecordsForDay(today);
     _selectedItemIds.addAll(recordsForToday);
+  }
+
+  // 記録を保存するメソッド
+  Future<void> _saveRecords(bool isAddingRecord) async {
+    if (_isSaving) return;
+
+    setState(() {
+      _isSaving = true;
+    });
+
+    try {
+      final provider = context.read<CalendarProvider>();
+      await provider.addRecordsForToday(_selectedItemIds.toList());
+
+      if (mounted) {
+        if (isAddingRecord) {
+          // チェックボックスを最後に有効にした事柄の色、または
+          // チェックボックスが有効になっている最初の事柄の色を取得
+          Color? itemColor;
+          if (_selectedItemIds.isNotEmpty) {
+            final items = provider.items;
+            // 最後に選択された事柄の色を取得
+            if (_lastSelectedItemId != null && _selectedItemIds.contains(_lastSelectedItemId)) {
+              try {
+                final item = items.firstWhere((item) => item.id == _lastSelectedItemId);
+                itemColor = item.getEffectiveColor(provider.settings);
+              } catch (e) {
+                itemColor = null;
+              }
+            }
+            // 最後に選択された事柄が見つからない場合は、最初の選択された事柄の色を使用
+            if (itemColor == null) {
+              final firstItemId = _selectedItemIds.first;
+              try {
+                final item = items.firstWhere((item) => item.id == firstItemId);
+                itemColor = item.getEffectiveColor(provider.settings);
+              } catch (e) {
+                // アイテムが見つからない場合は色指定なし
+                itemColor = null;
+              }
+            }
+          }
+          _showCongratulationsDialog(context, color: itemColor);
+        } else {
+          // If removing a record, do nothing. The AddRecordDialog remains open.
+        }
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
+    }
+  }
+
+  // 確認ダイアログを表示するメソッド
+  Future<bool> _showConfirmationDialog(CalendarItem item, bool willBeSelected) async {
+    final localizations = AppLocalizations.of(context)!;
+    
+    return await showDialog<bool>( // Specify the return type as bool
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(localizations.confirmation),
+          content: Text(willBeSelected 
+              ? localizations.addRecordConfirmation(item.name)
+              : localizations.removeRecordConfirmation(item.name)),
+          actions: <Widget>[
+            TextButton(
+              child: Text(localizations.noButton),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false); // Return false for "No"
+              },
+            ),
+            TextButton(
+              child: Text(localizations.yesButton),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true); // Return true for "Yes"
+              },
+            ),
+          ],
+        );
+      },
+    ) ?? false; // Return false if dialog is dismissed without selection
   }
 
   @override
@@ -466,64 +552,35 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
               ),
               title: Text(item.name),
               value: isSelected,
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value == true) {
-                    _selectedItemIds.add(item.id);
-                    _lastSelectedItemId = item.id; // 最後に選択された事柄を記録
-                  } else {
-                    _selectedItemIds.remove(item.id);
-                    // 最後に選択された事柄が解除された場合はクリア
-                    if (_lastSelectedItemId == item.id) {
-                      _lastSelectedItemId = null;
+              onChanged: _isSaving ? null : (bool? value) async {
+                final bool confirmed = await _showConfirmationDialog(item, value == true);
+                if (confirmed) {
+                  setState(() {
+                    if (value == true) {
+                      _selectedItemIds.add(item.id);
+                      _lastSelectedItemId = item.id;
+                    } else {
+                      _selectedItemIds.remove(item.id);
+                      if (_lastSelectedItemId == item.id) {
+                        _lastSelectedItemId = null;
+                      }
                     }
-                  }
-                });
+                  });
+                  await _saveRecords(value == true);
+                } else {
+                  // If not confirmed ("No" was clicked), do nothing. The AddRecordDialog remains open.
+                }
               },
             );
           }).toList(),
         ),
       ),
       actions: <Widget>[
-  TextButton(
-            child: Text(AppLocalizations.of(context)!.okButton),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
         TextButton(
-          child: Text(localizations.saveButton),
-            onPressed: () {
-              // チェックボックスを最後に有効にした事柄の色、または
-              // チェックボックスが有効になっている最初の事柄の色を取得
-              Color? itemColor;
-              if (_selectedItemIds.isNotEmpty) {
-                // 最後に選択された事柄の色を取得
-                if (_lastSelectedItemId != null && _selectedItemIds.contains(_lastSelectedItemId)) {
-                  try {
-                    final item = items.firstWhere((item) => item.id == _lastSelectedItemId);
-                    itemColor = item.getEffectiveColor(provider.settings);
-                  } catch (e) {
-                    // アイテムが見つからない場合は他の選択された事柄の色を使用
-                    itemColor = null;
-                  }
-                }
-                // 最後に選択された事柄が見つからない場合は、最初の選択された事柄の色を使用
-                if (itemColor == null) {
-                  final firstItemId = _selectedItemIds.first;
-                  try {
-                    final item = items.firstWhere((item) => item.id == firstItemId);
-                    itemColor = item.getEffectiveColor(provider.settings);
-                  } catch (e) {
-                    // アイテムが見つからない場合は色指定なし
-                    itemColor = null;
-                  }
-                }
-              }
-              provider.addRecordsForToday(_selectedItemIds.toList());
-              Navigator.of(context).pop();
-              _showCongratulationsDialog(context, color: itemColor); // Call the new dialog with color
-            },
+          child: Text(localizations.cancelButton),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ],
     );
@@ -562,10 +619,11 @@ void _showCongratulationsDialog(BuildContext context, {Color? color}) {
           ],
         ),
         actions: <Widget>[
-  TextButton(
+          TextButton(
             child: Text(AppLocalizations.of(dialogContext)!.okButton),
             onPressed: () {
-              Navigator.of(dialogContext).pop();
+              Navigator.of(dialogContext).pop(); // おめでとうダイアログを閉じる
+              // 今日の事柄の記録画面に戻る（ダイアログを閉じない）
             },
           ),
         ],

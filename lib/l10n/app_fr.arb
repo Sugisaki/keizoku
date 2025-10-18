@@ -117,5 +117,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
-  "okButton": "OK"
+  "okButton": "OK",
+  "confirmation": "Confirmation",
+  "addRecordConfirmation": "Voulez-vous ajouter un enregistrement pour {itemName} ?",
+  "removeRecordConfirmation": "Voulez-vous supprimer l'enregistrement pour {itemName} ?",
+  "yesButton": "Oui",
+  "noButton": "Non",
+  "congratulations": "Félicitations !",
+  "recordSavedSuccessfully": "Enregistrement sauvegardé avec succès !"
 }

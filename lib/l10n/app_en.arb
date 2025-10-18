@@ -227,5 +227,10 @@
   },
   "congratulations": "Congratulations!",
   "recordSavedSuccessfully": "Record saved successfully!",
-  "okButton": "OK"
+  "okButton": "OK",
+  "confirmation": "Confirmation",
+  "addRecordConfirmation": "Do you want to add a record for {itemName}?",
+  "removeRecordConfirmation": "Do you want to remove the record for {itemName}?",
+  "yesButton": "Yes",
+  "noButton": "No"
 }

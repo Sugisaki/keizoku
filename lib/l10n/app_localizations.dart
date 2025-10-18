@@ -512,6 +512,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get okButton;
+
+  /// No description provided for @confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get confirmation;
+
+  /// No description provided for @addRecordConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to add a record for {itemName}?'**
+  String addRecordConfirmation(Object itemName);
+
+  /// No description provided for @removeRecordConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to remove the record for {itemName}?'**
+  String removeRecordConfirmation(Object itemName);
+
+  /// No description provided for @yesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yesButton;
+
+  /// No description provided for @noButton.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get noButton;
 }
 
 class _AppLocalizationsDelegate

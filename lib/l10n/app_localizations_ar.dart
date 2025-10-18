@@ -200,11 +200,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newItem => 'عنصر جديد';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'تهانينا!';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully => 'تم حفظ السجل بنجاح!';
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => 'تأكيد';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return 'هل تريد إضافة سجل لـ $itemName؟';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return 'هل تريد إزالة السجل لـ $itemName؟';
+  }
+
+  @override
+  String get yesButton => 'نعم';
+
+  @override
+  String get noButton => 'لا';
 }

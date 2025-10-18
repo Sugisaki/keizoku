@@ -200,11 +200,30 @@ class AppLocalizationsId extends AppLocalizations {
   String get newItem => 'Item Baru';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => 'Selamat!';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully => 'Rekaman berhasil disimpan!';
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String get confirmation => 'Konfirmasi';
+
+  @override
+  String addRecordConfirmation(Object itemName) {
+    return 'Apakah Anda ingin menambahkan catatan untuk $itemName?';
+  }
+
+  @override
+  String removeRecordConfirmation(Object itemName) {
+    return 'Apakah Anda ingin menghapus catatan untuk $itemName?';
+  }
+
+  @override
+  String get yesButton => 'Ya';
+
+  @override
+  String get noButton => 'Tidak';
 }

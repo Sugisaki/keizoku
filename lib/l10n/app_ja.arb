@@ -119,5 +119,10 @@
   },
   "congratulations": "おめでとう",
   "recordSavedSuccessfully": "記録が正常に保存されました！",
-  "okButton": "OK"
+  "okButton": "OK",
+  "confirmation": "確認",
+  "addRecordConfirmation": "{itemName}の記録を追加しますか？",
+  "removeRecordConfirmation": "{itemName}の記録を削除しますか？",
+  "yesButton": "はい",
+  "noButton": "いいえ"
 }
