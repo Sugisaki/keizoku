@@ -83,3 +83,6 @@ Podfile.lock
 
 # Development test data
 assets/test_calendar_records.json
+
+# ios 使わない
+/ios/
