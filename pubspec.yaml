@@ -19,14 +19,26 @@ dependencies:
   path_provider: ^2.0.11
   intl: ^0.20.2
   lottie: ^2.7.0 # Add lottie package
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
   generate: true
   assets:
     - assets/
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  # 従来のAndroid、iOS用の画像 (通常は前景と背景を合わせた512x512のPNG)
+  image_path: "assets/icon/foreground.png"
+
+  # アダプティブアイコン設定
+  adaptive_icon_foreground: "assets/icon/foreground.png"
+  adaptive_icon_background: "#FFFFFF" # または背景画像のパス "assets/icon/background.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
