@@ -5,21 +5,15 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
 
-import 'models/calendar_settings.dart';
 import 'models/calendar_item.dart';
-import 'models/calendar_records.dart';
 import 'models/language_settings.dart';
 import 'widgets/calendar_widget.dart';
 import 'providers/calendar_provider.dart';
-import 'repositories/settings_repository.dart';
-import 'repositories/records_repository.dart';
-import 'screens/settings_screen.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
-import 'repositories/items_repository.dart';
 import 'repositories/local/local_items_repository.dart';
-import 'repositories/language_repository.dart';
 import 'repositories/local/local_language_repository.dart';
+import 'screens/settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +50,7 @@ class MyApp extends StatelessWidget {
         
         return MaterialApp(
           title: 'Calendar App',
+          debugShowCheckedModeBanner: false, // DEBUGバナーを表示しない
           locale: effectiveLocale,
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -98,6 +93,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   DateTime? _displayMonth;
   final CalendarWidgetController _calendarController = CalendarWidgetController();
+  double _scrollOffset = 0.0; // State variable for scroll offset
+  double _calendarWidgetHeight = 0.0; // State variable for calendar widget height
 
   void _handleVisibleMonthChanged(DateTime date) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -121,6 +118,17 @@ class _MyHomePageState extends State<MyHomePage> {
           if (localizations != null) {
             provider.updateDefaultItemNames(localizations.newItem);
           }
+          // Calculate initial _scrollOffset after data is loaded and calendar height is known
+          final screenWidth = MediaQuery.of(context).size.width;
+          const double dayHeadersAndSpacingHeight = 32.0;
+          final double dayCellHeight = screenWidth / 7;
+          final double itemLinesHeight = (provider.items.length * (2 + 2)) + 4;
+          final double singleWeekRowHeight = dayCellHeight + itemLinesHeight;
+          final double availableHeight = (MediaQuery.of(context).size.height / 2) - dayHeadersAndSpacingHeight;
+          final int maxRows = (singleWeekRowHeight > 0) ? (availableHeight / singleWeekRowHeight).floor() : 1;
+          final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
+          _calendarWidgetHeight = calendarHeight; // Update state variable
+          _scrollOffset = calendarHeight + 16.0 + 60.0 + 16.0; // Initial offset below calendar and buttons
         }
       });
     });
@@ -161,8 +169,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final provider = context.watch<CalendarProvider>();
 
+    // 高さ計算を先に実行
+    double calendarHeight = 0;
     Widget bodyWidget;
-    // provider.itemsが空の間はローディングインジケータを表示
+    
     if (provider.items.isEmpty) {
       bodyWidget = const Center(child: CircularProgressIndicator());
     } else {
@@ -178,52 +188,19 @@ class _MyHomePageState extends State<MyHomePage> {
       final double availableHeight = (screenHeight / 2) - dayHeadersAndSpacingHeight;
       final int maxRows = (singleWeekRowHeight > 0) ? (availableHeight / singleWeekRowHeight).floor() : 1;
 
-      final calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
+      calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
 
-      bodyWidget = Column(
-        children: [
-          SizedBox(
-            height: calendarHeight,
-            child: CalendarWidget(
-              settings: provider.settings,
-              items: provider.items,
-              records: provider.records,
-              onVisibleMonthChanged: _handleVisibleMonthChanged,
-              displayMonth: _displayMonth ?? DateTime.now(),
-              maxRows: maxRows,
-              controller: _calendarController,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _calendarController.scrollToBottom();
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // 事柄の追加ボタン
-                IconButton(
-                  color: Colors.blue,
-                  onPressed: () => _showAddRecordDialog(context),
-                  icon: const Icon(Icons.add_circle_rounded),
-                  iconSize: 48,
-                  padding: const EdgeInsets.all(8),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
+      bodyWidget = SizedBox(
+        height: calendarHeight,
+        child: CalendarWidget(
+          settings: provider.settings,
+          items: provider.items,
+          records: provider.records,
+          onVisibleMonthChanged: _handleVisibleMonthChanged,
+          displayMonth: _displayMonth ?? DateTime.now(),
+          maxRows: maxRows,
+          controller: _calendarController,
+        ),
       );
     }
 
@@ -280,146 +257,179 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
 
-      body: Column(
-        children: [
-          bodyWidget,
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              AppLocalizations.of(context)!.continuousRecords,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // カレンダー部分
+            SizedBox(
+              height: calendarHeight,
+              child: bodyWidget,
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              // 連続記録の表
-              child: Column(
+            const SizedBox(height: 16), // Spacing above buttons
+            // 中央の今日ボタンや追加ボタン
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
                 children: [
-                  // ヘッダー行
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _calendarController.scrollToBottom();
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // 事柄の追加ボタン
+                  IconButton(
+                    color: Colors.blue,
+                    onPressed: () => _showAddRecordDialog(context),
+                    icon: const Icon(Icons.add_circle_rounded),
+                    iconSize: 48,
+                    padding: const EdgeInsets.all(8),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16), // Spacing below buttons
+            const Divider(),
+            // 連続記録（タイトル）
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                AppLocalizations.of(context)!.continuousRecords,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // 連続記録のリスト
+            Column(
+              children: [
+                // ヘッダー行
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Text(
+                          AppLocalizations.of(context)!.itemName,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.dayShort,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.weekShort,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.monthShort,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // データ行
+                ...provider.items.where((item) => item.isEnabled).map((item) {
+                  final continuousMonths = provider.calculateContinuousMonths(item.id);
+                  final continuousWeeks = provider.calculateContinuousWeeks(item.id);
+                  final continuousDays = provider.calculateContinuousDays(item.id);
+
+                  // 事柄名、日数、週数、月数の行
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: item.getEffectiveColor(provider.settings),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: Row(
                       children: [
-                        SizedBox(
+                        // 事柄名
+                        Container(
                           width: MediaQuery.of(context).size.width / 2,
+                          decoration: BoxDecoration(
+                            color: item.getEffectiveColor(provider.settings),
+                            border: Border.all(
+                              color: item.getEffectiveColor(provider.settings),
+                              width: 2.0,
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4),
+                              bottomLeft: Radius.circular(4),
+                            ),
+                          ),
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                           child: Text(
-                            AppLocalizations.of(context)!.itemName,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                            item.name,
+                            style: const TextStyle(color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                        // 日数
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            child: Text(
+                              continuousDays > 0 ? continuousDays.toString() : '',
+                              textAlign: TextAlign.right,
                             ),
                           ),
                         ),
+                        // 週数
                         Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.dayShort,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            child: Text(
+                              continuousWeeks > 0 ? continuousWeeks.toString() : '',
+                              textAlign: TextAlign.right,
                             ),
                           ),
                         ),
+                        // 月数
                         Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.weekShort,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            AppLocalizations.of(context)!.monthShort,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            child: Text(
+                              continuousMonths > 0 ? continuousMonths.toString() : '',
+                              textAlign: TextAlign.right,
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  // データ行
-                  ...provider.items.where((item) => item.isEnabled).map((item) {
-                    final continuousMonths = provider.calculateContinuousMonths(item.id);
-                    final continuousWeeks = provider.calculateContinuousWeeks(item.id);
-                    final continuousDays = provider.calculateContinuousDays(item.id);
-
-                    // 事柄名、日数、週数、月数の行
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: item.getEffectiveColor(provider.settings),
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          // 事柄名
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2,
-                            decoration: BoxDecoration(
-                              color: item.getEffectiveColor(provider.settings),
-                              border: Border.all(
-                                color: item.getEffectiveColor(provider.settings),
-                                width: 2.0,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4),
-                                bottomLeft: Radius.circular(4),
-                              ),
-                            ),
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                            child: Text(
-                              item.name,
-                              style: const TextStyle(color: Colors.white),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                          ),
-                          // 日数
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                              child: Text(
-                                continuousDays > 0 ? continuousDays.toString() : '',
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ),
-                          // 週数
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                              child: Text(
-                                continuousWeeks > 0 ? continuousWeeks.toString() : '',
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ),
-                          // 月数
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                              child: Text(
-                                continuousMonths > 0 ? continuousMonths.toString() : '',
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
+                  );
+                }).toList(),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
