@@ -62,14 +62,15 @@ class DayCellWidget extends StatelessWidget {
 
   /*  事柄のアイコンを orderプロパティの値に従って適切な位置に配置する。
          order   →  3x3のグリッドでの配置
-      [7][8][9]  →  [0][1][2]
+      [-][8][9]  →  [0][1][2]
       [1][2][3]  →  [3][4][5]
       [4][5][6]  →  [6][7][8]
   */
   Widget _buildIconGrid() {
     final iconSize = cellWidth * 0.33; // アイコンサイズ
+    // 順番に対してどの位置の表示するかを設定（順番1から8まで）
     const orderToIndexMap = {
-      7: 0, 8: 1, 9: 2,
+      7: 1, 8: 2, 9: 0,
       1: 3, 2: 4, 3: 5,
       4: 6, 5: 7, 6: 8,
     };
@@ -80,6 +81,7 @@ class DayCellWidget extends StatelessWidget {
 
     relevantItems.sort((a, b) => a.order.compareTo(b.order));
 
+    // 9のグリッドに分けて表示する（ただしグリッド0は使わない）
     List<Widget> gridChildren = List.generate(9, (_) => const SizedBox.shrink());
 
     for (var item in relevantItems) {
