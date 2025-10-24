@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -20,8 +21,9 @@ class LocalRecordsRepository implements RecordsRepository {
     return File('$path/$_fileName');
   }
 
-  // 開発環境のテストファイルをアセットから読み込む
+  // 開発環境のテストファイルをアセットから読み込む（デバッグモードのみ）
   Future<String?> _loadTestAsset() async {
+    if (!kDebugMode) return null;
     try {
       final contents = await rootBundle.loadString('assets/test_calendar_records.json');
       return contents;
