@@ -67,7 +67,7 @@ class DayCellWidget extends StatelessWidget {
       [4][5][6]  →  [6][7][8]
   */
   Widget _buildIconGrid() {
-    final iconSize = cellWidth / 4;
+    final iconSize = cellWidth * 0.33; // アイコンサイズ
     const orderToIndexMap = {
       7: 0, 8: 1, 9: 2,
       1: 3, 2: 4, 3: 5,
@@ -86,13 +86,35 @@ class DayCellWidget extends StatelessWidget {
       if (orderToIndexMap.containsKey(item.order)) {
         final gridIndex = orderToIndexMap[item.order]!;
         if (gridIndex >= 0 && gridIndex < 9) {
-          gridChildren[gridIndex] = Opacity(
-            opacity: 0.5,
-            child: Icon(
-              item.getEffectiveIcon(),
-              color: item.getEffectiveColor(settings),
-              size: iconSize,
-            ),
+          gridChildren[gridIndex] = Stack(
+            alignment: Alignment.center,
+            children: [
+              // 背景のアイコン
+              Opacity(
+                opacity: 0.7,
+                child: Icon(
+                  item.getEffectiveIcon(),
+                  color: item.getEffectiveColor(settings),
+                  size: iconSize,
+                ),
+              ),
+              // 前面の文字
+              Text(
+                item.name.isNotEmpty ? item.name.substring(0, 1) : '',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: iconSize * 0.5, // アイコンの中の文字サイズ
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    Shadow(
+                      offset: const Offset(0.5, 0.5),
+                      blurRadius: 1.0,
+                      color: Colors.black.withValues().withValues(alpha: 0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           );
         }
       }
