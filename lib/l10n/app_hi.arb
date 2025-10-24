@@ -2,7 +2,7 @@
   "@@locale": "hi",
   "appTitle": "कैलेंडर एप्प",
   "today": "आज",
-  "todayButton": "आज {date}",
+  "todayButton": "{date} {icon} जोड़ें",
   "settings": "सेटिंग्स",
   "weekStartsOn": "सप्ताह की शुरुआत",
   "sunday": "रविवार",
@@ -48,6 +48,10 @@
   "addRecordTitle": "आज का रिकॉर्ड जोड़ें",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "जोड़ें",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "रद्द करें",
   "@cancelButton": {

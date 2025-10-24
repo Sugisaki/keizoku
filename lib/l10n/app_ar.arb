@@ -2,7 +2,7 @@
   "@@locale": "ar",
   "appTitle": "تطبيق التقويم",
   "today": "اليوم",
-  "todayButton": "اليوم {date}",
+  "todayButton": "{date} {icon} إضافة",
   "settings": "الإعدادات",
   "weekStartsOn": "تبدأ الأسبوع",
   "sunday": "الأحد",
@@ -48,6 +48,10 @@
   "addRecordTitle": "إضافة سجل اليوم",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "إضافة",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "إلغاء",
   "@cancelButton": {

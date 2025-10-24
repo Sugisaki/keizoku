@@ -15,8 +15,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get today => 'Today';
 
   @override
-  String todayButton(String date) {
-    return 'Today $date';
+  String todayButton(String date, String icon) {
+    return '$date $icon Add';
   }
 
   @override
@@ -146,7 +146,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get colorLightOrange => 'Light Orange';
 
   @override
-  String get addRecordTitle => 'Add Record for Today';
+  String get addRecordTitle => 'Add';
+
+  @override
+  String get addItem => 'Add';
 
   @override
   String get cancelButton => 'Cancel';

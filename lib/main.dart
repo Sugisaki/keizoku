@@ -271,25 +271,51 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
+                  // 今日にスクロールするボタン
+                  IconButton(
+                    color: Colors.grey,
+                    onPressed: () => _calendarController.scrollToBottom(),
+                    icon: const Icon(Icons.vertical_align_bottom), // add_circle_rounded),
+                    iconSize: 36,
+                    padding: const EdgeInsets.all(8),
+                  ),
+                  const SizedBox(width: 8),
+                  // 事柄の追加ボタン（ラベルは、日付、アイコン、追加）
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        _calendarController.scrollToBottom();
+                        _showAddRecordDialog(context);
                       },
-                      child: Text(
-                        AppLocalizations.of(context)!.todayButton(DateFormat('M/d').format(DateTime.now())),
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple, // ボタンの色を紫に設定
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            DateFormat.MMMd(Localizations.localeOf(context).languageCode).format(DateTime.now()),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.add_circle_rounded,
+                            size: 24,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)!.addItem,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  // 事柄の追加ボタン
-                  IconButton(
-                    color: Colors.blue,
-                    onPressed: () => _showAddRecordDialog(context),
-                    icon: const Icon(Icons.add_circle_rounded),
-                    iconSize: 48,
-                    padding: const EdgeInsets.all(8),
                   ),
                 ],
               ),

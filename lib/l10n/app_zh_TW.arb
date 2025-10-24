@@ -2,7 +2,7 @@
   "@@locale": "zh_TW",
   "appTitle": "日曆應用",
   "today": "今天",
-  "todayButton": "今天 {date}",
+  "todayButton": "{date} {icon} 新增",
   "settings": "設定",
   "weekStartsOn": "週的開始",
   "sunday": "星期日",
@@ -48,6 +48,10 @@
   "addRecordTitle": "新增今日記錄",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "新增",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "取消",
   "@cancelButton": {

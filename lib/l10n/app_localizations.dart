@@ -129,11 +129,11 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get today;
 
-  /// Today button with date
+  /// Today button with date and add icon
   ///
   /// In en, this message translates to:
-  /// **'Today {date}'**
-  String todayButton(String date);
+  /// **'{date} {icon} Add'**
+  String todayButton(String date, String icon);
 
   /// Settings menu label
   ///
@@ -390,8 +390,14 @@ abstract class AppLocalizations {
   /// Title for the Add Record dialog
   ///
   /// In en, this message translates to:
-  /// **'Add Record for Today'**
+  /// **'Add'**
   String get addRecordTitle;
+
+  /// Add item button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addItem;
 
   /// Text for the Cancel button
   ///

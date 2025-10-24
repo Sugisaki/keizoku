@@ -15,8 +15,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get today => 'اليوم';
 
   @override
-  String todayButton(String date) {
-    return 'اليوم $date';
+  String todayButton(String date, String icon) {
+    return '$date $icon إضافة';
   }
 
   @override
@@ -147,6 +147,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addRecordTitle => 'إضافة سجل اليوم';
+
+  @override
+  String get addItem => 'إضافة';
 
   @override
   String get cancelButton => 'إلغاء';

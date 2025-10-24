@@ -8,13 +8,17 @@
   "@today": {
     "description": "Label for today button"
   },
-  "todayButton": "Today {date}",
+  "todayButton": "{date} {icon} Add",
   "@todayButton": {
-    "description": "Today button with date",
+    "description": "Today button with date and add icon",
     "placeholders": {
       "date": {
         "type": "String",
-        "example": "12/19"
+        "example": "Dec 19"
+      },
+      "icon": {
+        "type": "String",
+        "example": "+"
       }
     }
   },
@@ -150,9 +154,13 @@
   "colorCyan": "Cyan",
   "colorLightBlue": "Light Blue",
   "colorLightOrange": "Light Orange",
-  "addRecordTitle": "Add Record for Today",
+  "addRecordTitle": "Add",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "Add",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "Cancel",
   "@cancelButton": {

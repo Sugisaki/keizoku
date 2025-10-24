@@ -15,8 +15,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get today => '오늘';
 
   @override
-  String todayButton(String date) {
-    return '오늘 $date';
+  String todayButton(String date, String icon) {
+    return '$date $icon 추가';
   }
 
   @override
@@ -147,6 +147,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get addRecordTitle => '오늘 기록 추가';
+
+  @override
+  String get addItem => '추가';
 
   @override
   String get cancelButton => '취소';

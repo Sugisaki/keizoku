@@ -2,7 +2,7 @@
   "@@locale": "pt",
   "appTitle": "Aplicativo de Calendário",
   "today": "Hoje",
-  "todayButton": "Hoje {date}",
+  "todayButton": "{date} {icon} Adicionar",
   "settings": "Configurações",
   "weekStartsOn": "A semana começa",
   "sunday": "Domingo",
@@ -48,6 +48,10 @@
   "addRecordTitle": "Adicionar Registro para Hoje",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "Adicionar",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "Cancelar",
   "@cancelButton": {

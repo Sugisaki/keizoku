@@ -2,7 +2,7 @@
   "@@locale": "ja",
   "appTitle": "カレンダーアプリ",
   "today": "今日",
-  "todayButton": "今日 {date}",
+  "todayButton": "{date}日 {icon} 追加",
   "settings": "設定",
   "weekStartsOn": "週の始まり",
   "sunday": "日曜日",
@@ -45,9 +45,13 @@
   "colorCyan": "シアン",
   "colorLightBlue": "薄ブルー",
   "colorLightOrange": "薄オレンジ",
-  "addRecordTitle": "今日の記録を追加",
+  "addRecordTitle": "追加",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "追加",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "キャンセル",
   "@cancelButton": {

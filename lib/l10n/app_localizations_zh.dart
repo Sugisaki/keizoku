@@ -15,8 +15,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get today => '今天';
 
   @override
-  String todayButton(String date) {
-    return '今天 $date';
+  String todayButton(String date, String icon) {
+    return '$date $icon 添加';
   }
 
   @override
@@ -149,6 +149,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addRecordTitle => '添加今日记录';
 
   @override
+  String get addItem => '添加';
+
+  @override
   String get cancelButton => '取消';
 
   @override
@@ -239,8 +242,8 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get today => '今天';
 
   @override
-  String todayButton(String date) {
-    return '今天 $date';
+  String todayButton(String date, String icon) {
+    return '$date $icon 新增';
   }
 
   @override
@@ -371,6 +374,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get addRecordTitle => '新增今日記錄';
+
+  @override
+  String get addItem => '新增';
 
   @override
   String get cancelButton => '取消';

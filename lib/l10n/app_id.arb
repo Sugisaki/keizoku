@@ -2,7 +2,7 @@
   "@@locale": "id",
   "appTitle": "Aplikasi Kalender",
   "today": "Hari ini",
-  "todayButton": "Hari ini {date}",
+  "todayButton": "{date} {icon} Tambahkan",
   "settings": "Pengaturan",
   "weekStartsOn": "Minggu dimulai pada",
   "sunday": "Minggu",
@@ -48,6 +48,10 @@
   "addRecordTitle": "Tambahkan Catatan Hari Ini",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
+  },
+  "addItem": "Tambahkan",
+  "@addItem": {
+    "description": "Add item button text"
   },
   "cancelButton": "Batal",
   "@cancelButton": {
