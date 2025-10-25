@@ -171,10 +171,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // 高さ計算を先に実行
     double calendarHeight = 0;
-    Widget bodyWidget;
+    Widget calendarBody;
     
     if (provider.items.isEmpty) {
-      bodyWidget = const Center(child: CircularProgressIndicator());
+      calendarBody = const Center(child: CircularProgressIndicator());
     } else {
       // データロード後に高さ計算とカレンダー描画を行う
       final screenHeight = MediaQuery.of(context).size.height;
@@ -190,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       calendarHeight = (maxRows > 0 ? maxRows : 1) * singleWeekRowHeight;
 
-      bodyWidget = SizedBox(
+      calendarBody = SizedBox(
         height: calendarHeight,
         child: CalendarWidget(
           settings: provider.settings,
@@ -263,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // カレンダー部分
             SizedBox(
               height: calendarHeight,
-              child: bodyWidget,
+              child: calendarBody, // カレンダー
             ),
             const SizedBox(height: 16), // Spacing above buttons
             // 中央の今日ボタンや追加ボタン

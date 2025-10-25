@@ -52,7 +52,6 @@ linked_*.ds
 /macos/Flutter/ephemeral
 
 # Generated files
-lib/generated_plugin_registrant.dart
 
 # Obfuscated files
 /app.so
@@ -82,7 +81,7 @@ Pods/
 Podfile.lock
 
 # Development test data
-assets/test_calendar_records.json
+assets/test_*
 
 # ios 使わない
 /ios/
