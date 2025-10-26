@@ -33,6 +33,20 @@ class LocalRecordsRepository implements RecordsRepository {
     }
   }
 
+  Map<DateTime, List<int>> _parseAndMergeRecords(String jsonString) {
+    final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final Map<DateTime, List<int>> mergedRecords = {};
+    json.forEach((key, value) {
+      final parsedDateTime = DateTime.parse(key);
+      final normalizedDate = DateTime(parsedDateTime.year, parsedDateTime.month, parsedDateTime.day);
+      final ids = List<int>.from(value);
+
+      mergedRecords.update(normalizedDate, (existingIds) => (existingIds + ids).toSet().toList(),
+          ifAbsent: () => ids);
+    });
+    return mergedRecords;
+  }
+
   @override
   Future<CalendarRecords> loadRecords() async {
     try {
@@ -44,13 +58,12 @@ class LocalRecordsRepository implements RecordsRepository {
       if (await file.exists()) {
         print('Loading data from local file');
         final contents = await file.readAsString();
-        final json = jsonDecode(contents) as Map<String, dynamic>;
-        final localRecords = json.map((key, value) {
-          // JSONのキー(String)をDateTimeに変換
-          return MapEntry(DateTime.parse(key), List<int>.from(value));
+        final localRecords = _parseAndMergeRecords(contents);
+        // ローカルファイルのデータをマージ
+        localRecords.forEach((date, ids) {
+          finalRecords.update(date, (existingIds) => (existingIds + ids).toSet().toList(),
+              ifAbsent: () => ids);
         });
-        // ローカルファイルのデータを追加
-        finalRecords.addAll(localRecords);
       }
 
       // 2. 開発環境のテストアセットからデータを読み込み
@@ -59,15 +72,14 @@ class LocalRecordsRepository implements RecordsRepository {
         print('Loading test data from assets/test_calendar_records.json');
         // テストアセットがロードされていることを示すフラグを設定
         _isUsingTestAsset = true;
-        final json = jsonDecode(testAssetContents) as Map<String, dynamic>;
-        final testAssetRecords = json.map((key, value) {
-          // JSONのキー(String)をDateTimeに変換
-          return MapEntry(DateTime.parse(key), List<int>.from(value));
+        final testAssetRecords = _parseAndMergeRecords(testAssetContents);
+        // アセットのテストデータをマージ（最高優先度で上書き）
+        testAssetRecords.forEach((date, ids) {
+          finalRecords.update(
+              date, (existingIds) => (existingIds + ids).toSet().toList(),
+              ifAbsent: () => ids);
         });
-        // アセットのテストデータを追加（最高優先度で上書き）
-        finalRecords.addAll(testAssetRecords);
       }
-
       return CalendarRecords(records: finalRecords);
     } catch (e) {
       // エラーが発生した場合は空のレコードを返す

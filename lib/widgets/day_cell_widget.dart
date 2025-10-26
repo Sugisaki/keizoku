@@ -81,44 +81,58 @@ class DayCellWidget extends StatelessWidget {
 
     relevantItems.sort((a, b) => a.order.compareTo(b.order));
 
-    // 9のグリッドに分けて表示する（ただしグリッド0は使わない）
     List<Widget> gridChildren = List.generate(9, (_) => const SizedBox.shrink());
+    Set<int> occupiedIndices = {}; // 占有されているグリッドインデックスを追跡
 
     for (var item in relevantItems) {
-      if (orderToIndexMap.containsKey(item.order)) {
-        final gridIndex = orderToIndexMap[item.order]!;
-        if (gridIndex >= 0 && gridIndex < 9) {
-          gridChildren[gridIndex] = Stack(
-            alignment: Alignment.center,
-            children: [
-              // 背景のアイコン
-              Opacity(
-                opacity: 0.7,
-                child: Icon(
-                  item.getEffectiveIcon(),
-                  color: item.getEffectiveColor(settings),
-                  size: iconSize,
-                ),
-              ),
-              // 前面の文字
-              Text(
-                item.name.isNotEmpty ? item.name.substring(0, 1) : '',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: iconSize * 0.5, // アイコンの中の文字サイズ
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      offset: const Offset(0.5, 0.5),
-                      blurRadius: 1.0,
-                      color: Colors.black.withValues().withValues(alpha: 0.5),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
+      int? preferredIndex = orderToIndexMap[item.order];
+      int assignedIndex = -1;
+
+      if (preferredIndex != null && preferredIndex >= 0 && preferredIndex < 9 && !occupiedIndices.contains(preferredIndex)) {
+        // 優先位置が利用可能であればそこに割り当てる
+        assignedIndex = preferredIndex;
+      } else {
+        // 優先位置が占有されているか無効な場合、次に利用可能な位置を探す
+        for (int i = 0; i < 9; i++) {
+          if (!occupiedIndices.contains(i)) {
+            assignedIndex = i;
+            break;
+          }
         }
+      }
+
+      if (assignedIndex != -1) {
+        occupiedIndices.add(assignedIndex);
+        gridChildren[assignedIndex] = Stack(
+          alignment: Alignment.center,
+          children: [
+            // 背景のアイコン
+            Opacity(
+              opacity: 0.7,
+              child: Icon(
+                item.getEffectiveIcon(),
+                color: item.getEffectiveColor(settings),
+                size: iconSize,
+              ),
+            ),
+            // 前面の文字
+            Text(
+              item.name.isNotEmpty ? item.name.substring(0, 1) : '',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: iconSize * 0.5, // アイコンの中の文字サイズ
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: const Offset(0.5, 0.5),
+                    blurRadius: 1.0,
+                    color: Colors.black.withValues().withValues(alpha: 0.5),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
       }
     }
 
