@@ -634,14 +634,20 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
               if (hasChanges) {
                 // 新しく追加された事柄があるかどうかを確認
                 final hasNewRecords = _selectedItemIds.difference(_initialSelectedItemIds).isNotEmpty;
-                // おめでとうダイアログは表示しない（保存ボタンから呼び出される場合）
-                final success = await _saveRecords(hasNewRecords, showCongratulations: false);
+                // 保存成功時におめでとうダイアログを表示
+                final success = await _saveRecords(hasNewRecords, showCongratulations: hasNewRecords);
                 shouldClose = success;
               }
               
-              // 保存処理が成功した場合のみダイアログを閉じる
+              // おめでとうダイアログが表示される場合は、ダイアログを閉じない
               if (mounted && shouldClose) {
-                Navigator.of(context).pop();
+                if (hasChanges && _selectedItemIds.difference(_initialSelectedItemIds).isNotEmpty) {
+                  // 新しい記録が追加された場合は、おめでとうダイアログが表示されるため
+                  // ここではダイアログを閉じない（おめでとうダイアログのOKボタンで閉じる）
+                } else {
+                  // 削除のみの場合は、追加ダイアログを閉じる
+                  Navigator.of(context).pop();
+                }
               }
             } catch (e) {
               // エラーが発生した場合はスナックバーで通知
@@ -704,7 +710,8 @@ void _showCongratulationsDialog(BuildContext context, {Color? color}) {
             child: Text(AppLocalizations.of(dialogContext)!.okButton),
             onPressed: () {
               Navigator.of(dialogContext).pop(); // おめでとうダイアログを閉じる
-              // 今日の事柄の記録画面に戻る（ダイアログを閉じない）
+              // 追加ダイアログも閉じる
+              Navigator.of(context).pop();
             },
           ),
         ],
