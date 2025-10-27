@@ -152,6 +152,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addItem => 'إضافة';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => 'إلغاء';
 
   @override

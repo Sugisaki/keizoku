@@ -152,6 +152,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addItem => 'Añadir';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => 'Cancelar';
 
   @override

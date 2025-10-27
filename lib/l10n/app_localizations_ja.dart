@@ -152,6 +152,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addItem => '追加';
 
   @override
+  String get yesterday => '昨日';
+
+  @override
   String get cancelButton => 'キャンセル';
 
   @override

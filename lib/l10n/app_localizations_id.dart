@@ -152,6 +152,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get addItem => 'Tambahkan';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => 'Batal';
 
   @override

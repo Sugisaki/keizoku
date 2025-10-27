@@ -152,6 +152,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addItem => '추가';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => '취소';
 
   @override

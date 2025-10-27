@@ -53,6 +53,10 @@
   "@addItem": {
     "description": "Add item button text"
   },
+  "yesterday": "昨日",
+  "@yesterday": {
+    "description": "Yesterday button text"
+  },
   "cancelButton": "キャンセル",
   "@cancelButton": {
     "description": "Text for the Cancel button"

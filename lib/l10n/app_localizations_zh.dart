@@ -152,6 +152,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addItem => '添加';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => '取消';
 
   @override

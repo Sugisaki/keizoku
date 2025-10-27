@@ -152,6 +152,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get addItem => 'जोड़ें';
 
   @override
+  String get yesterday => 'Yesterday';
+
+  @override
   String get cancelButton => 'रद्द करें';
 
   @override

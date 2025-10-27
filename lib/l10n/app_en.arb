@@ -162,6 +162,10 @@
   "@addItem": {
     "description": "Add item button text"
   },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Yesterday button text"
+  },
   "cancelButton": "Cancel",
   "@cancelButton": {
     "description": "Text for the Cancel button"

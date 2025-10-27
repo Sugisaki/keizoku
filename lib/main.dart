@@ -140,7 +140,24 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (BuildContext dialogContext) {
         return ChangeNotifierProvider.value(
           value: context.read<CalendarProvider>(),
-          child: const AddRecordDialog(),
+          child: RecordDialog(
+            targetDate: DateTime.now(),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showYesterdayRecordDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return ChangeNotifierProvider.value(
+          value: context.read<CalendarProvider>(),
+          child: RecordDialog(
+            targetDate: DateTime.now().subtract(const Duration(days: 1)),
+            titlePrefix: AppLocalizations.of(context)!.yesterday,
+          ),
         );
       },
     );
@@ -280,8 +297,30 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.all(8),
                   ),
                   const SizedBox(width: 8),
-                  // 事柄の追加ボタン（ラベルは、日付、アイコン、追加）
+                  // 昨日の追加ボタン
                   Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showYesterdayRecordDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueGrey, // ボタンの色を青グレーに設定
+                      ),
+                      child: Text(
+                        DateFormat.MMMd(Localizations.localeOf(context).languageCode).format(DateTime.now().subtract(const Duration(days: 1))),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // 今日の事柄の追加ボタン（ラベルは、日付、アイコン、追加）
+                  Expanded(
+                    flex: 2,
                     child: ElevatedButton(
                       onPressed: () {
                         _showAddRecordDialog(context);
@@ -461,15 +500,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class AddRecordDialog extends StatefulWidget {
-  const AddRecordDialog({super.key});
+class RecordDialog extends StatefulWidget {
+  final DateTime targetDate;
+  final String? titlePrefix;
+  
+  const RecordDialog({
+    super.key, 
+    required this.targetDate,
+    this.titlePrefix,
+  });
 
   @override
-  State<AddRecordDialog> createState() => _AddRecordDialogState();
+  State<RecordDialog> createState() => _RecordDialogState();
 }
 
-/// 今日の記録の追加
-class _AddRecordDialogState extends State<AddRecordDialog> {
+/// 記録の追加・編集
+class _RecordDialogState extends State<RecordDialog> {
   final Set<int> _selectedItemIds = {};
   final Set<int> _initialSelectedItemIds = {}; // ダイアログ表示時の初期選択状態を保持
   int? _lastSelectedItemId;
@@ -479,10 +525,10 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   void initState() {
     super.initState();
     final provider = context.read<CalendarProvider>();
-    // 現在の日のすべての記録IDを取得し、_selectedItemIdsを初期化
-    final recordsForToday = provider.records.getRecordsForDay(DateTime.now());
-    _selectedItemIds.addAll(recordsForToday);
-    _initialSelectedItemIds.addAll(recordsForToday); // 初期選択状態を保存
+    // ターゲット日のすべての記録IDを取得し、_selectedItemIdsを初期化
+    final recordsForTargetDate = provider.records.getRecordsForDay(widget.targetDate);
+    _selectedItemIds.addAll(recordsForTargetDate);
+    _initialSelectedItemIds.addAll(recordsForTargetDate); // 初期選択状態を保存
   }
 
   // 記録を保存するメソッド
@@ -500,8 +546,22 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
       final Set<int> newlyAddedItemIds = _selectedItemIds.difference(_initialSelectedItemIds);
       final Set<int> removedItemIds = _initialSelectedItemIds.difference(_selectedItemIds);
 
+      // ターゲット日付の最終時刻を計算（昨日の場合は23:59:59、今日の場合は現在時刻）
+      DateTime saveDateTime;
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final targetDay = DateTime(widget.targetDate.year, widget.targetDate.month, widget.targetDate.day);
+      
+      if (targetDay.isBefore(today)) {
+        // 過去の日付の場合は23:59:59で保存
+        saveDateTime = DateTime(widget.targetDate.year, widget.targetDate.month, widget.targetDate.day, 23, 59, 59, 999, 999);
+      } else {
+        // 今日以降の場合は現在時刻で保存
+        saveDateTime = now;
+      }
+
       // providerの新しいメソッドを呼び出して記録を更新
-      await provider.updateRecordsForToday(DateTime.now(), newlyAddedItemIds.toList(), removedItemIds.toList());
+      await provider.updateRecordsForToday(saveDateTime, newlyAddedItemIds.toList(), removedItemIds.toList());
 
       if (mounted && isAddingRecord && showCongratulations) {
         // チェックボックスを最後に有効にした事柄の色、または
@@ -584,8 +644,14 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
     final localizations = AppLocalizations.of(context)!;
     final items = provider.items;
 
+    // タイトルを構築
+    String title = localizations.addRecordTitle;
+    if (widget.titlePrefix != null) {
+      title = '${widget.titlePrefix} - $title';
+    }
+
     return AlertDialog(
-      title: Text(localizations.addRecordTitle),
+      title: Text(title),
       content: SingleChildScrollView(
         child: ListBody(
           children: items.where((item) => item.isEnabled).map((item) {

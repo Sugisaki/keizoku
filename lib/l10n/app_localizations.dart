@@ -399,6 +399,12 @@ abstract class AppLocalizations {
   /// **'Add'**
   String get addItem;
 
+  /// Yesterday button text
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
   /// Text for the Cancel button
   ///
   /// In en, this message translates to:
