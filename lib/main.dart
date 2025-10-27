@@ -486,8 +486,8 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   }
 
   // 記録を保存するメソッド
-  Future<void> _saveRecords(bool isAddingRecord) async {
-    if (_isSaving) return;
+  Future<bool> _saveRecords(bool isAddingRecord, {bool showCongratulations = true}) async {
+    if (_isSaving) return false;
 
     setState(() {
       _isSaving = true;
@@ -503,39 +503,41 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
       // providerの新しいメソッドを呼び出して記録を更新
       await provider.updateRecordsForToday(DateTime.now(), newlyAddedItemIds.toList(), removedItemIds.toList());
 
-      if (mounted) {
-        if (isAddingRecord) {
-          // チェックボックスを最後に有効にした事柄の色、または
-          // チェックボックスが有効になっている最初の事柄の色を取得
-          Color? itemColor;
-          if (_selectedItemIds.isNotEmpty) {
-            final items = provider.items;
-            // 最後に選択された事柄の色を取得
-            if (_lastSelectedItemId != null && _selectedItemIds.contains(_lastSelectedItemId)) {
-              try {
-                final item = items.firstWhere((item) => item.id == _lastSelectedItemId);
-                itemColor = item.getEffectiveColor(provider.settings);
-              } catch (e) {
-                itemColor = null;
-              }
-            }
-            // 最後に選択された事柄が見つからない場合は、最初の選択された事柄の色を使用
-            if (itemColor == null) {
-              final firstItemId = _selectedItemIds.first;
-              try {
-                final item = items.firstWhere((item) => item.id == firstItemId);
-                itemColor = item.getEffectiveColor(provider.settings);
-              } catch (e) {
-                // アイテムが見つからない場合は色指定なし
-                itemColor = null;
-              }
+      if (mounted && isAddingRecord && showCongratulations) {
+        // チェックボックスを最後に有効にした事柄の色、または
+        // チェックボックスが有効になっている最初の事柄の色を取得
+        Color? itemColor;
+        if (_selectedItemIds.isNotEmpty) {
+          final items = provider.items;
+          // 最後に選択された事柄の色を取得
+          if (_lastSelectedItemId != null && _selectedItemIds.contains(_lastSelectedItemId)) {
+            try {
+              final item = items.firstWhere((item) => item.id == _lastSelectedItemId);
+              itemColor = item.getEffectiveColor(provider.settings);
+            } catch (e) {
+              itemColor = null;
             }
           }
-          _showCongratulationsDialog(context, color: itemColor);
-        } else {
-          // If removing a record, do nothing. The AddRecordDialog remains open.
+          // 最後に選択された事柄が見つからない場合は、最初の選択された事柄の色を使用
+          if (itemColor == null) {
+            final firstItemId = _selectedItemIds.first;
+            try {
+              final item = items.firstWhere((item) => item.id == firstItemId);
+              itemColor = item.getEffectiveColor(provider.settings);
+            } catch (e) {
+              // アイテムが見つからない場合は色指定なし
+              itemColor = null;
+            }
+          }
         }
+        // おめでとうダイアログを表示
+        _showCongratulationsDialog(context, color: itemColor);
       }
+      
+      return true; // 成功を返す
+    } catch (e) {
+      // エラーが発生した場合は再スロー
+      rethrow;
     } finally {
       if (mounted) {
         setState(() {
@@ -596,24 +598,18 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
               ),
               title: Text(item.name),
               value: isSelected,
-              onChanged: _isSaving ? null : (bool? value) async {
-                final bool confirmed = await _showConfirmationDialog(item, value == true);
-                if (confirmed) {
-                  setState(() {
-                    if (value == true) {
-                      _selectedItemIds.add(item.id);
-                      _lastSelectedItemId = item.id;
-                    } else {
-                      _selectedItemIds.remove(item.id);
-                      if (_lastSelectedItemId == item.id) {
-                        _lastSelectedItemId = null;
-                      }
+              onChanged: _isSaving ? null : (bool? value) {
+                setState(() {
+                  if (value == true) {
+                    _selectedItemIds.add(item.id);
+                    _lastSelectedItemId = item.id;
+                  } else {
+                    _selectedItemIds.remove(item.id);
+                    if (_lastSelectedItemId == item.id) {
+                      _lastSelectedItemId = null;
                     }
-                  });
-                  await _saveRecords(value == true);
-                } else {
-                  // If not confirmed ("No" was clicked), do nothing. The AddRecordDialog remains open.
-                }
+                  }
+                });
               },
             );
           }).toList(),
@@ -625,6 +621,47 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
+        ),
+        ElevatedButton(
+          onPressed: _isSaving ? null : () async {
+            try {
+              // 何らかの変更があった場合のみ保存処理を実行
+              final hasChanges = !_selectedItemIds.difference(_initialSelectedItemIds).isEmpty || 
+                                !_initialSelectedItemIds.difference(_selectedItemIds).isEmpty;
+              
+              bool shouldClose = true;
+              
+              if (hasChanges) {
+                // 新しく追加された事柄があるかどうかを確認
+                final hasNewRecords = _selectedItemIds.difference(_initialSelectedItemIds).isNotEmpty;
+                // おめでとうダイアログは表示しない（保存ボタンから呼び出される場合）
+                final success = await _saveRecords(hasNewRecords, showCongratulations: false);
+                shouldClose = success;
+              }
+              
+              // 保存処理が成功した場合のみダイアログを閉じる
+              if (mounted && shouldClose) {
+                Navigator.of(context).pop();
+              }
+            } catch (e) {
+              // エラーが発生した場合はスナックバーで通知
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('保存中にエラーが発生しました: $e'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
+          child: _isSaving 
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : Text(localizations.saveButton),
         ),
       ],
     );
