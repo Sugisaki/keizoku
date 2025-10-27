@@ -471,6 +471,7 @@ class AddRecordDialog extends StatefulWidget {
 /// 今日の記録の追加
 class _AddRecordDialogState extends State<AddRecordDialog> {
   final Set<int> _selectedItemIds = {};
+  final Set<int> _initialSelectedItemIds = {}; // ダイアログ表示時の初期選択状態を保持
   int? _lastSelectedItemId;
   bool _isSaving = false; // 保存状態を管理
 
@@ -478,9 +479,10 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
   void initState() {
     super.initState();
     final provider = context.read<CalendarProvider>();
-    final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    final recordsForToday = provider.records.getRecordsForDay(today);
+    // 現在の日のすべての記録IDを取得し、_selectedItemIdsを初期化
+    final recordsForToday = provider.records.getRecordsForDay(DateTime.now());
     _selectedItemIds.addAll(recordsForToday);
+    _initialSelectedItemIds.addAll(recordsForToday); // 初期選択状態を保存
   }
 
   // 記録を保存するメソッド
@@ -493,7 +495,13 @@ class _AddRecordDialogState extends State<AddRecordDialog> {
 
     try {
       final provider = context.read<CalendarProvider>();
-      await provider.addRecordsForToday(_selectedItemIds.toList());
+
+      // 新たに追加された事柄IDと削除された事柄IDを計算
+      final Set<int> newlyAddedItemIds = _selectedItemIds.difference(_initialSelectedItemIds);
+      final Set<int> removedItemIds = _initialSelectedItemIds.difference(_selectedItemIds);
+
+      // providerの新しいメソッドを呼び出して記録を更新
+      await provider.updateRecordsForToday(DateTime.now(), newlyAddedItemIds.toList(), removedItemIds.toList());
 
       if (mounted) {
         if (isAddingRecord) {

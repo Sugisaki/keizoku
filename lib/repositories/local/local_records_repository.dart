@@ -33,25 +33,24 @@ class LocalRecordsRepository implements RecordsRepository {
     }
   }
 
-  Map<DateTime, List<int>> _parseAndMergeRecords(String jsonString) {
+  List<RecordEntry> _parseAndMergeRecords(String jsonString) {
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
-    final Map<DateTime, List<int>> mergedRecords = {};
+    final List<RecordEntry> records = [];
     json.forEach((key, value) {
       final parsedDateTime = DateTime.parse(key);
-      final normalizedDate = DateTime(parsedDateTime.year, parsedDateTime.month, parsedDateTime.day);
       final ids = List<int>.from(value);
-
-      mergedRecords.update(normalizedDate, (existingIds) => (existingIds + ids).toSet().toList(),
-          ifAbsent: () => ids);
+      for (final id in ids) {
+        records.add(RecordEntry(dateTime: parsedDateTime, itemId: id));
+      }
     });
-    return mergedRecords;
+    return records;
   }
 
   @override
   Future<CalendarRecords> loadRecords() async {
     try {
-      // 最終的にマージされるレコードのマップ
-      Map<DateTime, List<int>> finalRecords = {};
+      // 最終的にマージされるレコードのリスト
+      List<RecordEntry> finalRecords = [];
 
       // 1. ローカルファイルからデータを読み込み
       final file = await _localFile;
@@ -59,11 +58,7 @@ class LocalRecordsRepository implements RecordsRepository {
         print('Loading data from local file');
         final contents = await file.readAsString();
         final localRecords = _parseAndMergeRecords(contents);
-        // ローカルファイルのデータをマージ
-        localRecords.forEach((date, ids) {
-          finalRecords.update(date, (existingIds) => (existingIds + ids).toSet().toList(),
-              ifAbsent: () => ids);
-        });
+        finalRecords.addAll(localRecords);
       }
 
       // 2. 開発環境のテストアセットからデータを読み込み
@@ -73,18 +68,13 @@ class LocalRecordsRepository implements RecordsRepository {
         // テストアセットがロードされていることを示すフラグを設定
         _isUsingTestAsset = true;
         final testAssetRecords = _parseAndMergeRecords(testAssetContents);
-        // アセットのテストデータをマージ（最高優先度で上書き）
-        testAssetRecords.forEach((date, ids) {
-          finalRecords.update(
-              date, (existingIds) => (existingIds + ids).toSet().toList(),
-              ifAbsent: () => ids);
-        });
+        finalRecords.addAll(testAssetRecords);
       }
-      return CalendarRecords(records: finalRecords);
+      return CalendarRecords(recordsWithTime: finalRecords);
     } catch (e) {
       // エラーが発生した場合は空のレコードを返す
       print('[ERROR] loading records: $e');
-      return CalendarRecords(records: {});
+      return CalendarRecords(recordsWithTime: []);
     }
   }
 
@@ -98,9 +88,12 @@ class LocalRecordsRepository implements RecordsRepository {
     try {
       final file = await _localFile;
 
-      // DateTimeキーをJSONで扱えるStringに変換
-      final jsonEncodableMap = records.records.map((key, value) {
-        return MapEntry(key.toIso8601String(), value);
+      // List<RecordEntry>をMap<String, List<int>>に変換してJSONで扱えるようにする
+      final Map<String, List<int>> jsonEncodableMap = {};
+      records.recordsWithTime.forEach((entry) {
+        final key = entry.dateTime.toIso8601String();
+        jsonEncodableMap.update(key, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
+            ifAbsent: () => [entry.itemId]);
       });
 
       final jsonString = jsonEncode(jsonEncodableMap);

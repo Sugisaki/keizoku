@@ -166,18 +166,32 @@ class CalendarProvider extends ChangeNotifier {
     return patterns.contains(name);
   }
 
-  // 今日の事柄の記録を追加/更新する
-  Future<void> addRecordsForToday(List<int> itemIds) async {
-    final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-    final newRecordsMap = Map<DateTime, List<int>>.from(_records.records);
 
-    if (itemIds.isEmpty) {
-      newRecordsMap.remove(today);
-    } else {
-      newRecordsMap[today] = itemIds;
+
+  // 指定された時刻の記録を更新する（追加・削除）
+  Future<void> updateRecordsForToday(DateTime dateTime, List<int> addIds, List<int> removeIds) async {
+    final List<RecordEntry> newRecordsList = List.from(_records.recordsWithTime);
+
+    // 同じ日かどうかを判定するヘルパーメソッド
+    bool isSameDay(DateTime dt1, DateTime dt2) {
+      return dt1.year == dt2.year && dt1.month == dt2.month && dt1.day == dt2.day;
     }
 
-    _records = CalendarRecords(records: newRecordsMap);
+    // 削除するIDを処理
+    for (final removeId in removeIds) {
+      newRecordsList.removeWhere((entry) => isSameDay(entry.dateTime, dateTime) && entry.itemId == removeId);
+    }
+
+    // 追加するIDを処理
+    for (final addId in addIds) {
+      // 同じdateTimeとitemIdの組み合わせが既に存在しないか確認してから追加
+      final bool alreadyExists = newRecordsList.any((entry) => isSameDay(entry.dateTime, dateTime) && entry.itemId == addId);
+      if (!alreadyExists) {
+        newRecordsList.add(RecordEntry(dateTime: dateTime, itemId: addId));
+      }
+    }
+
+    _records = CalendarRecords(recordsWithTime: newRecordsList);
     await _recordsRepository.saveRecords(_records);
     notifyListeners();
   }
