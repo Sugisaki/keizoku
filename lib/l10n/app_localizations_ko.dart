@@ -176,6 +176,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get continuousDays => '연속';
 
   @override
+  String get unsavedChangesWarning =>
+      '변경 사항이 저장되지 않았습니다. 화면을 나가면 사라집니다. 계속하시겠습니까?';
+
+  @override
   String get dayShort => '일';
 
   @override

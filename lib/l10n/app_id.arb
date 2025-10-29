@@ -116,5 +116,6 @@
   "yesButton": "Ya",
   "noButton": "Tidak",
   "congratulations": "Selamat!",
-  "recordSavedSuccessfully": "Rekaman berhasil disimpan!"
+  "recordSavedSuccessfully": "Rekaman berhasil disimpan!",
+  "unsavedChangesWarning": "Perubahan belum disimpan. Jika Anda meninggalkan layar, mereka akan hilang. Apakah Anda yakin?"
 }

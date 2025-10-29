@@ -70,6 +70,7 @@
   "continuousMonths": "Dernier",
   "continuousWeeks": "Total",
   "continuousDays": "Continu",
+  "unsavedChangesWarning": "Les modifications n'ont pas été enregistrées. Si vous quittez l'écran, elles seront perdues. Êtes-vous sûr ?",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },
@@ -120,5 +121,6 @@
   "addRecordConfirmation": "Voulez-vous ajouter un enregistrement pour {itemName} ?",
   "removeRecordConfirmation": "Voulez-vous supprimer l'enregistrement pour {itemName} ?",
   "yesButton": "Oui",
-  "noButton": "Non"
+  "noButton": "Non",
+  "unsavedChangesWarning": "Les modifications n'ont pas été enregistrées. Si vous quittez l'écran, elles seront perdues. Êtes-vous sûr ?"
 }

@@ -176,6 +176,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continuousDays => 'مستمر';
 
   @override
+  String get unsavedChangesWarning =>
+      'لم يتم حفظ التغييرات. إذا غادرت الشاشة، فسيتم فقدانها. هل أنت متأكد؟';
+
+  @override
   String get dayShort => 'يوم';
 
   @override

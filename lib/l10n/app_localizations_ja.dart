@@ -176,6 +176,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get continuousDays => '連続';
 
   @override
+  String get unsavedChangesWarning => '変更内容が保存されていません。画面を離れると失われますが、よろしいですか？';
+
+  @override
   String get dayShort => '日数';
 
   @override

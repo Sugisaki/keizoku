@@ -117,5 +117,6 @@
   "yesButton": "हाँ",
   "noButton": "नहीं",
   "congratulations": "बधाई हो!",
-  "recordSavedSuccessfully": "रिकॉर्ड सफलतापूर्वक सहेजा गया!"
+  "recordSavedSuccessfully": "रिकॉर्ड सफलतापूर्वक सहेजा गया!",
+  "unsavedChangesWarning": "परिवर्तन सहेजे नहीं गए हैं। यदि आप स्क्रीन छोड़ते हैं, तो वे खो जाएंगे। क्या आपको यकीन है?"
 }

@@ -120,5 +120,8 @@
   "addRecordConfirmation": "هل تريد إضافة سجل لـ {itemName}؟",
   "removeRecordConfirmation": "هل تريد إزالة السجل لـ {itemName}؟",
   "yesButton": "نعم",
-  "noButton": "لا"
+  "noButton": "لا",
+  "congratulations": "تهانينا!",
+  "recordSavedSuccessfully": "تم حفظ السجل بنجاح!",
+  "unsavedChangesWarning": "لم يتم حفظ التغييرات. إذا غادرت الشاشة، فسيتم فقدانها. هل أنت متأكد؟"
 }

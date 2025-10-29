@@ -176,6 +176,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get continuousDays => 'Contínuo';
 
   @override
+  String get unsavedChangesWarning =>
+      'As alterações não foram salvas. Se você sair da tela, elas serão perdidas. Tem certeza?';
+
+  @override
   String get dayShort => 'Dias';
 
   @override

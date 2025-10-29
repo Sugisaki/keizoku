@@ -176,6 +176,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get continuousDays => '连续';
 
   @override
+  String get unsavedChangesWarning => '更改尚未保存。如果离开屏幕，将会丢失。确定吗？';
+
+  @override
   String get dayShort => '天数';
 
   @override
@@ -401,6 +404,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get continuousDays => '連續';
+
+  @override
+  String get unsavedChangesWarning => '變更尚未儲存。如果離開畫面，將會遺失。確定嗎？';
 
   @override
   String get dayShort => '天數';

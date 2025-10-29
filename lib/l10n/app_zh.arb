@@ -67,6 +67,7 @@
   "continuousMonths": "最后",
   "continuousWeeks": "总数",
   "continuousDays": "连续",
+  "unsavedChangesWarning": "更改尚未保存。如果离开屏幕，将会丢失。确定吗？",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },
@@ -117,5 +118,6 @@
   "yesButton": "是",
   "noButton": "否",
   "congratulations": "恭喜",
-  "recordSavedSuccessfully": "记录已成功保存！"
+  "recordSavedSuccessfully": "记录已成功保存！",
+  "unsavedChangesWarning": "更改尚未保存。如果离开屏幕，将会丢失。确定吗？"
 }

@@ -176,6 +176,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get continuousDays => 'Berkesinambungan';
 
   @override
+  String get unsavedChangesWarning =>
+      'Perubahan belum disimpan. Jika Anda meninggalkan layar, mereka akan hilang. Apakah Anda yakin?';
+
+  @override
   String get dayShort => 'Hari';
 
   @override

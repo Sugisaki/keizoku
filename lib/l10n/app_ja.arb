@@ -70,6 +70,7 @@
   "continuousMonths": "最後",
   "continuousWeeks": "総数",
   "continuousDays": "連続",
+  "unsavedChangesWarning": "変更内容が保存されていません。画面を離れると失われますが、よろしいですか？",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },
@@ -120,5 +121,6 @@
   "addRecordConfirmation": "{itemName}の記録を追加しますか？",
   "removeRecordConfirmation": "{itemName}の記録を削除しますか？",
   "yesButton": "はい",
-  "noButton": "いいえ"
+  "noButton": "いいえ",
+  "unsavedChangesWarning": "変更内容が保存されていません。画面を離れると失われますが、よろしいですか？"
 }

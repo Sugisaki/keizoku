@@ -70,6 +70,7 @@
   "continuousMonths": "Letzter",
   "continuousWeeks": "Gesamt",
   "continuousDays": "Streak",
+  "unsavedChangesWarning": "Änderungen wurden nicht gespeichert. Wenn Sie den Bildschirm verlassen, gehen sie verloren. Sind Sie sicher?",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },
@@ -120,5 +121,6 @@
   "addRecordConfirmation": "Möchten Sie einen Datensatz für {itemName} hinzufügen?",
   "removeRecordConfirmation": "Möchten Sie den Datensatz für {itemName} entfernen?",
   "yesButton": "Ja",
-  "noButton": "Nein"
+  "noButton": "Nein",
+  "unsavedChangesWarning": "Änderungen wurden nicht gespeichert. Wenn Sie den Bildschirm verlassen, gehen sie verloren. Sind Sie sicher?"
 }

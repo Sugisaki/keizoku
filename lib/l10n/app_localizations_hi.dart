@@ -176,6 +176,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get continuousDays => 'लगातार';
 
   @override
+  String get unsavedChangesWarning =>
+      'परिवर्तन सहेजे नहीं गए हैं। यदि आप स्क्रीन छोड़ते हैं, तो वे खो जाएंगे। क्या आपको यकीन है?';
+
+  @override
   String get dayShort => 'दिन';
 
   @override

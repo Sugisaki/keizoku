@@ -179,6 +179,7 @@
   "continuousMonths": "Last",
   "continuousWeeks": "Total",
   "continuousDays": "Streak",
+  "unsavedChangesWarning": "Changes have not been saved. If you leave the screen, they will be lost. Are you sure?",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

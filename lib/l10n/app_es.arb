@@ -116,5 +116,6 @@
   "yesButton": "Sí",
   "noButton": "No",
   "congratulations": "¡Felicidades!",
-  "recordSavedSuccessfully": "¡Registro guardado exitosamente!"
+  "recordSavedSuccessfully": "¡Registro guardado exitosamente!",
+  "unsavedChangesWarning": "Los cambios no se han guardado. Si sales de la pantalla, se perderán. ¿Estás seguro?"
 }

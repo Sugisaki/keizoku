@@ -447,6 +447,12 @@ abstract class AppLocalizations {
   /// **'Streak'**
   String get continuousDays;
 
+  /// No description provided for @unsavedChangesWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes have not been saved. If you leave the screen, they will be lost. Are you sure?'**
+  String get unsavedChangesWarning;
+
   /// Short label for days
   ///
   /// In en, this message translates to:
