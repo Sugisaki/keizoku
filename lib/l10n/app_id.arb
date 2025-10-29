@@ -61,23 +61,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "Catatan Berkelanjutan",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "Catatan",
   "itemName": "Nama Item",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "Bulan Berkelanjutan",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "Minggu Berkelanjutan",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "Hari Berkelanjutan",
+  "continuousMonths": "Terakhir",
+  "continuousWeeks": "Total",
+  "continuousDays": "Berkesinambungan",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

@@ -161,19 +161,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get saveButton => '保存';
 
   @override
-  String get continuousRecords => '连续记录';
+  String get continuousRecords => '记录';
 
   @override
   String get itemName => '项目名称';
 
   @override
-  String get continuousMonths => '连续月数';
+  String get continuousMonths => '最后';
 
   @override
-  String get continuousWeeks => '连续周数';
+  String get continuousWeeks => '总数';
 
   @override
-  String get continuousDays => '连续天数';
+  String get continuousDays => '连续';
 
   @override
   String get dayShort => '天数';
@@ -388,19 +388,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get saveButton => '儲存';
 
   @override
-  String get continuousRecords => '連續記錄';
+  String get continuousRecords => '記錄';
 
   @override
   String get itemName => '項目名稱';
 
   @override
-  String get continuousMonths => '連續月數';
+  String get continuousMonths => '最後';
 
   @override
-  String get continuousWeeks => '連續週數';
+  String get continuousWeeks => '總數';
 
   @override
-  String get continuousDays => '連續天數';
+  String get continuousDays => '連續';
 
   @override
   String get dayShort => '天數';

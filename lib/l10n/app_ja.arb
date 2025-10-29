@@ -65,23 +65,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "連続記録",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "記録",
   "itemName": "項目名",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "連続月数",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "連続週数",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "連続日数",
+  "continuousMonths": "最後",
+  "continuousWeeks": "総数",
+  "continuousDays": "連続",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

@@ -161,19 +161,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get saveButton => '保存';
 
   @override
-  String get continuousRecords => '連続記録';
+  String get continuousRecords => '記録';
 
   @override
   String get itemName => '項目名';
 
   @override
-  String get continuousMonths => '連続月数';
+  String get continuousMonths => '最後';
 
   @override
-  String get continuousWeeks => '連続週数';
+  String get continuousWeeks => '総数';
 
   @override
-  String get continuousDays => '連続日数';
+  String get continuousDays => '連続';
 
   @override
   String get dayShort => '日数';

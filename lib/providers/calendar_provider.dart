@@ -331,4 +331,44 @@ class CalendarProvider extends ChangeNotifier {
     }
     return false;
   }
+
+  // 最後の記録日を取得
+  DateTime? getLastRecordDate(int itemId) {
+    // 今日から過去に遡って記録を探す
+    DateTime currentDate = DateTime.now();
+    currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day); // 時刻をリセット
+    
+    // 最大で1年分だけ遡る（パフォーマンス対策）
+    final oneYearAgo = currentDate.subtract(const Duration(days: 365));
+    
+    while (!currentDate.isBefore(oneYearAgo)) {
+      if (_hasRecordOnDay(currentDate, itemId)) {
+        return currentDate;
+      }
+      currentDate = currentDate.subtract(const Duration(days: 1));
+    }
+    
+    return null; // 記録が見つからない場合
+  }
+
+  // 事柄の記録のある総日数を計算
+  int getTotalRecordDays(int itemId) {
+    int totalDays = 0;
+    
+    // 今日から過去に遡って記録を探す
+    DateTime currentDate = DateTime.now();
+    currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day); // 時刻をリセット
+    
+    // 最大で1年分だけ遡る（パフォーマンス対策）
+    final oneYearAgo = currentDate.subtract(const Duration(days: 365));
+    
+    while (!currentDate.isBefore(oneYearAgo)) {
+      if (_hasRecordOnDay(currentDate, itemId)) {
+        totalDays++;
+      }
+      currentDate = currentDate.subtract(const Duration(days: 1));
+    }
+    
+    return totalDays;
+  }
 }

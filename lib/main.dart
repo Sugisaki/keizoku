@@ -388,31 +388,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Expanded(
                         child: Text(
-                          AppLocalizations.of(context)!.dayShort,
+                          AppLocalizations.of(context)!.continuousDays,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context)!.weekShort,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context)!.continuousWeeks,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context)!.monthShort,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context)!.continuousMonths,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
                     ],
                   ),
                 ),
@@ -467,22 +467,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                        // 週数
+                        // 週数（記録のある総日数）
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: Text(
-                              continuousWeeks > 0 ? continuousWeeks.toString() : '',
+                              provider.getTotalRecordDays(item.id).toString(),
                               textAlign: TextAlign.right,
                             ),
                           ),
                         ),
-                        // 月数
+                        // 月数（最後の記録日）
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: Text(
-                              continuousMonths > 0 ? continuousMonths.toString() : '',
+                              _getLastRecordDateString(provider.getLastRecordDate(item.id)),
                               textAlign: TextAlign.right,
                             ),
                           ),
@@ -498,6 +498,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+String _getLastRecordDateString(DateTime? lastRecordDate) {
+  if (lastRecordDate == null) {
+    return '';
+  }
+
+  // 日本の場合は MM/dd 形式で表示
+  return '${lastRecordDate.month}/${lastRecordDate.day}';
 }
 
 class RecordDialog extends StatefulWidget {

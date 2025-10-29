@@ -161,19 +161,19 @@ class AppLocalizationsPt extends AppLocalizations {
   String get saveButton => 'Salvar';
 
   @override
-  String get continuousRecords => 'Registros Contínuos';
+  String get continuousRecords => 'Registros';
 
   @override
   String get itemName => 'Nome do Item';
 
   @override
-  String get continuousMonths => 'Meses Contínuos';
+  String get continuousMonths => 'Último';
 
   @override
-  String get continuousWeeks => 'Semanas Contínuas';
+  String get continuousWeeks => 'Total';
 
   @override
-  String get continuousDays => 'Dias Contínuos';
+  String get continuousDays => 'Contínuo';
 
   @override
   String get dayShort => 'Dias';

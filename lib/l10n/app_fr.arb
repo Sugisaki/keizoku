@@ -65,23 +65,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "Enregistrements continus",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "Enregistrements",
   "itemName": "Nom de l'élément",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "Mois consécutifs",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "Semaines consécutives",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "Jours consécutifs",
+  "continuousMonths": "Dernier",
+  "continuousWeeks": "Total",
+  "continuousDays": "Continu",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

@@ -161,19 +161,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get saveButton => '저장';
 
   @override
-  String get continuousRecords => '연속 기록';
+  String get continuousRecords => '기록';
 
   @override
   String get itemName => '항목 이름';
 
   @override
-  String get continuousMonths => '연속 월';
+  String get continuousMonths => '마지막';
 
   @override
-  String get continuousWeeks => '연속 주';
+  String get continuousWeeks => '총수';
 
   @override
-  String get continuousDays => '연속 일';
+  String get continuousDays => '연속';
 
   @override
   String get dayShort => '일';

@@ -161,19 +161,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saveButton => 'حفظ';
 
   @override
-  String get continuousRecords => 'السجلات المستمرة';
+  String get continuousRecords => 'السجلات';
 
   @override
   String get itemName => 'اسم العنصر';
 
   @override
-  String get continuousMonths => 'أشهر متتالية';
+  String get continuousMonths => 'آخر';
 
   @override
-  String get continuousWeeks => 'أسابيع متتالية';
+  String get continuousWeeks => 'المجموع';
 
   @override
-  String get continuousDays => 'أيام متتالية';
+  String get continuousDays => 'مستمر';
 
   @override
   String get dayShort => 'يوم';

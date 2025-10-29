@@ -161,19 +161,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get saveButton => 'Simpan';
 
   @override
-  String get continuousRecords => 'Catatan Berkelanjutan';
+  String get continuousRecords => 'Catatan';
 
   @override
   String get itemName => 'Nama Item';
 
   @override
-  String get continuousMonths => 'Bulan Berkelanjutan';
+  String get continuousMonths => 'Terakhir';
 
   @override
-  String get continuousWeeks => 'Minggu Berkelanjutan';
+  String get continuousWeeks => 'Total';
 
   @override
-  String get continuousDays => 'Hari Berkelanjutan';
+  String get continuousDays => 'Berkesinambungan';
 
   @override
   String get dayShort => 'Hari';

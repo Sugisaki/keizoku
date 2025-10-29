@@ -161,19 +161,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get saveButton => 'Enregistrer';
 
   @override
-  String get continuousRecords => 'Enregistrements continus';
+  String get continuousRecords => 'Enregistrements';
 
   @override
   String get itemName => 'Nom de l\'élément';
 
   @override
-  String get continuousMonths => 'Mois consécutifs';
+  String get continuousMonths => 'Dernier';
 
   @override
-  String get continuousWeeks => 'Semaines consécutives';
+  String get continuousWeeks => 'Total';
 
   @override
-  String get continuousDays => 'Jours consécutifs';
+  String get continuousDays => 'Continu';
 
   @override
   String get dayShort => 'Jours';

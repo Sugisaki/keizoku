@@ -417,34 +417,34 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get saveButton;
 
-  /// Title for the continuous records table
+  /// No description provided for @continuousRecords.
   ///
   /// In en, this message translates to:
-  /// **'Continuous Records'**
+  /// **'Records'**
   String get continuousRecords;
 
-  /// Column header for item name
+  /// No description provided for @itemName.
   ///
   /// In en, this message translates to:
   /// **'Item Name'**
   String get itemName;
 
-  /// Column header for continuous months
+  /// No description provided for @continuousMonths.
   ///
   /// In en, this message translates to:
-  /// **'Months'**
+  /// **'Last'**
   String get continuousMonths;
 
-  /// Column header for continuous weeks
+  /// No description provided for @continuousWeeks.
   ///
   /// In en, this message translates to:
-  /// **'Weeks'**
+  /// **'Total'**
   String get continuousWeeks;
 
   /// Column header for continuous days
   ///
   /// In en, this message translates to:
-  /// **'Days'**
+  /// **'Streak'**
   String get continuousDays;
 
   /// Short label for days

@@ -65,23 +65,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "연속 기록",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "기록",
   "itemName": "항목 이름",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "연속 월",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "연속 주",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "연속 일",
+  "continuousMonths": "마지막",
+  "continuousWeeks": "총수",
+  "continuousDays": "연속",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

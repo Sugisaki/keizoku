@@ -65,23 +65,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "Fortlaufende Aufzeichnungen",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "Aufzeichnungen",
   "itemName": "Elementname",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "Monate in Folge",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "Wochen in Folge",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "Tage in Folge",
+  "continuousMonths": "Letzter",
+  "continuousWeeks": "Gesamt",
+  "continuousDays": "Streak",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

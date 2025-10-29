@@ -161,19 +161,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get saveButton => 'सहेजें';
 
   @override
-  String get continuousRecords => 'लगातार रिकॉर्ड';
+  String get continuousRecords => 'रिकॉर्ड';
 
   @override
   String get itemName => 'आइटम का नाम';
 
   @override
-  String get continuousMonths => 'लगातार महीने';
+  String get continuousMonths => 'अंतिम';
 
   @override
-  String get continuousWeeks => 'लगातार सप्ताह';
+  String get continuousWeeks => 'कुल';
 
   @override
-  String get continuousDays => 'लगातार दिन';
+  String get continuousDays => 'लगातार';
 
   @override
   String get dayShort => 'दिन';

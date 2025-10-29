@@ -61,23 +61,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "लगातार रिकॉर्ड",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "रिकॉर्ड",
   "itemName": "आइटम का नाम",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "लगातार महीने",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "लगातार सप्ताह",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "लगातार दिन",
+  "continuousMonths": "अंतिम",
+  "continuousWeeks": "कुल",
+  "continuousDays": "लगातार",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

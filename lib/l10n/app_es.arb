@@ -61,23 +61,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "Registros continuos",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "Registros",
   "itemName": "Nombre del elemento",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "Meses continuos",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "Semanas continuas",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "Días continuos",
+  "continuousMonths": "Último",
+  "continuousWeeks": "Total",
+  "continuousDays": "Continuo",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

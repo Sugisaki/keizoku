@@ -65,23 +65,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "السجلات المستمرة",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "السجلات",
   "itemName": "اسم العنصر",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "أشهر متتالية",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "أسابيع متتالية",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "أيام متتالية",
+  "continuousMonths": "آخر",
+  "continuousWeeks": "المجموع",
+  "continuousDays": "مستمر",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },

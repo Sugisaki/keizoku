@@ -62,23 +62,11 @@
   "@saveButton": {
     "description": "Text for the Save button"
   },
-  "continuousRecords": "连续记录",
-  "@continuousRecords": {
-    "description": "Title for the continuous records table"
-  },
+  "continuousRecords": "记录",
   "itemName": "项目名称",
-  "@itemName": {
-    "description": "Column header for item name"
-  },
-  "continuousMonths": "连续月数",
-  "@continuousMonths": {
-    "description": "Column header for continuous months"
-  },
-  "continuousWeeks": "连续周数",
-  "@continuousWeeks": {
-    "description": "Column header for continuous weeks"
-  },
-  "continuousDays": "连续天数",
+  "continuousMonths": "最后",
+  "continuousWeeks": "总数",
+  "continuousDays": "连续",
   "@continuousDays": {
     "description": "Column header for continuous days"
   },
