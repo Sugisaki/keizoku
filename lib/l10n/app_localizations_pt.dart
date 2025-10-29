@@ -146,7 +146,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get colorLightOrange => 'Laranja Claro';
 
   @override
-  String get addRecordTitle => 'Adicionar Registro para Hoje';
+  String get addRecordTitle => 'Adicionar';
 
   @override
   String get addItem => 'Adicionar';

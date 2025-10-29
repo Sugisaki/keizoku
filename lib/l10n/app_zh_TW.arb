@@ -45,7 +45,7 @@
   "colorCyan": "青色",
   "colorLightBlue": "淺藍色",
   "colorLightOrange": "淺橙色",
-  "addRecordTitle": "新增今日記錄",
+  "addRecordTitle": "新增",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },

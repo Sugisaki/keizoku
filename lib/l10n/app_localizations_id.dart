@@ -146,7 +146,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get colorLightOrange => 'Oranye Muda';
 
   @override
-  String get addRecordTitle => 'Tambahkan Catatan Hari Ini';
+  String get addRecordTitle => 'Tambahkan';
 
   @override
   String get addItem => 'Tambahkan';

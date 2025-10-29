@@ -45,7 +45,7 @@
   "colorCyan": "Cian",
   "colorLightBlue": "Azul claro",
   "colorLightOrange": "Naranja claro",
-  "addRecordTitle": "Añadir registro para hoy",
+  "addRecordTitle": "Añadir",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },

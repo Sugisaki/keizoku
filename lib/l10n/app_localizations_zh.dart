@@ -146,13 +146,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get colorLightOrange => '浅橙色';
 
   @override
-  String get addRecordTitle => '添加今日记录';
+  String get addRecordTitle => '添加';
 
   @override
   String get addItem => '添加';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => '昨天';
 
   @override
   String get cancelButton => '取消';
@@ -376,7 +376,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get colorLightOrange => '淺橙色';
 
   @override
-  String get addRecordTitle => '新增今日記錄';
+  String get addRecordTitle => '新增';
 
   @override
   String get addItem => '新增';

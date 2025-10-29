@@ -45,13 +45,17 @@
   "colorCyan": "سماوي",
   "colorLightBlue": "أزرق فاتح",
   "colorLightOrange": "برتقالي فاتح",
-  "addRecordTitle": "إضافة سجل اليوم",
+  "addRecordTitle": "إضافة",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },
   "addItem": "إضافة",
   "@addItem": {
     "description": "Add item button text"
+  },
+  "yesterday": "أمس",
+  "@yesterday": {
+    "description": "Yesterday button text"
   },
   "cancelButton": "إلغاء",
   "@cancelButton": {
@@ -121,12 +125,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
+  "congratulations": "تهانينا!",
+  "recordSavedSuccessfully": "تم حفظ السجل بنجاح!",
   "okButton": "OK",
   "confirmation": "تأكيد",
   "addRecordConfirmation": "هل تريد إضافة سجل لـ {itemName}؟",
   "removeRecordConfirmation": "هل تريد إزالة السجل لـ {itemName}؟",
   "yesButton": "نعم",
-  "noButton": "لا",
-  "congratulations": "تهانينا!",
-  "recordSavedSuccessfully": "تم حفظ السجل بنجاح!"
+  "noButton": "لا"
 }

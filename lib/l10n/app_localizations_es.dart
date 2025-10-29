@@ -146,7 +146,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get colorLightOrange => 'Naranja claro';
 
   @override
-  String get addRecordTitle => 'Añadir registro para hoy';
+  String get addRecordTitle => 'Añadir';
 
   @override
   String get addItem => 'Añadir';

@@ -45,13 +45,14 @@
   "colorCyan": "青色",
   "colorLightBlue": "浅蓝色",
   "colorLightOrange": "浅橙色",
-  "addRecordTitle": "添加今日记录",
-  "@addRecordTitle": {
-    "description": "Title for the Add Record dialog"
-  },
+  "addRecordTitle": "添加",
   "addItem": "添加",
   "@addItem": {
     "description": "Add item button text"
+  },
+  "yesterday": "昨天",
+  "@yesterday": {
+    "description": "Yesterday button text"
   },
   "cancelButton": "取消",
   "@cancelButton": {

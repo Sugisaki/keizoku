@@ -146,13 +146,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get colorLightOrange => 'Hellorange';
 
   @override
-  String get addRecordTitle => 'Eintrag für heute hinzufügen';
+  String get addRecordTitle => 'Hinzufügen';
 
   @override
   String get addItem => 'Hinzufügen';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'Gestern';
 
   @override
   String get cancelButton => 'Abbrechen';

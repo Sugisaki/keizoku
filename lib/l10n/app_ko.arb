@@ -45,13 +45,17 @@
   "colorCyan": "청색",
   "colorLightBlue": "밝은 파랑",
   "colorLightOrange": "밝은 오렌지",
-  "addRecordTitle": "오늘 기록 추가",
+  "addRecordTitle": "추가",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },
   "addItem": "추가",
   "@addItem": {
     "description": "Add item button text"
+  },
+  "yesterday": "어제",
+  "@yesterday": {
+    "description": "Yesterday button text"
   },
   "cancelButton": "취소",
   "@cancelButton": {
@@ -121,16 +125,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
+  "congratulations": "축하합니다",
+  "recordSavedSuccessfully": "기록이 성공적으로 저장되었습니다!",
   "okButton": "OK",
   "confirmation": "확인",
   "addRecordConfirmation": "{itemName}에 대한 기록을 추가하시겠습니까?",
   "removeRecordConfirmation": "{itemName}에 대한 기록을 삭제하시겠습니까?",
   "yesButton": "예",
-  "noButton": "아니오",
-  "confirmation": "확인",
-  "addRecordConfirmation": "{itemName}에 대한 기록을 추가하시겠습니까?",
-  "removeRecordConfirmation": "{itemName}에 대한 기록을 삭제하시겠습니까?",
-  "yesButton": "예",
-  "noButton": "아니오",
-  "okButton": "OK"
+  "noButton": "아니오"
 }

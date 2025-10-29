@@ -146,13 +146,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get colorLightOrange => '밝은 오렌지';
 
   @override
-  String get addRecordTitle => '오늘 기록 추가';
+  String get addRecordTitle => '추가';
 
   @override
   String get addItem => '추가';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => '어제';
 
   @override
   String get cancelButton => '취소';
@@ -206,10 +206,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get newItem => '새 항목';
 
   @override
-  String get congratulations => 'Congratulations!';
+  String get congratulations => '축하합니다';
 
   @override
-  String get recordSavedSuccessfully => 'Record saved successfully!';
+  String get recordSavedSuccessfully => '기록이 성공적으로 저장되었습니다!';
 
   @override
   String get okButton => 'OK';

@@ -45,7 +45,7 @@
   "colorCyan": "Sian",
   "colorLightBlue": "Biru Muda",
   "colorLightOrange": "Oranye Muda",
-  "addRecordTitle": "Tambahkan Catatan Hari Ini",
+  "addRecordTitle": "Tambahkan",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },

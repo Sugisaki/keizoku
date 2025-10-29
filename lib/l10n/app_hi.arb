@@ -45,7 +45,7 @@
   "colorCyan": "सियान",
   "colorLightBlue": "हल्का नीला",
   "colorLightOrange": "हल्का नारंगी",
-  "addRecordTitle": "आज का रिकॉर्ड जोड़ें",
+  "addRecordTitle": "जोड़ें",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },
@@ -121,6 +121,7 @@
   "@newItem": {
     "description": "Default name for new items"
   },
+  "yesterday": "कल",
   "okButton": "OK",
   "confirmation": "पुष्टि",
   "addRecordConfirmation": "क्या आप {itemName} के लिए एक रिकॉर्ड जोड़ना चाहते हैं?",

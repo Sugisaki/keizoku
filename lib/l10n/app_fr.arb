@@ -45,13 +45,17 @@
   "colorCyan": "Cyan",
   "colorLightBlue": "Bleu clair",
   "colorLightOrange": "Orange clair",
-  "addRecordTitle": "Ajouter un enregistrement pour aujourd'hui",
+  "addRecordTitle": "Ajouter",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },
   "addItem": "Ajouter",
   "@addItem": {
     "description": "Add item button text"
+  },
+  "yesterday": "Hier",
+  "@yesterday": {
+    "description": "Yesterday button text"
   },
   "cancelButton": "Annuler",
   "@cancelButton": {
@@ -121,12 +125,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
+  "congratulations": "Félicitations !",
+  "recordSavedSuccessfully": "Enregistrement sauvegardé avec succès !",
   "okButton": "OK",
   "confirmation": "Confirmation",
   "addRecordConfirmation": "Voulez-vous ajouter un enregistrement pour {itemName} ?",
   "removeRecordConfirmation": "Voulez-vous supprimer l'enregistrement pour {itemName} ?",
   "yesButton": "Oui",
-  "noButton": "Non",
-  "congratulations": "Félicitations !",
-  "recordSavedSuccessfully": "Enregistrement sauvegardé avec succès !"
+  "noButton": "Non"
 }

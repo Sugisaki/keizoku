@@ -45,13 +45,17 @@
   "colorCyan": "Cyan",
   "colorLightBlue": "Hellblau",
   "colorLightOrange": "Hellorange",
-  "addRecordTitle": "Eintrag für heute hinzufügen",
+  "addRecordTitle": "Hinzufügen",
   "@addRecordTitle": {
     "description": "Title for the Add Record dialog"
   },
   "addItem": "Hinzufügen",
   "@addItem": {
     "description": "Add item button text"
+  },
+  "yesterday": "Gestern",
+  "@yesterday": {
+    "description": "Yesterday button text"
   },
   "cancelButton": "Abbrechen",
   "@cancelButton": {
@@ -121,12 +125,12 @@
   "@newItem": {
     "description": "Default name for new items"
   },
+  "congratulations": "Glückwunsch!",
+  "recordSavedSuccessfully": "Eintrag erfolgreich gespeichert!",
   "okButton": "OK",
   "confirmation": "Bestätigung",
   "addRecordConfirmation": "Möchten Sie einen Datensatz für {itemName} hinzufügen?",
   "removeRecordConfirmation": "Möchten Sie den Datensatz für {itemName} entfernen?",
   "yesButton": "Ja",
-  "noButton": "Nein",
-  "congratulations": "Glückwunsch!",
-  "recordSavedSuccessfully": "Eintrag erfolgreich gespeichert!"
+  "noButton": "Nein"
 }

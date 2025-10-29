@@ -146,13 +146,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get colorLightOrange => 'برتقالي فاتح';
 
   @override
-  String get addRecordTitle => 'إضافة سجل اليوم';
+  String get addRecordTitle => 'إضافة';
 
   @override
   String get addItem => 'إضافة';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'أمس';
 
   @override
   String get cancelButton => 'إلغاء';
