@@ -105,6 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 24,
                   color: item.getEffectiveColor(provider.settings),
                 ),
+                // デバッグモードの時は、事柄名の後にidを表示
                 title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
                 trailing: Icon(
                   item.isEnabled ? Icons.check_circle : Icons.not_interested,

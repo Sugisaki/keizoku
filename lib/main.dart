@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         
         return MaterialApp(
           title: 'Calendar App',
-          //debugShowCheckedModeBanner: false, // DEBUGバナーを表示しない
+          //debugShowCheckedModeBanner: false, // デバッグモードの時はDEBUGバナー表示
           locale: effectiveLocale,
           localizationsDelegates: const [
             AppLocalizations.delegate,
