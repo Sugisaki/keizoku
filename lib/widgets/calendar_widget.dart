@@ -14,6 +14,7 @@ class CalendarWidget extends StatefulWidget {
   final DateTime displayMonth;
   final int maxRows;
   final CalendarWidgetController? controller;
+  final double adjustedFontSize;
 
   const CalendarWidget({
     super.key,
@@ -24,6 +25,7 @@ class CalendarWidget extends StatefulWidget {
     required this.displayMonth,
     required this.maxRows,
     this.controller,
+    required this.adjustedFontSize,
   });
 
   @override
@@ -199,7 +201,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       return Row(
           children: dayNames.map((day) => Expanded(
               child: Center(
-                  child: Text(day, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
+                  child: Text(day, style: TextStyle(fontWeight: FontWeight.bold, fontSize: widget.adjustedFontSize * 0.857))
               )
           )).toList(),
       );
@@ -254,6 +256,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       settings: widget.settings,
                       isScrolling: _isScrolling,
                       cellWidth: constraints.maxWidth / 7,
+                      adjustedFontSize: widget.adjustedFontSize,
                     );
                   },
                 ),

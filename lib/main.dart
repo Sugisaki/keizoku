@@ -163,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  ///その月に何件の事柄の記録があるか
   Map<CalendarItem, int> _getMonthlyRecordSummary(DateTime month, CalendarProvider provider) {
     final Map<CalendarItem, int> monthlySummary = {};
     final startOfMonth = DateTime(month.year, month.month, 1);
@@ -189,7 +190,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // 高さ計算を先に実行
     double calendarHeight = 0;
     Widget calendarBody;
-    
+
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    double deviceWidth = mediaQueryData.size.width;
+    double deviceHeight = mediaQueryData.size.height;
+    double pixelRatio = mediaQueryData.devicePixelRatio;
+    print('Width: $deviceWidth');
+    print('Height: $deviceHeight');
+    print('Pixel Ratio: $pixelRatio');
+    print('Width in pixels: ${deviceWidth * pixelRatio}');
+
+    // デバイスの幅に応じてフォントサイズを調整
+    double baseFontSize = 14.0; // 基本フォントサイズ
+    double adjustedFontSize = baseFontSize;
+    if (deviceWidth < 400.0) {
+      // 360.0未満のデバイスではフォントサイズを小さくする
+      adjustedFontSize = baseFontSize * (deviceWidth / 360.0);
+    }
+
     if (provider.items.isEmpty) {
       calendarBody = const Center(child: CircularProgressIndicator());
     } else {
@@ -217,18 +235,26 @@ class _MyHomePageState extends State<MyHomePage> {
           displayMonth: _displayMonth ?? DateTime.now(),
           maxRows: maxRows,
           controller: _calendarController,
+          adjustedFontSize: adjustedFontSize,
         ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        // タイトル欄、年月と事柄のアイコン
+        // タイトル欄は、年月と設定アイコン
         title: Row(
           children: [
-            Text(_displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!)),
+            // 年月
+            Text(
+              _displayMonth == null ? '' : DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(_displayMonth!),
+              style: TextStyle(
+                fontSize: adjustedFontSize * 1.4, // 調整されたフォントサイズを使用
+              ),
+            ),
             const SizedBox(width: 8),
-            if (_displayMonth != null) ...() {
+            // ここに月ごとに何件の事柄の記録があるかアイコンと数字で表示（しようとしていたけどやめた）
+            if (false && _displayMonth != null) ...() {
               final sortedEntries = _getMonthlyRecordSummary(_displayMonth!, provider).entries
                   .where((entry) => entry.key.isEnabled)
                   .toList()
@@ -285,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 16), // Spacing above buttons
             // 中央の今日ボタンや追加ボタン
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Row(
                 children: [
                   // 今日にスクロールするボタン
@@ -293,8 +319,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.grey,
                     onPressed: () => _calendarController.scrollToBottom(),
                     icon: const Icon(Icons.vertical_align_bottom), // add_circle_rounded),
-                    iconSize: 36,
-                    padding: const EdgeInsets.all(8),
+                    iconSize: adjustedFontSize * 2,
+                    padding: const EdgeInsets.all(2),
                   ),
                   const SizedBox(width: 8),
                   // 昨日の追加ボタン
@@ -306,14 +332,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueGrey, // ボタンの色を青グレーに設定
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0), // 水平方向にパディングを追加
                       ),
                       child: Text(
                         DateFormat.MMMd(Localizations.localeOf(context).languageCode).format(DateTime.now().subtract(const Duration(days: 1))),
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: TextStyle(
+                          fontSize: adjustedFontSize,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
+                        maxLines: 1,
                       ),
                     ),
                   ),
@@ -333,21 +361,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Text(
                             DateFormat.MMMd(Localizations.localeOf(context).languageCode).format(DateTime.now()),
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: adjustedFontSize,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.add_circle_rounded,
-                            size: 24,
+                            size: adjustedFontSize * 1.2,
                             color: Colors.white,
                           ),
                           Text(
                             AppLocalizations.of(context)!.addItem,
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: adjustedFontSize * 1.2,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -366,7 +394,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 AppLocalizations.of(context)!.continuousRecords,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: adjustedFontSize * 1.285, fontWeight: FontWeight.bold), // 18/14 = 1.285
               ),
             ),
             // 連続記録のリスト
@@ -383,6 +411,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           AppLocalizations.of(context)!.itemName,
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
+                            fontSize: adjustedFontSize,
                           ),
                         ),
                       ),
@@ -392,6 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
+                            fontSize: adjustedFontSize,
                           ),
                         ),
                       ),
@@ -401,6 +431,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
+                          fontSize: adjustedFontSize,
                         ),
                       ),
                     ),
@@ -410,6 +441,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
+                          fontSize: adjustedFontSize,
                         ),
                       ),
                     ),
@@ -449,41 +481,46 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
                           child: Text(
                             item.name,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontSize: adjustedFontSize),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                         ),
-                        // 日数
+                        // 「連続」日数
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
                               continuousDays > 0 ? continuousDays.toString() : '',
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: adjustedFontSize),
                             ),
                           ),
                         ),
-                        // 週数（記録のある総日数）
+                        // 「総数」記録のある総日数
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
                               provider.getTotalRecordDays(item.id).toString(),
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: adjustedFontSize),
                             ),
                           ),
                         ),
-                        // 月数（最後の記録日）
+                        // 「最後」の記録日
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                            alignment: Alignment.center, // テキストを中央寄せにする
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
                               _getLastRecordDateString(provider.getLastRecordDate(item.id)),
-                              textAlign: TextAlign.right,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: adjustedFontSize),
+                              maxLines: 1,
                             ),
                           ),
                         ),

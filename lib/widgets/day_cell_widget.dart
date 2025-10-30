@@ -12,6 +12,7 @@ class DayCellWidget extends StatelessWidget {
   final CalendarSettings settings;
   final bool isScrolling;
   final double cellWidth;
+  final double adjustedFontSize;
 
   const DayCellWidget({
     super.key,
@@ -22,6 +23,7 @@ class DayCellWidget extends StatelessWidget {
     required this.settings,
     this.isScrolling = false,
     required this.cellWidth,
+    required this.adjustedFontSize,
   });
 
   @override
@@ -45,6 +47,7 @@ class DayCellWidget extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: dateColor, // 動的に色を変更
+                  fontSize: adjustedFontSize * 0.857, // 12/14 = 0.857
                 ),
               ),
             ),

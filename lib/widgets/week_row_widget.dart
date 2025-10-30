@@ -13,6 +13,7 @@ class WeekRowWidget extends StatelessWidget {
   final CalendarSettings settings;
   final bool isScrolling;
   final double cellWidth;
+  final double adjustedFontSize;
 
   const WeekRowWidget({
     super.key,
@@ -23,6 +24,7 @@ class WeekRowWidget extends StatelessWidget {
     required this.settings,
     this.isScrolling = false,
     required this.cellWidth,
+    required this.adjustedFontSize,
   });
 
   @override
@@ -43,6 +45,7 @@ class WeekRowWidget extends StatelessWidget {
                   settings: settings,
                   isScrolling: isScrolling,
                   cellWidth: cellWidth,
+                  adjustedFontSize: adjustedFontSize,
                 ),
               ),
             );
