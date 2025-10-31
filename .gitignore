@@ -66,6 +66,9 @@ captures/
 *.jar
 *.jks
 
+# Google
+google-services.json
+
 # Xcode
 *.moved-aside
 DerivedData/

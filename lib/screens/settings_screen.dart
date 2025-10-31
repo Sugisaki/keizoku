@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../constants/color_constants.dart';
 import '../l10n/app_localizations.dart';
 import '../models/calendar_item.dart';
@@ -19,6 +21,25 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _isReorderMode = false;
   List<CalendarItem>? _reorderableItems;
+  GoogleSignInAccount? _googleUser;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _initGoogleSignIn();
+  }
+
+  void _initGoogleSignIn() async {
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _googleUser = account;
+      });
+    });
+    await _googleSignIn.signInSilently();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +107,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const Divider(),
+          // Googleアカウント連携
+          _googleUser != null
+              ? ListTile(
+                  leading: _googleUser?.photoUrl != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(_googleUser!.photoUrl!),
+                        )
+                      : const CircleAvatar(
+                          child: Icon(Icons.person),
+                        ),
+                  title: Text(localizations.googleAccount),
+                  subtitle: Text(_googleUser!.displayName ?? localizations.loggedIn),
+                  trailing: TextButton(
+                    onPressed: _handleGoogleSignOut,
+                    child: Text(localizations.logoutButton),
+                  ),
+                )
+              : ListTile(
+                  title: Text(localizations.googleAccount),
+                  subtitle: Text(localizations.notLoggedIn),
+                  trailing: ElevatedButton(
+                    onPressed: _handleGoogleSignIn,
+                    child: Text(localizations.loginButton),
+                  ),
+                ),
+          const Divider(),
           // 事柄の管理セクション
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -124,7 +171,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // 並べ替えモードのボタン
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _isReorderMode 
+            child: _isReorderMode
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -217,6 +264,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
         },
       ),
     ];
+  }
+
+  // Google Sign-Out処理
+  Future<void> _handleGoogleSignOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      setState(() {
+        _googleUser = null;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.loggedOut)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.logoutFailed(e.toString()))),
+        );
+      }
+      print("Error during Google Sign-Out: $e");
+    }
+  }
+
+  // Google Sign-In処理
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // ユーザーがサインインをキャンセルした
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Firebaseにサインイン
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      setState(() {
+        _googleUser = googleUser;
+      });
+
+      // ログイン成功のメッセージ表示など
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.loggedInAs(userCredential.user?.displayName ?? ''))),
+        );
+      }
+
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.loginFailed(e.toString()))),
+        );
+      }
+      print("Error during Google Sign-In: $e");
+    }
   }
 
   String _getCurrentLanguageName(Locale? selectedLocale, AppLocalizations localizations) {

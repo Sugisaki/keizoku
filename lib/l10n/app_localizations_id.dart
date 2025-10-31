@@ -236,4 +236,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get noButton => 'Tidak';
+
+  @override
+  String get googleAccount => 'Google Account';
+
+  @override
+  String get notLoggedIn => 'Not logged in';
+
+  @override
+  String loggedInAs(String displayName) {
+    return 'Logged in as $displayName';
+  }
+
+  @override
+  String loginFailed(String error) {
+    return 'Google login failed: $error';
+  }
+
+  @override
+  String get loggedIn => 'Logged in';
+
+  @override
+  String get loginButton => 'Login';
+
+  @override
+  String get logoutButton => 'Logout';
+
+  @override
+  String get loggedOut => 'Logged out successfully.';
+
+  @override
+  String logoutFailed(String error) {
+    return 'Logout failed: $error';
+  }
 }

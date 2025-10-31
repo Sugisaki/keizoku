@@ -122,5 +122,56 @@
   "removeRecordConfirmation": "{itemName}の記録を削除しますか？",
   "yesButton": "はい",
   "noButton": "いいえ",
-  "unsavedChangesWarning": "変更内容が保存されていません。画面を離れると失われますが、よろしいですか？"
+  "unsavedChangesWarning": "変更内容が保存されていません。画面を離れると失われますが、よろしいですか？",
+  "googleAccount": "Googleアカウント",
+  "@googleAccount": {
+    "description": "Googleアカウント設定のラベル"
+  },
+  "notLoggedIn": "ログインしていません",
+  "@notLoggedIn": {
+    "description": "Googleでログインしていない場合のステータス"
+  },
+  "loggedInAs": "{displayName}としてログイン中",
+  "@loggedInAs": {
+    "description": "Googleでログインしている場合のメッセージ",
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Googleログイン失敗: {error}",
+  "@loginFailed": {
+    "description": "Googleログイン失敗時のエラーメッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "loggedIn": "ログイン済み",
+  "@loggedIn": {
+    "description": "Googleでログインしている場合のステータス"
+  },
+  "loginButton": "ログイン",
+  "@loginButton": {
+    "description": "Googleログインボタンのテキスト"
+  },
+  "logoutButton": "ログアウト",
+  "@logoutButton": {
+    "description": "Googleログアウトボタンのテキスト"
+  },
+  "loggedOut": "ログアウトしました。",
+  "@loggedOut": {
+    "description": "ユーザーが正常にログアウトしたときのメッセージ"
+  },
+  "logoutFailed": "ログアウト失敗: {error}",
+  "@logoutFailed": {
+    "description": "Googleログアウト失敗時のエラーメッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

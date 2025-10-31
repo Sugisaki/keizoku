@@ -235,4 +235,37 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get noButton => 'いいえ';
+
+  @override
+  String get googleAccount => 'Googleアカウント';
+
+  @override
+  String get notLoggedIn => 'ログインしていません';
+
+  @override
+  String loggedInAs(String displayName) {
+    return '$displayNameとしてログイン中';
+  }
+
+  @override
+  String loginFailed(String error) {
+    return 'Googleログイン失敗: $error';
+  }
+
+  @override
+  String get loggedIn => 'ログイン済み';
+
+  @override
+  String get loginButton => 'ログイン';
+
+  @override
+  String get logoutButton => 'ログアウト';
+
+  @override
+  String get loggedOut => 'ログアウトしました。';
+
+  @override
+  String logoutFailed(String error) {
+    return 'ログアウト失敗: $error';
+  }
 }

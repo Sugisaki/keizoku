@@ -233,5 +233,56 @@
   "addRecordConfirmation": "Do you want to add a record for {itemName}?",
   "removeRecordConfirmation": "Do you want to remove the record for {itemName}?",
   "yesButton": "Yes",
-  "noButton": "No"
+  "noButton": "No",
+  "googleAccount": "Google Account",
+  "@googleAccount": {
+    "description": "Label for Google Account setting"
+  },
+  "notLoggedIn": "Not logged in",
+  "@notLoggedIn": {
+    "description": "Status when user is not logged in with Google"
+  },
+  "loggedInAs": "Logged in as {displayName}",
+  "@loggedInAs": {
+    "description": "Message when user is logged in with Google",
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Google login failed: {error}",
+  "@loginFailed": {
+    "description": "Error message when Google login fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "loggedIn": "Logged in",
+  "@loggedIn": {
+    "description": "Status when user is logged in with Google"
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Text for the Google Login button"
+  },
+  "logoutButton": "Logout",
+  "@logoutButton": {
+    "description": "Text for the Google Logout button"
+  },
+  "loggedOut": "Logged out successfully.",
+  "@loggedOut": {
+    "description": "Message when user logs out successfully"
+  },
+  "logoutFailed": "Logout failed: {error}",
+  "@logoutFailed": {
+    "description": "Error message when Google logout fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

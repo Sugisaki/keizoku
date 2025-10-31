@@ -560,6 +560,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get noButton;
+
+  /// Label for Google Account setting
+  ///
+  /// In en, this message translates to:
+  /// **'Google Account'**
+  String get googleAccount;
+
+  /// Status when user is not logged in with Google
+  ///
+  /// In en, this message translates to:
+  /// **'Not logged in'**
+  String get notLoggedIn;
+
+  /// Message when user is logged in with Google
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in as {displayName}'**
+  String loggedInAs(String displayName);
+
+  /// Error message when Google login fails
+  ///
+  /// In en, this message translates to:
+  /// **'Google login failed: {error}'**
+  String loginFailed(String error);
+
+  /// Status when user is logged in with Google
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in'**
+  String get loggedIn;
+
+  /// Text for the Google Login button
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginButton;
+
+  /// Text for the Google Logout button
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logoutButton;
+
+  /// Message when user logs out successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Logged out successfully.'**
+  String get loggedOut;
+
+  /// Error message when Google logout fails
+  ///
+  /// In en, this message translates to:
+  /// **'Logout failed: {error}'**
+  String logoutFailed(String error);
 }
 
 class _AppLocalizationsDelegate

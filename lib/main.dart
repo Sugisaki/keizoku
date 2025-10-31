@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart'; // Add this import
 import 'l10n/app_localizations.dart';
 
 import 'models/calendar_item.dart';
@@ -17,6 +18,7 @@ import 'screens/settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
 
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
