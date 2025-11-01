@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart'; // Add this import
+import 'package:firebase_auth/firebase_auth.dart'; // Add this import
 import 'l10n/app_localizations.dart';
 
 import 'models/calendar_item.dart';
@@ -12,7 +13,9 @@ import 'widgets/calendar_widget.dart';
 import 'providers/calendar_provider.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
-import 'repositories/local/local_items_repository.dart';
+import 'repositories/local/local_items_repository.dart'; // Add this import
+import 'repositories/firestore/firestore_items_repository.dart'; // Add this import
+import 'repositories/hybrid_items_repository.dart'; // Add this import
 import 'repositories/local/local_language_repository.dart';
 import 'screens/settings_screen.dart';
 
@@ -22,7 +25,15 @@ void main() async {
 
   final settingsRepository = LocalSettingsRepository();
   final recordsRepository = LocalRecordsRepository();
-  final itemsRepository = LocalItemsRepository();
+  // Get current user UID
+  final User? user = FirebaseAuth.instance.currentUser;
+  final localItemsRepository = LocalItemsRepository();
+  final firestoreItemsRepository = FirestoreItemsRepository(); // No uid needed
+  final itemsRepository = HybridItemsRepository(
+    localRepository: localItemsRepository,
+    firestoreRepository: firestoreItemsRepository,
+    // No uid needed here either, as it's fetched dynamically
+  );
   final languageRepository = LocalLanguageRepository();
 
   runApp(
