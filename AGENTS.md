@@ -26,11 +26,21 @@
 -   **インターフェース:**
     -   `SettingsRepository`: 設定の保存・読み込み操作を定義します。
     -   `RecordsRepository`: 記録の保存・読み込み操作を定義します。
+    -   `ItemsRepository`: 事柄リストの保存・読み込み操作を定義します。
     -   `LanguageRepository`: 言語設定の保存・読み込み操作を定義します。
 -   **ローカル実装 (`lib/repositories/local/`):**
     -   `LocalSettingsRepository`: `shared_preferences` を使用して設定データをデバイスに保存します。
     -   `LocalRecordsRepository`: `path_provider` を使用して取得したパスに、記録データをJSONファイルとして保存します。
+    -   `LocalItemsRepository`: `path_provider` を使用して取得したパスに、事柄データをJSONファイルとして保存します。データの最終更新時刻も管理します。
     -   `LocalLanguageRepository`: `shared_preferences` を使用して言語設定データをデバイスに保存します。
+-   **クラウド実装 (`lib/repositories/firestore/`):**
+    -   `FirestoreItemsRepository`: Firebase Firestore を使用して事柄データをクラウドに保存します。事柄コレクション全体の最終更新時刻も管理します。
+-   **ハイブリッド実装 (`lib/repositories/hybrid_items_repository.dart`):**
+    -   `HybridItemsRepository`: `LocalItemsRepository`と`FirestoreItemsRepository`を統合し、事柄データの永続化を管理します。
+    -   ユーザーがログインしている場合、ローカルとFirestoreの両方から事柄データをロードし、最終更新時刻が新しい方のデータが採用されます。採用されなかった方のリポジトリは、新しい方のデータで上書きされます。
+    -   事柄データを保存する際は、常にローカルに保存し、ログインしている場合はFirestoreにも保存します。
+    -   ユーザーがログインしていない場合は、ローカルの事柄データのみを使用します。
+
 
 ## 4. 状態管理 (`lib/providers/`)
 

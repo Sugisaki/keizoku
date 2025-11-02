@@ -7,7 +7,28 @@ import '../../constants/color_constants.dart';
 import '../../models/calendar_item.dart';
 import '../items_repository.dart';
 
-// JSONファイルを使用して事柄リストを永続化するクラス
+// Hold items and timestamp
+class LocalItemsData {
+  final List<CalendarItem> items;
+  final DateTime lastUpdated;
+
+  LocalItemsData({required this.items, required this.lastUpdated});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'items': items.map((item) => item.toJson()).toList(),
+      'lastUpdated': lastUpdated.toIso8601String(),
+    };
+  }
+
+  factory LocalItemsData.fromJson(Map<String, dynamic> json) {
+    return LocalItemsData(
+      items: (json['items'] as List).map((i) => CalendarItem.fromJson(i)).toList(),
+      lastUpdated: DateTime.parse(json['lastUpdated']),
+    );
+  }
+}
+
 class LocalItemsRepository implements ItemsRepository {
   static const String _fileName = 'calendar_items.json';
   bool _isUsingTestAsset = false;
@@ -19,7 +40,6 @@ class LocalItemsRepository implements ItemsRepository {
     return File('$path/$_fileName');
   }
 
-  // 開発環境のテストファイルをアセットから読み込む（デバッグモードのみ）
   Future<String?> _loadTestAsset() async {
     if (!kDebugMode) return null;
     try {
@@ -30,92 +50,76 @@ class LocalItemsRepository implements ItemsRepository {
     }
   }
 
-  @override
-  Future<List<CalendarItem>> loadItems() async {
+  // loadItems to return LocalItemsData
+  Future<LocalItemsData> loadItemsWithTimestamp() async {
     try {
       final testAssetContents = await _loadTestAsset();
       if (testAssetContents != null) {
         print('Loading test data from assets/test_calendar_items.json');
         _isUsingTestAsset = true;
         final List<dynamic> jsonList = jsonDecode(testAssetContents);
-        return jsonList.map((json) => CalendarItem.fromJson(json)).toList();
+        return LocalItemsData(
+          items: jsonList.map((json) => CalendarItem.fromJson(json)).toList(),
+          lastUpdated: DateTime.now(), // Use current time for test data
+        );
       }
 
       final file = await _localFile;
       if (!await file.exists()) {
-         // ファイルが存在しない場合は、8つのデフォルト事柄を生成して返す
-         final defaultItems = List.generate(8, (i) {
-          final colorHex = ColorConstants.colorKeys[(i + 1 - 1) % ColorConstants.colorKeys.length];
-          if (i == 0) {
-            // id=1の事柄のみ有効で名前は「新規項目1」
-            return CalendarItem(
-              id: i + 1, 
-              name: '新規項目${i + 1}', 
-              isEnabled: true, 
-              order: 1,
-              itemColorHex: colorHex,
-            );
-          } else {
-            // その他の事柄は無効で名前は「新規項目+id」
-            return CalendarItem(
-              id: i + 1, 
-              name: '新規項目${i + 1}', 
-              isEnabled: false, 
-              order: i + 1,
-              itemColorHex: colorHex,
-            );
-          }
-        });
-        // デフォルトデータをファイルに保存しておく
-        await saveItems(defaultItems);
-        return defaultItems;
+        final defaultItems = _generateDefaultItems();
+        final defaultData = LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
+        await saveItemsWithTimestamp(defaultData); // Save with timestamp
+        return defaultData;
       }
 
       final contents = await file.readAsString();
-      final List<dynamic> jsonList = jsonDecode(contents);
-
-      return jsonList.map((json) => CalendarItem.fromJson(json)).toList();
+      final Map<String, dynamic> jsonMap = jsonDecode(contents);
+      return LocalItemsData.fromJson(jsonMap);
     } catch (e) {
       print('Error loading items: $e');
-      // エラー時もデフォルトデータを返す
-       return List.generate(8, (i) {
-        final colorHex = ColorConstants.colorKeys[(i + 1 - 1) % ColorConstants.colorKeys.length];
-        if (i == 0) {
-          // id=1の事柄のみ有効で名前は「新規項目1」
-          return CalendarItem(
-            id: i + 1, 
-            name: '新規項目${i + 1}', 
-            isEnabled: true, 
-            order: 1,
-            itemColorHex: colorHex,
-          );
-        } else {
-          // その他の事柄は無効で名前は「新規項目+id」
-          return CalendarItem(
-            id: i + 1, 
-            name: '新規項目${i + 1}', 
-            isEnabled: false, 
-            order: i + 1,
-            itemColorHex: colorHex,
-          );
-        }
-      });
+      final defaultItems = _generateDefaultItems();
+      return LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
     }
   }
 
+  // Helper to generate default items
+  List<CalendarItem> _generateDefaultItems() {
+    return List.generate(8, (i) {
+      final colorHex = ColorConstants.colorKeys[(i + 1 - 1) % ColorConstants.colorKeys.length];
+      return CalendarItem(
+        id: i + 1,
+        name: '新規項目${i + 1}',
+        isEnabled: i == 0, // Only first item enabled by default
+        order: i + 1,
+        itemColorHex: colorHex,
+      );
+    });
+  }
+
   @override
-  Future<void> saveItems(List<CalendarItem> items) async {
+  Future<List<CalendarItem>> loadItems() async {
+    final data = await loadItemsWithTimestamp();
+    return data.items;
+  }
+
+  // saveItems to accept LocalItemsData
+  Future<void> saveItemsWithTimestamp(LocalItemsData data) async {
     if (_isUsingTestAsset) {
       print('[WARN] テストファイルがあるので保存処理はしていません');
       return;
     }
     try {
       final file = await _localFile;
-      final jsonList = items.map((item) => item.toJson()).toList();
-      final jsonString = jsonEncode(jsonList);
+      final jsonString = jsonEncode(data.toJson());
       await file.writeAsString(jsonString);
     } catch (e) {
       print('Error saving items: $e');
     }
+  }
+
+  @override
+  Future<void> saveItems(List<CalendarItem> items) async {
+    final data = LocalItemsData(items: items, lastUpdated: DateTime.now());
+    await saveItemsWithTimestamp(data);
   }
 }
