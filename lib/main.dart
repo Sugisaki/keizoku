@@ -13,6 +13,7 @@ import 'widgets/calendar_widget.dart';
 import 'providers/calendar_provider.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
+import 'repositories/firestore/firestore_records_repository.dart';
 import 'repositories/local/local_items_repository.dart'; // Add this import
 import 'repositories/firestore/firestore_items_repository.dart'; // Add this import
 import 'repositories/hybrid_items_repository.dart'; // Add this import
@@ -24,9 +25,8 @@ void main() async {
   await Firebase.initializeApp(); // Initialize Firebase
 
   final settingsRepository = LocalSettingsRepository();
-  final recordsRepository = LocalRecordsRepository();
-  // Get current user UID
-  final User? user = FirebaseAuth.instance.currentUser;
+  final localRecordsRepository = LocalRecordsRepository();
+  final firestoreRecordsRepository = FirestoreRecordsRepository();
   final localItemsRepository = LocalItemsRepository();
   final firestoreItemsRepository = FirestoreItemsRepository(); // No uid needed
   final itemsRepository = HybridItemsRepository(
@@ -40,9 +40,11 @@ void main() async {
     ChangeNotifierProvider(
       create: (context) => CalendarProvider(
         settingsRepository: settingsRepository,
-        recordsRepository: recordsRepository,
+        localRecordsRepository: localRecordsRepository,
+        firestoreRecordsRepository: firestoreRecordsRepository,
         itemsRepository: itemsRepository,
         languageRepository: languageRepository,
+        firebaseAuth: FirebaseAuth.instance,
       ),
       child: const MyApp(),
     ),

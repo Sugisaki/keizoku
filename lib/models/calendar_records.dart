@@ -1,4 +1,5 @@
-// AGENTS.mdの仕様に基づいた事柄の記録を管理するクラス
+import 'package:intl/intl.dart';
+
 /// 記録の単一エントリを表すクラス
 class RecordEntry {
   final DateTime dateTime;
@@ -27,8 +28,11 @@ class CalendarRecords {
 
   CalendarRecords({
     List<RecordEntry>? recordsWithTime,
+    Map<String, List<int>>? recordsMap, // New parameter for Firestore data
   })  : _recordsWithTime = recordsWithTime ?? [],
-        _recordsByDay = _buildRecordsByDay(recordsWithTime ?? []);
+        _recordsByDay = recordsMap != null
+            ? _buildRecordsByDayFromMap(recordsMap)
+            : _buildRecordsByDay(recordsWithTime ?? []);
 
   // _recordsWithTimeから_recordsByDayを構築するヘルパーメソッド
   static Map<DateTime, List<int>> _buildRecordsByDay(List<RecordEntry> recordsWithTime) {
@@ -39,6 +43,54 @@ class CalendarRecords {
           ifAbsent: () => [entry.itemId]);
     }
     return tempRecordsByDay;
+  }
+
+  // Helper method to build _recordsByDay from a map (Firestore format)
+  static Map<DateTime, List<int>> _buildRecordsByDayFromMap(Map<String, List<int>> recordsMap) {
+    final Map<DateTime, List<int>> tempRecordsByDay = {};
+    for (final entry in recordsMap.entries) {
+      try {
+        final dateTime = DateTime.parse(entry.key);
+        final day = DateTime(dateTime.year, dateTime.month, dateTime.day);
+        tempRecordsByDay.update(day, (existingIds) => (existingIds + entry.value).toSet().toList(),
+            ifAbsent: () => entry.value);
+      } catch (e) {
+        print('Error parsing date string from Firestore: ${entry.key}, Error: $e');
+      }
+    }
+    return tempRecordsByDay;
+  }
+
+  // Factory method to create CalendarRecords from Firestore data
+  factory CalendarRecords.fromJson(Map<String, dynamic> json) {
+    final List<RecordEntry> recordsWithTime = [];
+    json.forEach((key, value) {
+      try {
+        final parsedDateTime = DateTime.parse(key);
+        if (value is List) {
+          for (final itemId in value) {
+            if (itemId is int) {
+              recordsWithTime.add(RecordEntry(dateTime: parsedDateTime, itemId: itemId));
+            }
+          }
+        }
+      } catch (e) {
+        print('Error parsing date string from Firestore: $key, Error: $e');
+      }
+    });
+    return CalendarRecords(recordsWithTime: recordsWithTime);
+  }
+
+  // Convert CalendarRecords to a JSON-compatible map for Firestore
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> jsonMap = {};
+    final DateFormat formatter = DateFormat("yyyy-MM-ddTHH:mm:ss");
+    for (final entry in _recordsWithTime) {
+      final String formattedDateTime = formatter.format(entry.dateTime);
+      jsonMap.update(formattedDateTime, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
+          ifAbsent: () => [entry.itemId]);
+    }
+    return jsonMap;
   }
 
   // ファイル操作のために時刻情報を持つレコードを公開する

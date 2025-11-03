@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 import '../../models/calendar_records.dart';
 import '../records_repository.dart';
 
@@ -33,32 +34,55 @@ class LocalRecordsRepository implements RecordsRepository {
     }
   }
 
-  List<RecordEntry> _parseAndMergeRecords(String jsonString) {
-    final json = jsonDecode(jsonString) as Map<String, dynamic>;
+  Future<({CalendarRecords records, DateTime? lastUpdated})> _parseRecordsFile(String jsonString) async {
+    final Map<String, dynamic> fullJson = jsonDecode(jsonString) as Map<String, dynamic>;
+    final Map<String, dynamic> recordsJson = (fullJson['records'] as Map<String, dynamic>?) ?? {};
+
+    DateTime? lastUpdated;
+    if (fullJson.containsKey('lastUpdated')) {
+      try {
+        lastUpdated = DateTime.parse(fullJson['lastUpdated'] as String);
+      } catch (e) {
+        print('Error parsing lastUpdated from local file: $e');
+      }
+    }
+
     final List<RecordEntry> records = [];
-    json.forEach((key, value) {
-      final parsedDateTime = DateTime.parse(key);
-      final ids = List<int>.from(value);
-      for (final id in ids) {
-        records.add(RecordEntry(dateTime: parsedDateTime, itemId: id));
+    recordsJson.forEach((key, value) {
+      try {
+        final parsedDateTime = DateTime.parse(key);
+        final ids = List<int>.from(value);
+        for (final id in ids) {
+          records.add(RecordEntry(dateTime: parsedDateTime, itemId: id));
+        }
+      } catch (e) {
+        print('Error parsing record entry from local file: $e');
       }
     });
-    return records;
+    return (records: CalendarRecords(recordsWithTime: records), lastUpdated: lastUpdated);
   }
 
   @override
   Future<CalendarRecords> loadRecords() async {
+    final result = await loadRecordsWithTimestamp();
+    return result.records;
+  }
+
+  @override
+  Future<({CalendarRecords records, DateTime? lastUpdated})> loadRecordsWithTimestamp() async {
     try {
       // 最終的にマージされるレコードのリスト
       List<RecordEntry> finalRecords = [];
+      DateTime? fileLastUpdated;
 
       // 1. ローカルファイルからデータを読み込み
       final file = await _localFile;
       if (await file.exists()) {
         print('Loading data from local file');
         final contents = await file.readAsString();
-        final localRecords = _parseAndMergeRecords(contents);
-        finalRecords.addAll(localRecords);
+        final parsedResult = await _parseRecordsFile(contents);
+        finalRecords.addAll(parsedResult.records.recordsWithTime);
+        fileLastUpdated = parsedResult.lastUpdated;
       }
 
       // 2. 開発環境のテストアセットからデータを読み込み
@@ -67,14 +91,15 @@ class LocalRecordsRepository implements RecordsRepository {
         print('Loading test data from assets/test_calendar_records.json');
         // テストアセットがロードされていることを示すフラグを設定
         _isUsingTestAsset = true;
-        final testAssetRecords = _parseAndMergeRecords(testAssetContents);
-        finalRecords.addAll(testAssetRecords);
+        final parsedResult = await _parseRecordsFile(testAssetContents);
+        finalRecords.addAll(parsedResult.records.recordsWithTime);
+        // テストアセットのlastUpdatedは考慮しない（常にローカルファイルが優先されるため）
       }
-      return CalendarRecords(recordsWithTime: finalRecords);
+      return (records: CalendarRecords(recordsWithTime: finalRecords), lastUpdated: fileLastUpdated);
     } catch (e) {
       // エラーが発生した場合は空のレコードを返す
       print('[ERROR] loading records: $e');
-      return CalendarRecords(recordsWithTime: []);
+      return (records: CalendarRecords(recordsWithTime: []), lastUpdated: null);
     }
   }
 
@@ -88,15 +113,20 @@ class LocalRecordsRepository implements RecordsRepository {
     try {
       final file = await _localFile;
 
-      // List<RecordEntry>をMap<String, List<int>>に変換してJSONで扱えるようにする
-      final Map<String, List<int>> jsonEncodableMap = {};
+      final Map<String, List<int>> recordsJsonMap = {};
+      final DateFormat formatter = DateFormat("yyyy-MM-ddTHH:mm:ss");
       records.recordsWithTime.forEach((entry) {
-        final key = entry.dateTime.toIso8601String();
-        jsonEncodableMap.update(key, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
+        final key = formatter.format(entry.dateTime);
+        recordsJsonMap.update(key, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
             ifAbsent: () => [entry.itemId]);
       });
 
-      final jsonString = jsonEncode(jsonEncodableMap);
+      final Map<String, dynamic> fullJson = {
+        'lastUpdated': formatter.format(DateTime.now()),
+        'records': recordsJsonMap,
+      };
+
+      final jsonString = jsonEncode(fullJson);
       await file.writeAsString(jsonString);
     } catch (e) {
       print('Error saving records: $e');
