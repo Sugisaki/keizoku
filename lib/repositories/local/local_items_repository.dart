@@ -73,8 +73,24 @@ class LocalItemsRepository implements ItemsRepository {
       }
 
       final contents = await file.readAsString();
-      final Map<String, dynamic> jsonMap = jsonDecode(contents);
-      return LocalItemsData.fromJson(jsonMap);
+      final decodedContents = jsonDecode(contents);
+
+      if (decodedContents is List) {
+        // Old format: top-level is a list of items
+        print('Loading old format items from local file.');
+        return LocalItemsData(
+          items: decodedContents.map((json) => CalendarItem.fromJson(json)).toList(),
+          lastUpdated: DateTime(2026), // A very old date to ensure it gets updated
+        );
+      } else if (decodedContents is Map<String, dynamic>) {
+        // New format: top-level is a map with 'items' and 'lastUpdated'
+        print('Loading new format items from local file.');
+        return LocalItemsData.fromJson(decodedContents);
+      } else {
+        print('Unknown format for local items file. Returning default items.');
+        final defaultItems = _generateDefaultItems();
+        return LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
+      }
     } catch (e) {
       print('Error loading items: $e');
       final defaultItems = _generateDefaultItems();

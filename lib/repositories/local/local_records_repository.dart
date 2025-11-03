@@ -36,7 +36,6 @@ class LocalRecordsRepository implements RecordsRepository {
 
   Future<({CalendarRecords records, DateTime? lastUpdated})> _parseRecordsFile(String jsonString) async {
     final Map<String, dynamic> fullJson = jsonDecode(jsonString) as Map<String, dynamic>;
-    final Map<String, dynamic> recordsJson = (fullJson['records'] as Map<String, dynamic>?) ?? {};
 
     DateTime? lastUpdated;
     if (fullJson.containsKey('lastUpdated')) {
@@ -45,6 +44,15 @@ class LocalRecordsRepository implements RecordsRepository {
       } catch (e) {
         print('Error parsing lastUpdated from local file: $e');
       }
+    }
+
+    final Map<String, dynamic> recordsJson;
+    if (fullJson.containsKey('records')) {
+      recordsJson = (fullJson['records'] as Map<String, dynamic>?) ?? {};
+    } else {
+      // Old format: assume the entire map (excluding lastUpdated) is the records data
+      recordsJson = Map.from(fullJson);
+      recordsJson.remove('lastUpdated'); // Remove lastUpdated if it was at the top level
     }
 
     final List<RecordEntry> records = [];
