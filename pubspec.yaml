@@ -46,6 +46,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   mockito: ^5.5.1
+  build_runner: ^2.4.8 # Add this line
   # 統合テストの実行に必要
   integration_test:
     sdk: flutter

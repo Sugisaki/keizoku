@@ -84,9 +84,11 @@ class CalendarRecords {
   // Convert CalendarRecords to a JSON-compatible map for Firestore
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> jsonMap = {};
-    final DateFormat formatter = DateFormat("yyyy-MM-ddTHH:mm:ss");
     for (final entry in _recordsWithTime) {
-      final String formattedDateTime = formatter.format(entry.dateTime);
+      // ミリ秒以下が0の場合は小数点以下を省略し、そうでない場合はミリ秒まで表示する
+      final String formattedDateTime = entry.dateTime.millisecond == 0 && entry.dateTime.microsecond == 0
+          ? DateFormat("yyyy-MM-ddTHH:mm:ss").format(entry.dateTime)
+          : DateFormat("yyyy-MM-ddTHH:mm:ss.SSS").format(entry.dateTime);
       jsonMap.update(formattedDateTime, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
           ifAbsent: () => [entry.itemId]);
     }

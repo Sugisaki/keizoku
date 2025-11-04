@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
 import 'package:flutter_calendar_app/main.dart';
 import 'package:flutter_calendar_app/providers/calendar_provider.dart';
 import 'package:flutter_calendar_app/repositories/settings_repository.dart';
-import 'package:flutter_calendar_app/repositories/records_repository.dart';
+import 'package:flutter_calendar_app/repositories/local/local_records_repository.dart';
+import 'package:flutter_calendar_app/repositories/firestore/firestore_records_repository.dart';
 import 'package:flutter_calendar_app/repositories/items_repository.dart';
 import 'package:flutter_calendar_app/repositories/language_repository.dart';
 import 'package:flutter_calendar_app/models/calendar_settings.dart';
 import 'package:flutter_calendar_app/models/calendar_records.dart';
 import 'package:flutter_calendar_app/models/calendar_item.dart';
 import 'package:flutter_calendar_app/models/language_settings.dart';
+import 'widget_test.mocks.dart';
 
 // --- テスト用のダミーリポジトリ ---
 class InMemorySettingsRepository implements SettingsRepository {
@@ -20,11 +25,29 @@ class InMemorySettingsRepository implements SettingsRepository {
   Future<void> saveSettings(CalendarSettings settings) async {}
 }
 
-class InMemoryRecordsRepository implements RecordsRepository {
+class InMemoryLocalRecordsRepository implements LocalRecordsRepository {
+  bool _isUsingTestAsset = false;
+  @override
+  bool get isUsingTestAsset => _isUsingTestAsset;
+  
   @override
   Future<CalendarRecords> loadRecords() async => CalendarRecords();
   @override
   Future<void> saveRecords(CalendarRecords records) async {}
+  @override
+  Future<({CalendarRecords records, DateTime? lastUpdated})> loadRecordsWithTimestamp() async => (records: CalendarRecords(), lastUpdated: null);
+}
+
+class InMemoryFirestoreRecordsRepository implements FirestoreRecordsRepository {
+  @override
+  String? get uid => null;
+  
+  @override
+  Future<CalendarRecords> loadRecords() async => CalendarRecords();
+  @override
+  Future<void> saveRecords(CalendarRecords records) async {}
+  @override
+  Future<({CalendarRecords records, DateTime? lastUpdated})> loadRecordsWithTimestamp() async => (records: CalendarRecords(), lastUpdated: null);
 }
 
 class InMemoryItemsRepository implements ItemsRepository {
@@ -40,24 +63,32 @@ class InMemoryLanguageRepository implements LanguageRepository {
   @override
   Future<void> saveLanguageSettings(LanguageSettings settings) async {}
 }
+
 // --- ここまで ---
 
 void main() {
   testWidgets('Calendar smoke test', (WidgetTester tester) async {
     // ダミーリポジトリのインスタンスを作成
     final settingsRepository = InMemorySettingsRepository();
-    final recordsRepository = InMemoryRecordsRepository();
+    final localRecordsRepository = InMemoryLocalRecordsRepository();
+    final firestoreRecordsRepository = InMemoryFirestoreRecordsRepository();
     final itemsRepository = InMemoryItemsRepository();
     final languageRepository = InMemoryLanguageRepository();
+    final firebaseAuth = MockFirebaseAuth();
+    
+    // currentUserプロパティにスタブを設定
+    when(firebaseAuth.currentUser).thenReturn(null);
 
     // Providerをウィジェットツリーのトップに配置してアプリをビルド
     await tester.pumpWidget(
       ChangeNotifierProvider(
         create: (context) => CalendarProvider(
           settingsRepository: settingsRepository,
-          recordsRepository: recordsRepository,
+          localRecordsRepository: localRecordsRepository,
+          firestoreRecordsRepository: firestoreRecordsRepository,
           itemsRepository: itemsRepository,
           languageRepository: languageRepository,
+          firebaseAuth: firebaseAuth,
         ),
         child: const MyApp(),
       ),

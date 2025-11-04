@@ -122,15 +122,14 @@ class LocalRecordsRepository implements RecordsRepository {
       final file = await _localFile;
 
       final Map<String, List<int>> recordsJsonMap = {};
-      final DateFormat formatter = DateFormat("yyyy-MM-ddTHH:mm:ss");
       records.recordsWithTime.forEach((entry) {
-        final key = formatter.format(entry.dateTime);
+        final key = _formatDateTime(entry.dateTime);
         recordsJsonMap.update(key, (existingIds) => (existingIds + [entry.itemId]).toSet().toList(),
             ifAbsent: () => [entry.itemId]);
       });
 
       final Map<String, dynamic> fullJson = {
-        'lastUpdated': formatter.format(DateTime.now()),
+        'lastUpdated': _formatDateTime(DateTime.now()),
         'records': recordsJsonMap,
       };
 
@@ -138,6 +137,16 @@ class LocalRecordsRepository implements RecordsRepository {
       await file.writeAsString(jsonString);
     } catch (e) {
       print('Error saving records: $e');
+    }
+  }
+
+  // 日時を適切にフォーマットするヘルパーメソッド
+  String _formatDateTime(DateTime dateTime) {
+    // マイクロ秒とミリ秒が0の場合は小数点以下を削除
+    if (dateTime.microsecond == 0 && dateTime.millisecond == 0) {
+      return DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dateTime.toUtc());
+    } else {
+      return dateTime.toUtc().toIso8601String().replaceAll('Z', '');
     }
   }
 }

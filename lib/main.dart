@@ -607,18 +607,18 @@ class _RecordDialogState extends State<RecordDialog> {
       final Set<int> newlyAddedItemIds = _selectedItemIds.difference(_initialSelectedItemIds);
       final Set<int> removedItemIds = _initialSelectedItemIds.difference(_selectedItemIds);
 
-      // ターゲット日付の最終時刻を計算（昨日の場合は23:59:59、今日の場合は現在時刻）
+      // ターゲット日付の最終時刻を計算（昨日の場合は23:59:59.999、今日の場合は現在時刻のミリ秒を0に設定）
       DateTime saveDateTime;
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
       final targetDay = DateTime(widget.targetDate.year, widget.targetDate.month, widget.targetDate.day);
       
       if (targetDay.isBefore(today)) {
-        // 過去の日付の場合は23:59:59で保存
-        saveDateTime = DateTime(widget.targetDate.year, widget.targetDate.month, widget.targetDate.day, 23, 59, 59, 999, 999);
+        // 過去の日付の場合は23:59:59.999で保存
+        saveDateTime = DateTime(widget.targetDate.year, widget.targetDate.month, widget.targetDate.day, 23, 59, 59, 999);
       } else {
-        // 今日以降の場合は現在時刻で保存
-        saveDateTime = now;
+        // 今日以降の場合は現在時刻のミリ秒を0に設定して保存
+        saveDateTime = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second, 0);
       }
 
       // providerの新しいメソッドを呼び出して記録を更新
