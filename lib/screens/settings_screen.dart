@@ -310,7 +310,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _googleUser = googleUser;
       });
 
-      // ログイン成功のメッセージ表示など
+      // Googleサインイン成功のメッセージ表示など
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)!.loggedInAs(userCredential.user?.displayName ?? ''))),

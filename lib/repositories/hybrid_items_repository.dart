@@ -19,54 +19,101 @@ class HybridItemsRepository implements ItemsRepository {
 
   @override
   Future<List<CalendarItem>> loadItems() async {
-    final localData = await _localRepository.loadItemsWithTimestamp();
-    List<CalendarItem> itemsToReturn = localData.items;
+    final result = await loadItemsWithTimestamp();
+    return result.items;
+  }
 
-    if (_uid != null) {
+  /// 同期処理付きで事柄と最終更新時刻を読み込む
+  Future<({List<CalendarItem> items, DateTime? lastUpdated})> loadItemsWithTimestamp() async {
+    final user = FirebaseAuth.instance.currentUser;
+    
+    if (user == null) {
+      // Googleサインインしていない場合はローカルのみ
+      final localData = await _localRepository.loadItemsWithTimestamp();
+      return (items: localData.items, lastUpdated: localData.lastUpdated);
+    }
+
+    try {
+      // ローカルとFirestoreの両方からデータを取得
+      final localData = await _localRepository.loadItemsWithTimestamp();
       final firestoreResult = await _firestoreRepository.loadItemsWithTimestamp();
+
+      final localItems = localData.items;
+      final localLastUpdated = localData.lastUpdated;
       final firestoreItems = firestoreResult.items;
       final firestoreLastUpdated = firestoreResult.lastUpdated;
 
-      // Determine which data is newer
-      if (firestoreLastUpdated != null && firestoreLastUpdated.isAfter(localData.lastUpdated)) {
-        // Firestore data is newer, use it and update local
-        if (kDebugMode) {
-          print('Firestore data is newer. Using Firestore data and updating local.');
+      print('DEBUG: HybridItemsRepository sync - Local: ${localItems.length} items, updated: $localLastUpdated');
+      print('DEBUG: HybridItemsRepository sync - Firestore: ${firestoreItems.length} items, updated: $firestoreLastUpdated');
+
+      // 同期ロジック
+      if (firestoreLastUpdated == null) {
+        // Firestoreにメタデータがない場合：ローカル→Firestore
+        print('DEBUG: No Firestore metadata, uploading local items');
+        if (localItems.isNotEmpty) {
+          await _firestoreRepository.saveItems(localItems);
         }
-        itemsToReturn = firestoreItems;
+        return (items: localItems, lastUpdated: localLastUpdated);
+      } else if (localLastUpdated.isBefore(firestoreLastUpdated)) {
+        // Firestoreの方が新しい場合：Firestore→ローカル
+        print('DEBUG: Firestore data is newer, downloading to local');
         await _localRepository.saveItems(firestoreItems);
-      } else if (localData.items.isNotEmpty && (firestoreLastUpdated == null || localData.lastUpdated.isAtSameMomentAs(firestoreLastUpdated) || localData.lastUpdated.isAfter(firestoreLastUpdated))) {
-        // Local data is newer or Firestore is empty, use local data and update Firestore
-        if (kDebugMode) {
-          print('Local data is newer or Firestore is empty. Using local data and updating Firestore.');
-        }
-        itemsToReturn = localData.items;
-        await _firestoreRepository.saveItems(localData.items);
-      } else if (firestoreItems.isNotEmpty) {
-        // Fallback: if Firestore has items and local doesn't, use Firestore
-        if (kDebugMode) {
-          print('Firestore has items, local does not. Using Firestore data.');
-        }
-        itemsToReturn = firestoreItems;
-        await _localRepository.saveItems(firestoreItems);
+        return firestoreResult;
+      } else if (localLastUpdated.isAfter(firestoreLastUpdated)) {
+        // ローカルの方が新しい場合：マージしてFirestoreにアップロード
+        print('DEBUG: Local data is newer, merging and uploading');
+        final mergedItems = _mergeItems(firestoreItems, localItems);
+        await _localRepository.saveItems(mergedItems);
+        await _firestoreRepository.saveItems(mergedItems);
+        return (items: mergedItems, lastUpdated: DateTime.now());
+      } else {
+        // 同じ更新時刻の場合：何もしない
+        print('DEBUG: Same timestamp, no sync needed');
+        return (items: localItems, lastUpdated: localLastUpdated);
       }
-    } else {
-      // Not logged in, just return local items
-      if (kDebugMode) {
-        print('Not logged in. Using local data.');
-      }
+    } catch (e) {
+      print('Error during items sync: $e');
+      // エラー時はローカルデータを使用
+      final localData = await _localRepository.loadItemsWithTimestamp();
+      return (items: localData.items, lastUpdated: localData.lastUpdated);
     }
-    return itemsToReturn;
+  }
+
+  /// 事柄をマージする（Firestoreベース + ローカルのitem単位での上書き）
+  List<CalendarItem> _mergeItems(List<CalendarItem> firestoreItems, List<CalendarItem> localItems) {
+    // FirestoreのitemsをベースとしてMapに変換
+    final Map<int, CalendarItem> mergedMap = {};
+    
+    // Firestoreの事柄を追加
+    for (final item in firestoreItems) {
+      mergedMap[item.id] = item;
+    }
+
+    // ローカルの事柄で上書き（item単位）
+    for (final item in localItems) {
+      mergedMap[item.id] = item;
+    }
+
+    // リストに戻して、orderでソート
+    final mergedList = mergedMap.values.toList();
+    mergedList.sort((a, b) => a.order.compareTo(b.order));
+    
+    return mergedList;
   }
 
   @override
   Future<void> saveItems(List<CalendarItem> items) async {
+    print('DEBUG: HybridItemsRepository.saveItems() called with ${items.length} items');
     // Always save to local file
     await _localRepository.saveItems(items);
 
     if (_uid != null) {
+      print('DEBUG: HybridItemsRepository.saveItems() calling FirestoreItemsRepository.saveItems()');
       // If logged in, also save to Firestore
       await _firestoreRepository.saveItems(items);
+    } else {
+      print('DEBUG: HybridItemsRepository.saveItems() - user not logged in, skipping Firestore save');
     }
+    print('DEBUG: HybridItemsRepository.saveItems() completed');
   }
 }

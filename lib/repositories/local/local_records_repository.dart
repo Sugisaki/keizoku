@@ -140,13 +140,14 @@ class LocalRecordsRepository implements RecordsRepository {
     }
   }
 
-  // 日時を適切にフォーマットするヘルパーメソッド
+  // 日時を適切にフォーマットするヘルパーメソッド（ローカルタイムを使用）
   String _formatDateTime(DateTime dateTime) {
     // マイクロ秒とミリ秒が0の場合は小数点以下を削除
     if (dateTime.microsecond == 0 && dateTime.millisecond == 0) {
-      return DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dateTime.toUtc());
+      return DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dateTime);
     } else {
-      return dateTime.toUtc().toIso8601String().replaceAll('Z', '');
+      // ローカルタイムでISO8601形式（Zなし）
+      return dateTime.toIso8601String().replaceAll('Z', '');
     }
   }
 }

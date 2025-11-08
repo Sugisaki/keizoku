@@ -60,14 +60,15 @@ class LocalItemsRepository implements ItemsRepository {
         final List<dynamic> jsonList = jsonDecode(testAssetContents);
         return LocalItemsData(
           items: jsonList.map((json) => CalendarItem.fromJson(json)).toList(),
-          lastUpdated: DateTime.now(), // Use current time for test data
+          lastUpdated: DateTime(2000), // テストアセット使用時も古い日付でFirestore同期を優先
         );
       }
 
       final file = await _localFile;
       if (!await file.exists()) {
         final defaultItems = _generateDefaultItems();
-        final defaultData = LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
+        // 初期設定時は古い日付を設定してFirestoreからの同期を優先
+        final defaultData = LocalItemsData(items: defaultItems, lastUpdated: DateTime(2000));
         await saveItemsWithTimestamp(defaultData); // Save with timestamp
         return defaultData;
       }
@@ -80,7 +81,7 @@ class LocalItemsRepository implements ItemsRepository {
         print('Loading old format items from local file.');
         return LocalItemsData(
           items: decodedContents.map((json) => CalendarItem.fromJson(json)).toList(),
-          lastUpdated: DateTime(2026), // A very old date to ensure it gets updated
+          lastUpdated: DateTime(2000), // 古い日付を設定してFirestoreからの同期を優先
         );
       } else if (decodedContents is Map<String, dynamic>) {
         // New format: top-level is a map with 'items' and 'lastUpdated'
@@ -89,12 +90,14 @@ class LocalItemsRepository implements ItemsRepository {
       } else {
         print('Unknown format for local items file. Returning default items.');
         final defaultItems = _generateDefaultItems();
-        return LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
+        // 初期設定時は古い日付を設定してFirestoreからの同期を優先
+        return LocalItemsData(items: defaultItems, lastUpdated: DateTime(2000));
       }
     } catch (e) {
       print('Error loading items: $e');
       final defaultItems = _generateDefaultItems();
-      return LocalItemsData(items: defaultItems, lastUpdated: DateTime.now());
+      // エラー時も古い日付を設定してFirestoreからの同期を優先
+      return LocalItemsData(items: defaultItems, lastUpdated: DateTime(2000));
     }
   }
 

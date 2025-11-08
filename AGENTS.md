@@ -14,10 +14,10 @@
 
 アプリケーション内で使用される主要なデータ構造です。
 
--   `CalendarSettings`: カレンダーの表示設定（週の開始曜日、カラーパレットなど）を管理します。
--   `CalendarItem`: 記録する「事柄」の定義（ID, 名称, 色, アイコン）です。
--   `CalendarRecords`: 日付(`DateTime`)と、その日に記録された事柄IDのリスト(`List<int>`)を紐付けるマップを管理します。
--   `LanguageSettings`: アプリ内で使用する言語設定（選択された言語ロケール）を管理します。
+-   `CalendarSettings`: カレンダーの表示設定（週の開始曜日、カラーパレットなど）
+-   `CalendarItem`: 記録する「事柄」の定義（ID、名称、色、アイコン）
+-   `CalendarRecords`: 日時と記録された事柄IDのリストを紐付けるマップ
+-   `LanguageSettings`: アプリ内で使用する言語設定（選択された言語ロケール）
 
 ## 3. 永続化 (`lib/repositories/`)
 
@@ -31,22 +31,74 @@
 -   **ローカル実装 (`lib/repositories/local/`):**
     -   `LocalSettingsRepository`: `shared_preferences` を使用して設定データをデバイスに保存します。
     -   `LocalRecordsRepository`: `path_provider` を使用して取得したパスに、記録データをJSONファイルとして保存します。
-    -   `LocalItemsRepository`: `path_provider` を使用して取得したパスに、事柄データをJSONファイルとして保存します。データの最終更新時刻も管理します。
+    -   `LocalItemsRepository`: `path_provider` を使用して取得したパスに、事柄データをJSONファイルとして保存します。
     -   `LocalLanguageRepository`: `shared_preferences` を使用して言語設定データをデバイスに保存します。
 -   **クラウド実装 (`lib/repositories/firestore/`):**
-    -   `FirestoreItemsRepository`: Firebase Firestore を使用して事柄データをクラウドに保存します。事柄コレクション全体の最終更新時刻も管理します。
--   **ハイブリッド実装 (`lib/repositories/hybrid_items_repository.dart`):**
-    -   `HybridItemsRepository`: `LocalItemsRepository`と`FirestoreItemsRepository`を統合し、事柄データの永続化を管理します。
-    -   ユーザーがログインしている場合、ローカルとFirestoreの両方から事柄データをロードし、最終更新時刻が新しい方のデータが採用されます。採用されなかった方のリポジトリは、新しい方のデータで上書きされます。
-    -   事柄データを保存する際は、常にローカルに保存し、ログインしている場合はFirestoreにも保存します。
-    -   ユーザーがログインしていない場合は、ローカルの事柄データのみを使用します。
+    -   `FirestoreItemsRepository`: Firebase Firestore を使用して事柄データをクラウドに保存します。
+    -   `FirestoreRecordsRepository`: Firebase Firestore を使用して記録データをクラウドに保存します。
+    -   各リポジトリは対応するデータタイプの最終更新時刻をメタデータとして管理します。
+-   **ハイブリッド実装:**
+    -   `HybridItemsRepository` (`lib/repositories/hybrid_items_repository.dart`): `LocalItemsRepository`と`FirestoreItemsRepository`を統合し、事柄データの永続化を管理します。
+    -   `HybridRecordsRepository` (`lib/repositories/hybrid_records_repository.dart`): `LocalRecordsRepository`と`FirestoreRecordsRepository`を統合し、記録データの永続化を管理します。
+    -   ユーザーがGoogleサインインしていない場合は、ローカルのデータのみを使用します。
+    -   Googleサインインしている場合は、ローカルとFirestoreの統合同期を実行します。
 
 
-## 4. 状態管理 (`lib/providers/`)
+## 4. 統合同期システム
+
+ローカルとFirestoreのデータ同期を実行するシステムです。アプリ起動時に`HybridItemsRepository`と`HybridRecordsRepository`が自動的に同期処理を実行します。
+
+### 4.2 同期判定ロジック
+
+各データタイプ（事柄・記録）について、以下の条件で同期方向を決定：
+
+```
+if (Firestoreメタデータなし) {
+    ローカル → Firestore (アップロード)
+} else if (ローカル更新時刻 < Firestore更新時刻) {
+    Firestore → ローカル (ダウンロード)
+} else if (ローカル更新時刻 > Firestore更新時刻) {
+    マージ処理 → 両方に保存
+} else {
+    同期不要 (同じ更新時刻)
+}
+```
+
+### 4.3 マージ処理
+
+#### 事柄データのマージ
+- **単位**: `item.id` 単位
+- **方向**: Firestoreデータをベース、ローカルのitemで上書き
+- **ソート**: `order` フィールドでソートして順序を維持
+
+#### 記録データのマージ
+- **単位**: `DateTime` 時刻単位
+- **方向**: Firestoreデータをベース、ローカルの時刻記録で上書き
+- **時刻形式**: ローカルタイムを使用
+
+### 4.4 初期設定時刻の最適化
+
+初回起動時やデータ作成時に、意図的に古い日付(`DateTime(2000)`)を設定することで、Firestoreからの同期を優先します。これは新規ファイル作成時、テストアセット使用時、エラー時フォールバックの全てに適用されます。
+
+### 4.5 時刻管理の統一
+
+すべてのローカルファイルでローカルタイムを使用：
+
+- **LocalRecordsRepository**: `_formatDateTime()`でローカルタイム保存
+- **HybridRecordsRepository**: `_formatDateTimeLocal()`でマージ処理
+- **CalendarRecords**: `DateFormat`でローカルタイム変換
+
+### 4.6 エラーハンドリング
+
+- **同期失敗時**: ローカルデータで継続動作
+- **ネットワークエラー**: 自動的にローカルモードに切り替え
+- **認証エラー**: ログアウト処理を実行
+
+## 5. 状態管理 (`lib/providers/`)
 
 -   `CalendarProvider`: `ChangeNotifier`を継承したクラス。リポジトリを通じてデータをロード・セーブし、UIの更新を`notifyListeners()`で通知します。アプリケーション全体の状態（設定、事柄リスト、記録、言語設定）を保持します。
 
-## 5. UIコンポーネント (`lib/widgets/`)
+## 6. UIコンポーネント (`lib/widgets/`)
 
 -   `CalendarWidget`:
     -   カレンダー全体の表示を担うメインウィジェットです。
@@ -57,17 +109,17 @@
 -   `WeekRowWidget`: 1週間分の行を描画します。7日分の`DayCellWidget`と、その週に記録があった事柄を示すラインで構成されます。
 -   `DayCellWidget`: 1日分のセルを描画します。日付、および記録された事柄のアイコンを3x3のグリッドで表示します。スクロール中は表示月以外の日の文字色が通常色になります。
 
-## 6. 画面 (`lib/screens/` & `lib/main.dart`)
+## 7. 画面 (`lib/screens/` & `lib/main.dart`)
 
 -   `MyHomePage`: カレンダー画面のメインとなるScaffoldです。`CalendarWidget`を表示し、AppBarやフローティングアクションボタンを配置します。カレンダーの下部に「今日」ボタンを配置し、タップすると最新の週（一番下）にスクロールします。
 -   `SettingsScreen`: 週の開始曜日や言語設定などを行う画面です。
 -   `AddRecordDialog`: その日の事柄を記録するためのモーダルダイアログです。
 
-## 7. 多言語対応 (Internationalization)
+## 8. 多言語対応 (Internationalization)
 
-アプリケーションは12つの言語に対応しており、ユーザーはアプリ内で言語を選択できます。
+アプリケーションは12の言語に対応しており、ユーザーはアプリ内で言語を選択できます。
 
-### 7.1 対応言語
+### 8.1 対応言語
 -   **英語** (en): 国際標準言語（非対応言語のフォールバック）
 -   **日本語** (ja): 日本向け
 -   **中国語簡体字** (zh): 中国本土向け
@@ -81,7 +133,7 @@
 -   **ポルトガル語** (pt): ブラジル・ポルトガル向け
 -   **アラビア語** (ar): アラビア語圏向け
 
-### 7.2 国際化ファイル (`lib/l10n/`)
+### 8.2 国際化ファイル (`lib/l10n/`)
 -   `app_en.arb`: 英語翻訳（テンプレートファイル）
 -   `app_ja.arb`: 日本語翻訳
 -   `app_zh.arb`: 中国語簡体字翻訳
@@ -96,35 +148,38 @@
 -   `app_ar.arb`: アラビア語翻訳
 -   `app_localizations.dart`: 自動生成される国際化クラス
 
-### 7.3 翻訳対象
+### 8.3 翻訳対象
 -   **UI文字列**: ボタンテキスト、ラベル、メッセージ
 -   **曜日表示**: カレンダーヘッダーの曜日略称
 -   **月表示**: AppBarの年月表示（システムロケール対応）
 -   **設定項目**: 設定画面のすべての項目名
 -   **編集画面**: 編集画面のすべての項目名
 
-### 7.4 言語選択機能
+### 8.4 言語選択機能
 -   **設定画面**: 「言語」項目から言語を選択
 -   **System Default**: 端末の言語設定に従う（完全一致→言語コード一致→英語フォールバック）
 -   **即座反映**: 選択と同時にアプリ全体に適用
 -   **永続化**: 選択した言語設定を保存し、アプリ再起動後も維持
 -   **自動検出**: 初回起動時は端末言語を自動検出してデフォルト言語を決定
 
-### 7.5 技術実装
+### 8.5 技術実装
 -   **Flutter Localizations**: `flutter_localizations`パッケージを使用
 -   **ARBファイル**: Application Resource Bundle形式で翻訳を管理
 -   **動的切り替え**: `MaterialApp`の`locale`プロパティで言語を動的変更
 -   **状態管理**: `CalendarProvider`で言語設定を一元管理
 
-## 8. 高さ制限
+## 9. 高さ制限
 
 -   `main.dart`にて、`MediaQuery`で画面サイズを取得し、1週あたりの高さを動的に計算します。
 -   画面の縦サイズの半分を超えない、最大の行数（整数）を算出し、その高さでカレンダー領域を制限しています。
 
-## 9. 開発環境のテストファイル、事柄と事柄記録のデータ
--   assets/test_calendar_items.json
--   assets/test_calendar_records.json
--   テストファイルが存在する場合は、データをローカルファイルに保存しない
-### 9.1 記録の時刻
--   昨日以前の記録は時刻 23:59:59.999 でミリ秒付きで記録することで、通常の記録とは区別する
--   今日の記録の時刻は、小数点以下は省略して保存する
+## 10. 開発環境とテストデータ
+
+### 10.1 テストファイル
+-   `assets/test_calendar_items.json`: 事柄データのテスト用ファイル
+-   `assets/test_calendar_records.json`: 記録データのテスト用ファイル
+-   テストファイルが存在する場合は、データをローカルファイルに保存しません
+
+### 10.2 記録の時刻仕様
+-   **昨日以前の記録**: 時刻 23:59:59.999 でミリ秒付きで記録し、通常の記録と区別します
+-   **今日の記録**: 小数点以下を省略して保存します

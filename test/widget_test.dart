@@ -15,7 +15,11 @@ import 'package:flutter_calendar_app/models/calendar_settings.dart';
 import 'package:flutter_calendar_app/models/calendar_records.dart';
 import 'package:flutter_calendar_app/models/calendar_item.dart';
 import 'package:flutter_calendar_app/models/language_settings.dart';
+
+// Import the generated mocks
 import 'widget_test.mocks.dart';
+
+@GenerateMocks([FirebaseAuth])
 
 // --- テスト用のダミーリポジトリ ---
 class InMemorySettingsRepository implements SettingsRepository {

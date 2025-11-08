@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart'; // For date formatting
 import '../../models/calendar_records.dart';
 import '../records_repository.dart';
 
@@ -31,6 +30,7 @@ class FirestoreRecordsRepository implements RecordsRepository {
   String? get uid => FirebaseAuth.instance.currentUser?.uid;
 
   // Load records with timestamp
+  @override
   Future<({CalendarRecords records, DateTime? lastUpdated})> loadRecordsWithTimestamp() async {
     if (uid == null) {
       print('No user logged in. Returning empty records.');
@@ -71,6 +71,7 @@ class FirestoreRecordsRepository implements RecordsRepository {
 
   @override
   Future<void> saveRecords(CalendarRecords records) async {
+    print('DEBUG: FirestoreRecordsRepository.saveRecords() called');
     if (uid == null) {
       print('No user logged in. Not saving records to Firestore.');
       return;
@@ -95,6 +96,7 @@ class FirestoreRecordsRepository implements RecordsRepository {
       }
 
       // Update metadata timestamp
+      print('DEBUG: Updating RECORDS metadata at users/$uid/metadata/records');
       batch.set(metadataDocRef, FirestoreRecordsMetadata(lastUpdated: DateTime.now()).toJson());
 
       await batch.commit();

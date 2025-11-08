@@ -71,6 +71,7 @@ class FirestoreItemsRepository implements ItemsRepository {
 
   @override
   Future<void> saveItems(List<CalendarItem> items) async {
+    print('DEBUG: FirestoreItemsRepository.saveItems() called with ${items.length} items');
     if (uid == null) {
       print('No user logged in. Not saving items to Firestore.');
       return;
@@ -92,6 +93,7 @@ class FirestoreItemsRepository implements ItemsRepository {
       }
 
       // Update metadata timestamp
+      print('DEBUG: Updating ITEMS metadata at users/$uid/metadata/items');
       batch.set(metadataDocRef, FirestoreItemsMetadata(lastUpdated: DateTime.now()).toJson());
 
       await batch.commit();

@@ -3,8 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart'; // Add this import
-import 'package:firebase_auth/firebase_auth.dart'; // Add this import
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'l10n/app_localizations.dart';
 
 import 'models/calendar_item.dart';
@@ -14,9 +14,9 @@ import 'providers/calendar_provider.dart';
 import 'repositories/local/local_settings_repository.dart';
 import 'repositories/local/local_records_repository.dart';
 import 'repositories/firestore/firestore_records_repository.dart';
-import 'repositories/local/local_items_repository.dart'; // Add this import
-import 'repositories/firestore/firestore_items_repository.dart'; // Add this import
-import 'repositories/hybrid_items_repository.dart'; // Add this import
+import 'repositories/local/local_items_repository.dart';
+import 'repositories/firestore/firestore_items_repository.dart';
+import 'repositories/hybrid_items_repository.dart';
 import 'repositories/local/local_language_repository.dart';
 import 'screens/settings_screen.dart';
 
@@ -35,18 +35,33 @@ void main() async {
     // No uid needed here either, as it's fetched dynamically
   );
   final languageRepository = LocalLanguageRepository();
+  final firebaseAuth = FirebaseAuth.instance;
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => CalendarProvider(
-        settingsRepository: settingsRepository,
-        localRecordsRepository: localRecordsRepository,
-        firestoreRecordsRepository: firestoreRecordsRepository,
-        itemsRepository: itemsRepository,
-        languageRepository: languageRepository,
-        firebaseAuth: FirebaseAuth.instance,
-      ),
-      child: const MyApp(),
+    // Firebase Authの状態変化を監視し、認証状態が変化した際にCalendarProvider.loadData()を再実行
+    StreamBuilder<User?>(
+      stream: firebaseAuth.authStateChanges(),
+      builder: (context, snapshot) {
+        // Always create a new CalendarProvider instance when auth state changes
+        final calendarProvider = CalendarProvider(
+          settingsRepository: settingsRepository,
+          localRecordsRepository: localRecordsRepository,
+          firestoreRecordsRepository: firestoreRecordsRepository,
+          itemsRepository: itemsRepository,
+          languageRepository: languageRepository,
+          firebaseAuth: firebaseAuth,
+        );
+
+        // If user is signed in, load data immediately
+        if (snapshot.hasData) {
+          calendarProvider.loadData();
+        }
+
+        return ChangeNotifierProvider.value(
+          value: calendarProvider,
+          child: const MyApp(),
+        );
+      },
     ),
   );
 }

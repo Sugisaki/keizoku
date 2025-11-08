@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../repositories/firestore/firestore_records_repository.dart';
 import '../repositories/local/local_records_repository.dart';
+import '../repositories/hybrid_records_repository.dart';
 import 'package:flutter/material.dart';
 import '../constants/color_constants.dart';
 import '../models/calendar_settings.dart';
@@ -15,8 +16,7 @@ import '../repositories/records_repository.dart';
 // アプリケーションの状態を管理するクラス
 class CalendarProvider extends ChangeNotifier {
   late final SettingsRepository _settingsRepository;
-  late final RecordsRepository _localRecordsRepository;
-  late final RecordsRepository _firestoreRecordsRepository;
+  late final HybridRecordsRepository _hybridRecordsRepository;
   late final ItemsRepository _itemsRepository;
   late final LanguageRepository _languageRepository;
   late final FirebaseAuth _firebaseAuth;
@@ -41,11 +41,17 @@ class CalendarProvider extends ChangeNotifier {
     required FirebaseAuth firebaseAuth,
   }) {
     _settingsRepository = settingsRepository;
-    _localRecordsRepository = localRecordsRepository;
-    _firestoreRecordsRepository = firestoreRecordsRepository;
     _itemsRepository = itemsRepository;
     _languageRepository = languageRepository;
     _firebaseAuth = firebaseAuth;
+
+    // HybridRecordsRepositoryを初期化
+    _hybridRecordsRepository = HybridRecordsRepository(
+      localRepository: localRecordsRepository,
+      firestoreRepository: firestoreRecordsRepository,
+      firebaseAuth: firebaseAuth,
+    );
+
 
     // 初期データで初期化
     _settings = CalendarSettings();
@@ -60,43 +66,9 @@ class CalendarProvider extends ChangeNotifier {
   // 起動時にデータをロードする
   Future<void> loadData() async {
     _settings = await _settingsRepository.loadSettings();
-    _items = await _itemsRepository.loadItems(); // ItemsRepositoryから読み込む
+    _items = await _itemsRepository.loadItems(); // HybridItemsRepositoryで同期処理実行
+    _records = await _hybridRecordsRepository.loadRecords(); // HybridRecordsRepositoryで同期処理実行
     _languageSettings = await _loadLanguageSettings();
-
-    final user = _firebaseAuth.currentUser;
-
-    if (user != null) {
-      // ユーザーがログインしている場合、Firestoreとローカルを同期
-      final localResult = await _localRecordsRepository.loadRecordsWithTimestamp();
-      final firestoreResult = await _firestoreRecordsRepository.loadRecordsWithTimestamp();
-
-      final localRecords = localResult.records;
-      final localLastUpdated = localResult.lastUpdated;
-      final firestoreRecords = firestoreResult.records;
-      final firestoreLastUpdated = firestoreResult.lastUpdated;
-
-      if (localLastUpdated == null && firestoreLastUpdated == null) {
-        // 両方とも更新日時がない場合、ローカルを正とする
-        _records = localRecords;
-        await _firestoreRecordsRepository.saveRecords(localRecords);
-      } else if (localLastUpdated != null && (firestoreLastUpdated == null || localLastUpdated.isAfter(firestoreLastUpdated))) {
-        // ローカルの方が新しい、またはFirestoreにデータがない場合
-        _records = localRecords;
-        await _firestoreRecordsRepository.saveRecords(localRecords);
-      } else if (firestoreLastUpdated != null && (localLastUpdated == null || firestoreLastUpdated.isAfter(localLastUpdated))) {
-        // Firestoreの方が新しい、またはローカルにデータがない場合
-        _records = firestoreRecords;
-        await _localRecordsRepository.saveRecords(firestoreRecords);
-      } else {
-        // 両方の更新日時が同じか、どちらもnullでないが比較できない場合（理論上は発生しないはず）
-        // ここではFirestoreのデータを優先するが、必要に応じてマージロジックを実装
-        _records = firestoreRecords;
-        await _localRecordsRepository.saveRecords(firestoreRecords);
-      }
-    } else {
-      // ユーザーがログインしていない場合、ローカルからのみロード
-      _records = (await _localRecordsRepository.loadRecordsWithTimestamp()).records;
-    }
     notifyListeners();
   }
 
@@ -107,6 +79,7 @@ class CalendarProvider extends ChangeNotifier {
 
   // 事柄を更新する
   Future<void> updateItem(CalendarItem updatedItem) async {
+    print('DEBUG: CalendarProvider.updateItem() called for item ${updatedItem.id}: ${updatedItem.name}');
     // 1. _itemsリスト内でupdatedItemを更新
     List<CalendarItem> allItems = List.from(_items);
     final index = allItems.indexWhere((item) => item.id == updatedItem.id);
@@ -143,7 +116,9 @@ class CalendarProvider extends ChangeNotifier {
     // 5. 最終的な_itemsリストを再構築（有効なアイテムをorder順に、その後無効なアイテム）
     _items = [...enabled, ...disabled];
 
+    print('DEBUG: CalendarProvider.updateItem() calling _itemsRepository.saveItems()');
     await _itemsRepository.saveItems(_items);
+    print('DEBUG: CalendarProvider.updateItem() completed saveItems()');
     notifyListeners();
   }
 
@@ -213,6 +188,7 @@ class CalendarProvider extends ChangeNotifier {
 
   // 指定された時刻の記録を更新する（追加・削除）
   Future<void> updateRecordsForToday(DateTime dateTime, List<int> addIds, List<int> removeIds) async {
+    print('DEBUG: CalendarProvider.updateRecordsForToday() called - add: $addIds, remove: $removeIds');
     final List<RecordEntry> newRecordsList = List.from(_records.recordsWithTime);
 
     // 同じ日かどうかを判定するヘルパーメソッド
@@ -235,10 +211,9 @@ class CalendarProvider extends ChangeNotifier {
     }
 
     _records = CalendarRecords(recordsWithTime: newRecordsList);
-    await _localRecordsRepository.saveRecords(_records);
-    if (_firebaseAuth.currentUser != null) {
-      await _firestoreRecordsRepository.saveRecords(_records);
-    }
+    print('DEBUG: CalendarProvider.updateRecordsForToday() calling _hybridRecordsRepository.saveRecords()');
+    await _hybridRecordsRepository.saveRecords(_records);
+    print('DEBUG: CalendarProvider.updateRecordsForToday() completed saveRecords()');
     notifyListeners();
   }
 
