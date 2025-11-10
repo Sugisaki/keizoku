@@ -25,12 +25,21 @@ class CalendarProvider extends ChangeNotifier {
   late List<CalendarItem> _items; // 事柄リスト
   late CalendarRecords _records;
   late LanguageSettings _languageSettings;
+  
+  // 同期状態管理用のフラグ
+  bool _isSyncingItems = false;
+  bool _isSyncingRecords = false;
 
   // 外部から状態を読み取るためのgetter
   CalendarSettings get settings => _settings;
   List<CalendarItem> get items => _items;
   CalendarRecords get records => _records;
   LanguageSettings get languageSettings => _languageSettings;
+  
+  // 同期状態のgetter
+  bool get isSyncingItems => _isSyncingItems;
+  bool get isSyncingRecords => _isSyncingRecords;
+  bool get isSyncing => _isSyncingItems || _isSyncingRecords;
 
   CalendarProvider({
     required SettingsRepository settingsRepository,
@@ -66,8 +75,21 @@ class CalendarProvider extends ChangeNotifier {
   // 起動時にデータをロードする
   Future<void> loadData() async {
     _settings = await _settingsRepository.loadSettings();
+    
+    // Itemsの同期状態を更新
+    _isSyncingItems = true;
+    notifyListeners();
     _items = await _itemsRepository.loadItems(); // HybridItemsRepositoryで同期処理実行
+    _isSyncingItems = false;
+    notifyListeners();
+    
+    // Recordsの同期状態を更新
+    _isSyncingRecords = true;
+    notifyListeners();
     _records = await _hybridRecordsRepository.loadRecords(); // HybridRecordsRepositoryで同期処理実行
+    _isSyncingRecords = false;
+    notifyListeners();
+    
     _languageSettings = await _loadLanguageSettings();
     notifyListeners();
   }

@@ -154,7 +154,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
                         ),
-                        child: Text(localizations.loginButton),
+                        child: Text(
+                          localizations.loginButton,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
           const Divider(),
@@ -166,32 +169,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          // 事柄リスト
-          if (_isReorderMode)
-            ..._buildReorderableList(provider, localizations)
-          else
-            ...items.map((item) {
-              return ListTile(
-                leading: Container(
-                  width: 24,
-                  height: 24,
-                  color: item.getEffectiveColor(provider.settings),
-                ),
-                // デバッグモードの時は、事柄名の後にidを表示
-                title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
-                trailing: Icon(
-                  item.isEnabled ? Icons.check_circle : Icons.not_interested,
-                  color: item.isEnabled ? Colors.green : Colors.grey,
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EditItemScreen(item: item),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+           // 事柄リスト
+           if (provider.isSyncingItems)
+             const Center(child: Padding(padding: EdgeInsets.all(16.0), child: CircularProgressIndicator()))
+           else if (_isReorderMode)
+             ..._buildReorderableList(provider, localizations)
+           else
+             ...items.map((item) {
+               return ListTile(
+                 leading: Container(
+                   width: 24,
+                   height: 24,
+                   color: item.getEffectiveColor(provider.settings),
+                 ),
+                 // デバッグモードの時は、事柄名の後にidを表示
+                 title: Text(kDebugMode ? '${item.name} (${item.id})' : item.name),
+                 trailing: Icon(
+                   item.isEnabled ? Icons.check_circle : Icons.not_interested,
+                   color: item.isEnabled ? Colors.green : Colors.grey,
+                 ),
+                 onTap: () {
+                   Navigator.of(context).push(
+                     MaterialPageRoute(
+                       builder: (context) => EditItemScreen(item: item),
+                     ),
+                   );
+                 },
+               );
+             }).toList(),
           
           // 並べ替えモードのボタン
           Padding(
