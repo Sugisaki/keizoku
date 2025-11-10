@@ -614,6 +614,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout failed: {error}'**
   String logoutFailed(String error);
+
+  /// Message shown while checking Google login status
+  ///
+  /// In en, this message translates to:
+  /// **'Checking...'**
+  String get checkingLoginStatus;
 }
 
 class _AppLocalizationsDelegate

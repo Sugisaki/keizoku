@@ -22,6 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isReorderMode = false;
   List<CalendarItem>? _reorderableItems;
   GoogleSignInAccount? _googleUser;
+  bool _isCheckingSignIn = true; // サインイン状態の確認中フラグ
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,9 +37,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _googleUser = account;
+        _isCheckingSignIn = false; // 確認完了
       });
     });
-    await _googleSignIn.signInSilently();
+    
+    // 現在のユーザーを確認し、サインインしていない場合のみsignInSilently()を実行
+    if (_googleSignIn.currentUser == null) {
+      await _googleSignIn.signInSilently();
+    } else {
+      setState(() {
+        _googleUser = _googleSignIn.currentUser;
+      });
+    }
+    
+    // 確認完了フラグを設定（onCurrentUserChangedが呼ばれない場合用）
+    setState(() {
+      _isCheckingSignIn = false;
+    });
   }
 
   @override
@@ -108,30 +123,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const Divider(),
           // Googleアカウント連携
-          _googleUser != null
+          _isCheckingSignIn
               ? ListTile(
-                  leading: _googleUser?.photoUrl != null
-                      ? CircleAvatar(
-                          backgroundImage: NetworkImage(_googleUser!.photoUrl!),
-                        )
-                      : const CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
+                  leading: const CircularProgressIndicator(strokeWidth: 2.0),
                   title: Text(localizations.googleAccount),
-                  subtitle: Text(_googleUser!.displayName ?? localizations.loggedIn),
-                  trailing: TextButton(
-                    onPressed: _handleGoogleSignOut,
-                    child: Text(localizations.logoutButton),
-                  ),
+                  subtitle: Text(localizations.checkingLoginStatus),
                 )
-              : ListTile(
-                  title: Text(localizations.googleAccount),
-                  subtitle: Text(localizations.notLoggedIn),
-                  trailing: ElevatedButton(
-                    onPressed: _handleGoogleSignIn,
-                    child: Text(localizations.loginButton),
-                  ),
-                ),
+              : _googleUser != null
+                  ? ListTile(
+                      leading: _googleUser?.photoUrl != null
+                          ? CircleAvatar(
+                              backgroundImage: NetworkImage(_googleUser!.photoUrl!),
+                            )
+                          : const CircleAvatar(
+                              child: Icon(Icons.person),
+                            ),
+                      title: Text(localizations.googleAccount),
+                      subtitle: Text(_googleUser!.displayName ?? localizations.loggedIn),
+                      trailing: TextButton(
+                        onPressed: _handleGoogleSignOut,
+                        child: Text(localizations.logoutButton),
+                      ),
+                    )
+                  : ListTile(
+                      title: Text(localizations.googleAccount),
+                      subtitle: Text(localizations.notLoggedIn),
+                      trailing: ElevatedButton(
+                        onPressed: _handleGoogleSignIn,
+                        child: Text(localizations.loginButton),
+                      ),
+                    ),
           const Divider(),
           // 事柄の管理セクション
           Padding(

@@ -268,4 +268,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String logoutFailed(String error) {
     return 'ログアウト失敗: $error';
   }
+
+  @override
+  String get checkingLoginStatus => '確認中...';
 }

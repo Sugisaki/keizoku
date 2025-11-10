@@ -118,5 +118,6 @@
   "noButton": "否",
   "congratulations": "恭喜",
   "recordSavedSuccessfully": "記錄已成功保存",
-  "unsavedChangesWarning": "變更尚未儲存。如果離開畫面，將會遺失。確定嗎？"
+  "unsavedChangesWarning": "變更尚未儲存。如果離開畫面，將會遺失。確定嗎？",
+  "checkingLoginStatus": "檢查中..."
 }

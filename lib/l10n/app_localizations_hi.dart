@@ -269,4 +269,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String logoutFailed(String error) {
     return 'Logout failed: $error';
   }
+
+  @override
+  String get checkingLoginStatus => 'जांच रहे हैं...';
 }

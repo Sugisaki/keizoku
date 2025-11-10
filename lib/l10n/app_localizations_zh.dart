@@ -268,6 +268,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String logoutFailed(String error) {
     return 'Logout failed: $error';
   }
+
+  @override
+  String get checkingLoginStatus => '检查中...';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -498,4 +501,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get noButton => '否';
+
+  @override
+  String get checkingLoginStatus => '檢查中...';
 }

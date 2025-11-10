@@ -284,5 +284,9 @@
         "type": "String"
       }
     }
+  },
+  "checkingLoginStatus": "Checking...",
+  "@checkingLoginStatus": {
+    "description": "Message shown while checking Google login status"
   }
 }

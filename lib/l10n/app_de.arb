@@ -122,5 +122,6 @@
   "removeRecordConfirmation": "Möchten Sie den Datensatz für {itemName} entfernen?",
   "yesButton": "Ja",
   "noButton": "Nein",
-  "unsavedChangesWarning": "Änderungen wurden nicht gespeichert. Wenn Sie den Bildschirm verlassen, gehen sie verloren. Sind Sie sicher?"
+  "unsavedChangesWarning": "Änderungen wurden nicht gespeichert. Wenn Sie den Bildschirm verlassen, gehen sie verloren. Sind Sie sicher?",
+  "checkingLoginStatus": "Überprüfung..."
 }

@@ -123,5 +123,6 @@
   "noButton": "لا",
   "congratulations": "تهانينا!",
   "recordSavedSuccessfully": "تم حفظ السجل بنجاح!",
-  "unsavedChangesWarning": "لم يتم حفظ التغييرات. إذا غادرت الشاشة، فسيتم فقدانها. هل أنت متأكد؟"
+  "unsavedChangesWarning": "لم يتم حفظ التغييرات. إذا غادرت الشاشة، فسيتم فقدانها. هل أنت متأكد؟",
+  "checkingLoginStatus": "جاري التحقق..."
 }

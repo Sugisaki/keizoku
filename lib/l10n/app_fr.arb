@@ -122,5 +122,6 @@
   "removeRecordConfirmation": "Voulez-vous supprimer l'enregistrement pour {itemName} ?",
   "yesButton": "Oui",
   "noButton": "Non",
-  "unsavedChangesWarning": "Les modifications n'ont pas été enregistrées. Si vous quittez l'écran, elles seront perdues. Êtes-vous sûr ?"
+  "unsavedChangesWarning": "Les modifications n'ont pas été enregistrées. Si vous quittez l'écran, elles seront perdues. Êtes-vous sûr ?",
+  "checkingLoginStatus": "Vérification..."
 }

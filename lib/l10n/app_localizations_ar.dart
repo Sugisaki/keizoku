@@ -269,4 +269,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String logoutFailed(String error) {
     return 'Logout failed: $error';
   }
+
+  @override
+  String get checkingLoginStatus => 'جاري التحقق...';
 }

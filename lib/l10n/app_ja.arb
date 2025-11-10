@@ -173,5 +173,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "checkingLoginStatus": "確認中..."
 }

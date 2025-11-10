@@ -117,5 +117,6 @@
   "noButton": "No",
   "congratulations": "¡Felicidades!",
   "recordSavedSuccessfully": "¡Registro guardado exitosamente!",
-  "unsavedChangesWarning": "Los cambios no se han guardado. Si sales de la pantalla, se perderán. ¿Estás seguro?"
+  "unsavedChangesWarning": "Los cambios no se han guardado. Si sales de la pantalla, se perderán. ¿Estás seguro?",
+  "checkingLoginStatus": "Verificando..."
 }
