@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'l10n/app_localizations.dart';
 
 import 'models/calendar_item.dart';
@@ -272,7 +273,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        // タイトル欄は、年月と設定アイコン
+        // 左端にハンバーガーメニュー（設定画面へ）
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            );
+          },
+        ),
+        // タイトル欄は、年月
         title: Row(
           children: [
             // 年月
@@ -317,13 +327,38 @@ class _MyHomePageState extends State<MyHomePage> {
             }(),
           ],
         ),
-        // 設定ボタン
+        // 右端にGoogleユーザーアイコン
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+          // Googleユーザーアイコン（タップで設定画面へ）
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              final user = snapshot.data;
+              final isLoggedIn = user != null;
+              
+              return Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundImage: isLoggedIn && user.photoURL != null
+                        ? NetworkImage(user.photoURL!)
+                        : null,
+                    backgroundColor: Colors.grey[300],
+                    child: !isLoggedIn || user.photoURL == null
+                        ? Icon(
+                            Icons.person,
+                            color: Colors.grey[600],
+                            size: 20,
+                          )
+                        : null,
+                  ),
+                ),
               );
             },
           ),

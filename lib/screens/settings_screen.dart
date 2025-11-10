@@ -150,6 +150,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       subtitle: Text(localizations.notLoggedIn),
                       trailing: ElevatedButton(
                         onPressed: _handleGoogleSignIn,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                        ),
                         child: Text(localizations.loginButton),
                       ),
                     ),
