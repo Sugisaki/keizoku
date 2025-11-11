@@ -152,7 +152,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get addItem => 'Tambahkan';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'Kemarin';
 
   @override
   String get cancelButton => 'Batal';
@@ -238,23 +238,23 @@ class AppLocalizationsId extends AppLocalizations {
   String get noButton => 'Tidak';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Akun Google';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'Tidak login';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'Login sebagai $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Login Google gagal: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'Login';
 
   @override
   String get loginButton => 'Login';
@@ -263,13 +263,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get logoutButton => 'Logout';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'Berhasil logout.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'Logout gagal: $error';
   }
 
   @override
   String get checkingLoginStatus => 'Memeriksa...';
+
+  @override
+  String get deleteFirestoreData => 'Hapus Data Cloud';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Hapus secara permanen semua data Anda yang tersimpan di cloud. Ini tidak akan menghapus data lokal.';
+
+  @override
+  String get deleteButton => 'Hapus';
+
+  @override
+  String get confirmDelete => 'Konfirmasi Penghapusan';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'Apakah Anda yakin ingin menghapus secara permanen semua data yang tersimpan di cloud? Tindakan ini tidak dapat dibatalkan.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'Semua data yang tersimpan di cloud berhasil dihapus.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Gagal menghapus semua data yang tersimpan di cloud: $error';
+  }
 }

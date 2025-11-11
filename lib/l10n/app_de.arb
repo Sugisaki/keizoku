@@ -123,5 +123,21 @@
   "yesButton": "Ja",
   "noButton": "Nein",
   "unsavedChangesWarning": "Änderungen wurden nicht gespeichert. Wenn Sie den Bildschirm verlassen, gehen sie verloren. Sind Sie sicher?",
-  "checkingLoginStatus": "Überprüfung..."
+  "checkingLoginStatus": "Überprüfung...",
+  "googleAccount": "Google-Konto",
+  "notLoggedIn": "Nicht angemeldet",
+  "loggedInAs": "Angemeldet als {displayName}",
+  "loginFailed": "Google-Anmeldung fehlgeschlagen: {error}",
+  "loggedIn": "Angemeldet",
+  "loginButton": "Anmelden",
+  "logoutButton": "Abmelden",
+  "loggedOut": "Erfolgreich abgemeldet.",
+  "logoutFailed": "Abmeldung fehlgeschlagen: {error}",
+  "deleteFirestoreData": "Cloud-Daten löschen",
+  "deleteFirestoreDataDescription": "Alle in der Cloud gespeicherten Daten dauerhaft löschen. Lokale Daten werden nicht gelöscht.",
+  "deleteButton": "Löschen",
+  "confirmDelete": "Löschung bestätigen",
+  "deleteFirestoreDataConfirmation": "Sind Sie sicher, dass Sie alle Ihre in der Cloud gespeicherten Daten dauerhaft löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "firestoreDataDeletedSuccessfully": "Alle in der Cloud gespeicherten Daten wurden erfolgreich gelöscht.",
+  "firestoreDataDeletionFailed": "Alle in der Cloud gespeicherten Daten konnten nicht gelöscht werden: {error}"
 }

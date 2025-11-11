@@ -237,40 +237,63 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noButton => '否';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => '谷歌账户';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => '未登录';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return '以$displayName身份登录';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return '谷歌登录失败: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => '已登录';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => '登录';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => '退出登录';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => '已成功退出登录。';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return '退出登录失败: $error';
   }
 
   @override
   String get checkingLoginStatus => '检查中...';
+
+  @override
+  String get deleteFirestoreData => '删除云数据';
+
+  @override
+  String get deleteFirestoreDataDescription => '永久删除存储在云端的所有数据。这不会删除本地数据。';
+
+  @override
+  String get deleteButton => '删除';
+
+  @override
+  String get confirmDelete => '确认删除';
+
+  @override
+  String get deleteFirestoreDataConfirmation => '您确定要永久删除云端保存的所有数据吗？此操作无法撤销。';
+
+  @override
+  String get firestoreDataDeletedSuccessfully => '云端保存的所有数据删除成功。';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return '删除云端保存的所有数据失败: $error';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -421,6 +444,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get addItem => '新增';
 
   @override
+  String get yesterday => '昨天';
+
+  @override
   String get cancelButton => '取消';
 
   @override
@@ -503,5 +529,61 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get noButton => '否';
 
   @override
+  String get googleAccount => 'Google 帳戶';
+
+  @override
+  String get notLoggedIn => '未登入';
+
+  @override
+  String loggedInAs(String displayName) {
+    return '以 $displayName 身份登入';
+  }
+
+  @override
+  String loginFailed(String error) {
+    return 'Google 登入失敗: $error';
+  }
+
+  @override
+  String get loggedIn => '已登入';
+
+  @override
+  String get loginButton => '登入';
+
+  @override
+  String get logoutButton => '登出';
+
+  @override
+  String get loggedOut => '成功登出。';
+
+  @override
+  String logoutFailed(String error) {
+    return '登出失敗: $error';
+  }
+
+  @override
   String get checkingLoginStatus => '檢查中...';
+
+  @override
+  String get deleteFirestoreData => '刪除雲端資料';
+
+  @override
+  String get deleteFirestoreDataDescription => '永久刪除儲存在雲端的所有資料。這不會刪除本地資料。';
+
+  @override
+  String get deleteButton => '刪除';
+
+  @override
+  String get confirmDelete => '確認刪除';
+
+  @override
+  String get deleteFirestoreDataConfirmation => '您確定要永久刪除雲端儲存的所有資料嗎？此操作無法撤銷。';
+
+  @override
+  String get firestoreDataDeletedSuccessfully => '雲端儲存的所有資料刪除成功。';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return '刪除雲端儲存的所有資料失敗: $error';
+  }
 }

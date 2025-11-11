@@ -116,4 +116,16 @@ class HybridItemsRepository implements ItemsRepository {
     }
     print('DEBUG: HybridItemsRepository.saveItems() completed');
   }
+
+  @override
+  Future<void> deleteFirestoreItems() async {
+    print('DEBUG: HybridItemsRepository.deleteAllItems() called');
+    // ローカルデータは削除しない
+    // await _localRepository.deleteAllItems();
+    
+    if (_uid != null) {
+      await _firestoreRepository.deleteFirestoreItems();
+    }
+    print('DEBUG: HybridItemsRepository.deleteAllItems() completed');
+  }
 }

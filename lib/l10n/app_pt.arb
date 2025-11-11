@@ -118,5 +118,22 @@
   "congratulations": "Parabéns!",
   "recordSavedSuccessfully": "Registro salvo com sucesso!",
   "unsavedChangesWarning": "As alterações não foram salvas. Se você sair da tela, elas serão perdidas. Tem certeza?",
-  "checkingLoginStatus": "Verificando..."
+  "checkingLoginStatus": "Verificando...",
+  "yesterday": "Ontem",
+  "googleAccount": "Conta do Google",
+  "notLoggedIn": "Não conectado",
+  "loggedInAs": "Conectado como {displayName}",
+  "loginFailed": "Falha no login do Google: {error}",
+  "loggedIn": "Conectado",
+  "loginButton": "Entrar",
+  "logoutButton": "Sair",
+  "loggedOut": "Logout realizado com sucesso.",
+  "logoutFailed": "Falha no logout: {error}",
+  "deleteFirestoreData": "Excluir Dados da Nuvem",
+  "deleteFirestoreDataDescription": "Excluir permanentemente todos os seus dados armazenados na nuvem. Isso não excluirá os dados locais.",
+  "deleteButton": "Excluir",
+  "confirmDelete": "Confirmar Exclusão",
+  "deleteFirestoreDataConfirmation": "Tem certeza de que deseja excluir permanentemente todos os seus dados armazenados na nuvem? Esta ação não pode ser desfeita.",
+  "firestoreDataDeletedSuccessfully": "Todos os dados armazenados na nuvem foram excluídos com sucesso.",
+  "firestoreDataDeletionFailed": "Falha ao excluir todos os dados armazenados na nuvem: {error}"
 }

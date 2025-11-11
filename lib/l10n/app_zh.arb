@@ -120,5 +120,21 @@
   "congratulations": "恭喜",
   "recordSavedSuccessfully": "记录已成功保存！",
   "unsavedChangesWarning": "更改尚未保存。如果离开屏幕，将会丢失。确定吗？",
-  "checkingLoginStatus": "检查中..."
+  "checkingLoginStatus": "检查中...",
+  "googleAccount": "谷歌账户",
+  "notLoggedIn": "未登录",
+  "loggedInAs": "以{displayName}身份登录",
+  "loginFailed": "谷歌登录失败: {error}",
+  "loggedIn": "已登录",
+  "loginButton": "登录",
+  "logoutButton": "退出登录",
+  "loggedOut": "已成功退出登录。",
+  "logoutFailed": "退出登录失败: {error}",
+  "deleteFirestoreData": "删除云数据",
+  "deleteFirestoreDataDescription": "永久删除存储在云端的所有数据。这不会删除本地数据。",
+  "deleteButton": "删除",
+  "confirmDelete": "确认删除",
+  "deleteFirestoreDataConfirmation": "您确定要永久删除云端保存的所有数据吗？此操作无法撤销。",
+  "firestoreDataDeletedSuccessfully": "云端保存的所有数据删除成功。",
+  "firestoreDataDeletionFailed": "删除云端保存的所有数据失败: {error}"
 }

@@ -238,38 +238,64 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noButton => 'Nein';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Google-Konto';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'Nicht angemeldet';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'Angemeldet als $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Google-Anmeldung fehlgeschlagen: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'Angemeldet';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'Anmelden';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'Abmelden';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'Erfolgreich abgemeldet.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'Abmeldung fehlgeschlagen: $error';
   }
 
   @override
   String get checkingLoginStatus => 'Überprüfung...';
+
+  @override
+  String get deleteFirestoreData => 'Cloud-Daten löschen';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Alle in der Cloud gespeicherten Daten dauerhaft löschen. Lokale Daten werden nicht gelöscht.';
+
+  @override
+  String get deleteButton => 'Löschen';
+
+  @override
+  String get confirmDelete => 'Löschung bestätigen';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'Sind Sie sicher, dass Sie alle Ihre in der Cloud gespeicherten Daten dauerhaft löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'Alle in der Cloud gespeicherten Daten wurden erfolgreich gelöscht.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Alle in der Cloud gespeicherten Daten konnten nicht gelöscht werden: $error';
+  }
 }

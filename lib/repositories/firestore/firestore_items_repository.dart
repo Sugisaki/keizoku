@@ -102,4 +102,28 @@ class FirestoreItemsRepository implements ItemsRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteFirestoreItems() async {
+    if (uid == null) {
+      print('No user logged in. Cannot delete Firestore items.');
+      return;
+    }
+    try {
+      final userDocRef = _firestore.collection('users').doc(uid);
+      final itemsCollectionRef = userDocRef.collection('items');
+      final metadataDocRef = userDocRef.collection('metadata').doc('items');
+
+      // 1. itemsコレクション内のすべてのドキュメントを削除
+      final itemsSnapshot = await itemsCollectionRef.get();
+      for (final doc in itemsSnapshot.docs) {
+        await doc.reference.delete(); // 個別に削除
+      }
+
+      print('Firestore items deleted for user: $uid');
+    } catch (e) {
+      print('Error deleting Firestore items: $e');
+      rethrow;
+    }
+  }
 }

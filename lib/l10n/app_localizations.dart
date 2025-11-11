@@ -620,6 +620,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Checking...'**
   String get checkingLoginStatus;
+
+  /// Title for deleting cloud data
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Cloud Data'**
+  String get deleteFirestoreData;
+
+  /// Description for deleting cloud data
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete all your data stored in the cloud. This will not delete local data.'**
+  String get deleteFirestoreDataDescription;
+
+  /// Text for the Delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteButton;
+
+  /// Title for delete confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deletion'**
+  String get confirmDelete;
+
+  /// Confirmation message for deleting cloud data
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to permanently delete all your data stored in the cloud? This action cannot be undone.'**
+  String get deleteFirestoreDataConfirmation;
+
+  /// Success message after deleting cloud data
+  ///
+  /// In en, this message translates to:
+  /// **'All data stored in the cloud has been deleted successfully.'**
+  String get firestoreDataDeletedSuccessfully;
+
+  /// Error message when deleting cloud data fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete all data stored in the cloud: {error}'**
+  String firestoreDataDeletionFailed(String error);
 }
 
 class _AppLocalizationsDelegate

@@ -271,4 +271,30 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get checkingLoginStatus => '確認中...';
+
+  @override
+  String get deleteFirestoreData => 'クラウドデータの削除';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'クラウドに保存されているすべてのデータを完全に削除します。ローカルデータは削除されません。';
+
+  @override
+  String get deleteButton => '削除';
+
+  @override
+  String get confirmDelete => '削除の確認';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'クラウドに保存されているすべてのデータを完全に削除しますか？この操作は取り消すことができません。';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'クラウドに保存されているすべてのデータが正常に削除されました。';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'クラウドに保存されているすべてのデータの削除に失敗しました: $error';
+  }
 }

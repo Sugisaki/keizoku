@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // 追加
 import '../repositories/firestore/firestore_records_repository.dart';
 import '../repositories/local/local_records_repository.dart';
 import '../repositories/hybrid_records_repository.dart';
@@ -251,6 +252,54 @@ class CalendarProvider extends ChangeNotifier {
     _languageSettings = _languageSettings.copyWith(selectedLocale: newLocale);
     await _languageRepository.saveLanguageSettings(_languageSettings);
     notifyListeners();
+  }
+
+  // ユーザーデータをすべて削除する
+  Future<void> deleteFirestoreUserData() async {
+    print('DEBUG: CalendarProvider.deleteAllUserData() called');
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        print('No user logged in. Cannot delete Firestore data.');
+        return;
+      }
+
+      final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      final metadataRecordsDocRef = userDocRef.collection('metadata').doc('records');
+      final metadataItemsDocRef = userDocRef.collection('metadata').doc('items');
+
+      // レコードデータを削除 (Firestoreのみ)
+      await _hybridRecordsRepository.deleteFirestoreRecords();
+      _records = CalendarRecords(recordsMap: {}); // UI上のデータをクリア
+
+      // アイテムデータを削除 (Firestoreのみ)
+      await _itemsRepository.deleteFirestoreItems();
+      //_items = []; // UI上のデータをクリア
+
+      // metadata/recordsドキュメントを削除
+      final metadataRecordsDocSnapshot = await metadataRecordsDocRef.get();
+      if (metadataRecordsDocSnapshot.exists) {
+        await metadataRecordsDocRef.delete();
+      }
+
+      // metadata/itemsドキュメントを削除
+      final metadataItemsDocSnapshot = await metadataItemsDocRef.get();
+      if (metadataItemsDocSnapshot.exists) {
+        await metadataItemsDocRef.delete();
+      }
+
+      // users/{uid}ドキュメント自体を削除
+      final userDocSnapshot = await userDocRef.get();
+      if (userDocSnapshot.exists) {
+        await userDocRef.delete();
+      }
+
+      notifyListeners();
+      print('DEBUG: All Firestore user data deleted. Local data retained.');
+    } catch (e) {
+      print('Error deleting all user data: $e');
+      rethrow;
+    }
   }
 
   // 指定された日に特定の事柄が記録されているかチェック

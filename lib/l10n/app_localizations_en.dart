@@ -272,4 +272,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkingLoginStatus => 'Checking...';
+
+  @override
+  String get deleteFirestoreData => 'Delete Cloud Data';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Permanently delete all your data stored in the cloud. This will not delete local data.';
+
+  @override
+  String get deleteButton => 'Delete';
+
+  @override
+  String get confirmDelete => 'Confirm Deletion';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'Are you sure you want to permanently delete all your data stored in the cloud? This action cannot be undone.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'All data stored in the cloud has been deleted successfully.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Failed to delete all data stored in the cloud: $error';
+  }
 }

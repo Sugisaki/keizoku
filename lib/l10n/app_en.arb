@@ -288,5 +288,38 @@
   "checkingLoginStatus": "Checking...",
   "@checkingLoginStatus": {
     "description": "Message shown while checking Google login status"
+  },
+  "deleteFirestoreData": "Delete Cloud Data",
+  "@deleteFirestoreData": {
+    "description": "Title for deleting cloud data"
+  },
+  "deleteFirestoreDataDescription": "Permanently delete all your data stored in the cloud. This will not delete local data.",
+  "@deleteFirestoreDataDescription": {
+    "description": "Description for deleting cloud data"
+  },
+  "deleteButton": "Delete",
+  "@deleteButton": {
+    "description": "Text for the Delete button"
+  },
+  "confirmDelete": "Confirm Deletion",
+  "@confirmDelete": {
+    "description": "Title for delete confirmation dialog"
+  },
+  "deleteFirestoreDataConfirmation": "Are you sure you want to permanently delete all your data stored in the cloud? This action cannot be undone.",
+  "@deleteFirestoreDataConfirmation": {
+    "description": "Confirmation message for deleting cloud data"
+  },
+  "firestoreDataDeletedSuccessfully": "All data stored in the cloud has been deleted successfully.",
+  "@firestoreDataDeletedSuccessfully": {
+    "description": "Success message after deleting cloud data"
+  },
+  "firestoreDataDeletionFailed": "Failed to delete all data stored in the cloud: {error}",
+  "@firestoreDataDeletionFailed": {
+    "description": "Error message when deleting cloud data fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

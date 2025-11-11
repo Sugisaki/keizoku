@@ -174,5 +174,41 @@
       }
     }
   },
-  "checkingLoginStatus": "確認中..."
+  "checkingLoginStatus": "確認中...",
+  "@checkingLoginStatus": {
+    "description": "Googleログインステータス確認中に表示するメッセージ"
+  },
+  "deleteFirestoreData": "クラウドデータの削除",
+  "@deleteFirestoreData": {
+    "description": "クラウドデータ削除のタイトル"
+  },
+  "deleteFirestoreDataDescription": "クラウドに保存されているすべてのデータを完全に削除します。ローカルデータは削除されません。",
+  "@deleteFirestoreDataDescription": {
+    "description": "クラウドデータ削除の説明"
+  },
+  "deleteButton": "削除",
+  "@deleteButton": {
+    "description": "削除ボタンのテキスト"
+  },
+  "confirmDelete": "削除の確認",
+  "@confirmDelete": {
+    "description": "削除確認ダイアログのタイトル"
+  },
+  "deleteFirestoreDataConfirmation": "クラウドに保存されているすべてのデータを完全に削除しますか？この操作は取り消すことができません。",
+  "@deleteFirestoreDataConfirmation": {
+    "description": "Firestoreデータ削除の確認メッセージ"
+  },
+  "firestoreDataDeletedSuccessfully": "クラウドに保存されているすべてのデータが正常に削除されました。",
+  "@firestoreDataDeletedSuccessfully": {
+    "description": "Firestoreデータ削除後の成功メッセージ"
+  },
+  "firestoreDataDeletionFailed": "クラウドに保存されているすべてのデータの削除に失敗しました: {error}",
+  "@firestoreDataDeletionFailed": {
+    "description": "Firestoreデータ削除失敗時のエラーメッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

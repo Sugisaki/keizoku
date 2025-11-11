@@ -238,38 +238,64 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noButton => 'لا';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'حساب Google';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'غير مسجل الدخول';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'مسجل الدخول باسم $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'فشل تسجيل الدخول إلى Google: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'مسجل الدخول';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'تسجيل الدخول';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'تسجيل الخروج';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'تم تسجيل الخروج بنجاح.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'فشل تسجيل الخروج: $error';
   }
 
   @override
   String get checkingLoginStatus => 'جاري التحقق...';
+
+  @override
+  String get deleteFirestoreData => 'حذف بيانات السحابة';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'حذف جميع بياناتك المخزنة في السحابة نهائيًا. هذا لن يحذف البيانات المحلية.';
+
+  @override
+  String get deleteButton => 'حذف';
+
+  @override
+  String get confirmDelete => 'تأكيد الحذف';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'هل أنت متأكد من أنك تريد حذف جميع البيانات المحفوظة في السحابة نهائيًا؟ هذا الإجراء لا يمكن التراجع عنه.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'تم حذف جميع البيانات المحفوظة في السحابة بنجاح.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'فشل في حذف جميع البيانات المحفوظة في السحابة: $error';
+  }
 }

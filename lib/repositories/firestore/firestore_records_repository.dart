@@ -105,4 +105,36 @@ class FirestoreRecordsRepository implements RecordsRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteFirestoreRecords() async {
+    if (uid == null) {
+      print('No user logged in. Cannot delete Firestore records.');
+      return;
+    }
+    try {
+      final userDocRef = _firestore.collection('users').doc(uid);
+      final recordsCollectionRef = userDocRef.collection('records');
+      final metadataDocRef = userDocRef.collection('metadata').doc('records');
+
+      // 1. recordsコレクション内のすべてのドキュメントを削除
+      final recordsSnapshot = await recordsCollectionRef.get();
+      for (final doc in recordsSnapshot.docs) {
+        await doc.reference.delete(); // 個別に削除
+      }
+
+      // 2. metadata/recordsドキュメントを削除
+      // ドキュメントが存在しない場合でもエラーにならないようにチェック
+      final metadataDocSnapshot = await metadataDocRef.get();
+      if (metadataDocSnapshot.exists) {
+        await metadataDocRef.delete();
+      }
+
+
+      print('Firestore records and metadata/records deleted for user: $uid');
+    } catch (e) {
+      print('Error deleting Firestore records: $e');
+      rethrow;
+    }
+  }
 }

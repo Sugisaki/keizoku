@@ -118,5 +118,22 @@
   "congratulations": "Selamat!",
   "recordSavedSuccessfully": "Rekaman berhasil disimpan!",
   "unsavedChangesWarning": "Perubahan belum disimpan. Jika Anda meninggalkan layar, mereka akan hilang. Apakah Anda yakin?",
-  "checkingLoginStatus": "Memeriksa..."
+  "checkingLoginStatus": "Memeriksa...",
+  "yesterday": "Kemarin",
+  "googleAccount": "Akun Google",
+  "notLoggedIn": "Tidak login",
+  "loggedInAs": "Login sebagai {displayName}",
+  "loginFailed": "Login Google gagal: {error}",
+  "loggedIn": "Login",
+  "loginButton": "Login",
+  "logoutButton": "Logout",
+  "loggedOut": "Berhasil logout.",
+  "logoutFailed": "Logout gagal: {error}",
+  "deleteFirestoreData": "Hapus Data Cloud",
+  "deleteFirestoreDataDescription": "Hapus secara permanen semua data Anda yang tersimpan di cloud. Ini tidak akan menghapus data lokal.",
+  "deleteButton": "Hapus",
+  "confirmDelete": "Konfirmasi Penghapusan",
+  "deleteFirestoreDataConfirmation": "Apakah Anda yakin ingin menghapus secara permanen semua data yang tersimpan di cloud? Tindakan ini tidak dapat dibatalkan.",
+  "firestoreDataDeletedSuccessfully": "Semua data yang tersimpan di cloud berhasil dihapus.",
+  "firestoreDataDeletionFailed": "Gagal menghapus semua data yang tersimpan di cloud: {error}"
 }

@@ -141,4 +141,18 @@ class LocalItemsRepository implements ItemsRepository {
     final data = LocalItemsData(items: items, lastUpdated: DateTime.now());
     await saveItemsWithTimestamp(data);
   }
+
+  @override
+  Future<void> deleteFirestoreItems() async {
+    try {
+      final file = await _localFile;
+      if (await file.exists()) {
+        await file.delete();
+        print('Local items file deleted.');
+      }
+    } catch (e) {
+      print('Error deleting local items file: $e');
+      rethrow;
+    }
+  }
 }

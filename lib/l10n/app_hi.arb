@@ -119,5 +119,21 @@
   "congratulations": "बधाई हो!",
   "recordSavedSuccessfully": "रिकॉर्ड सफलतापूर्वक सहेजा गया!",
   "unsavedChangesWarning": "परिवर्तन सहेजे नहीं गए हैं। यदि आप स्क्रीन छोड़ते हैं, तो वे खो जाएंगे। क्या आपको यकीन है?",
-  "checkingLoginStatus": "जांच रहे हैं..."
+  "checkingLoginStatus": "जांच रहे हैं...",
+  "googleAccount": "Google खाता",
+  "notLoggedIn": "लॉग इन नहीं हैं",
+  "loggedInAs": "{displayName} के रूप में लॉग इन",
+  "loginFailed": "Google लॉग इन विफल: {error}",
+  "loggedIn": "लॉग इन है",
+  "loginButton": "लॉग इन करें",
+  "logoutButton": "लॉग आउट करें",
+  "loggedOut": "सफलतापूर्वक लॉग आउट हो गए।",
+  "logoutFailed": "लॉग आउट विफल: {error}",
+  "deleteFirestoreData": "क्लाउड डेटा हटाएं",
+  "deleteFirestoreDataDescription": "क्लाउड में संग्रहीत आपके सभी डेटा को स्थायी रूप से हटाएं। इससे स्थानीय डेटा हटाया नहीं जाएगा।",
+  "deleteButton": "हटाएं",
+  "confirmDelete": "हटाने की पुष्टि करें",
+  "deleteFirestoreDataConfirmation": "क्या आप वास्तव में क्लाउड में संग्रहीत अपने सभी डेटा को स्थायी रूप से हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+  "firestoreDataDeletedSuccessfully": "क्लाउड में संग्रहीत सभी डेटा सफलतापूर्वक हटा दिया गया।",
+  "firestoreDataDeletionFailed": "क्लाउड में संग्रहीत सभी डेटा हटाने में विफल: {error}"
 }

@@ -5,6 +5,9 @@ abstract class ItemsRepository {
   // 事柄リストを読み込む
   Future<List<CalendarItem>> loadItems();
 
-  // 事柄リストを保存する
+  // アイテムを保存する
   Future<void> saveItems(List<CalendarItem> items);
+
+  // すべてのアイテムを削除する
+  Future<void> deleteFirestoreItems();
 }

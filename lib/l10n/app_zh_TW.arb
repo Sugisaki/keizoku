@@ -119,5 +119,22 @@
   "congratulations": "恭喜",
   "recordSavedSuccessfully": "記錄已成功保存",
   "unsavedChangesWarning": "變更尚未儲存。如果離開畫面，將會遺失。確定嗎？",
-  "checkingLoginStatus": "檢查中..."
+  "checkingLoginStatus": "檢查中...",
+  "yesterday": "昨天",
+  "googleAccount": "Google 帳戶",
+  "notLoggedIn": "未登入",
+  "loggedInAs": "以 {displayName} 身份登入",
+  "loginFailed": "Google 登入失敗: {error}",
+  "loggedIn": "已登入",
+  "loginButton": "登入",
+  "logoutButton": "登出",
+  "loggedOut": "成功登出。",
+  "logoutFailed": "登出失敗: {error}",
+  "deleteFirestoreData": "刪除雲端資料",
+  "deleteFirestoreDataDescription": "永久刪除儲存在雲端的所有資料。這不會刪除本地資料。",
+  "deleteButton": "刪除",
+  "confirmDelete": "確認刪除",
+  "deleteFirestoreDataConfirmation": "您確定要永久刪除雲端儲存的所有資料嗎？此操作無法撤銷。",
+  "firestoreDataDeletedSuccessfully": "雲端儲存的所有資料刪除成功。",
+  "firestoreDataDeletionFailed": "刪除雲端儲存的所有資料失敗: {error}"
 }

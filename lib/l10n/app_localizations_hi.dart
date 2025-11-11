@@ -238,38 +238,64 @@ class AppLocalizationsHi extends AppLocalizations {
   String get noButton => 'नहीं';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Google खाता';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'लॉग इन नहीं हैं';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return '$displayName के रूप में लॉग इन';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Google लॉग इन विफल: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'लॉग इन है';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'लॉग इन करें';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'लॉग आउट करें';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'सफलतापूर्वक लॉग आउट हो गए।';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'लॉग आउट विफल: $error';
   }
 
   @override
   String get checkingLoginStatus => 'जांच रहे हैं...';
+
+  @override
+  String get deleteFirestoreData => 'क्लाउड डेटा हटाएं';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'क्लाउड में संग्रहीत आपके सभी डेटा को स्थायी रूप से हटाएं। इससे स्थानीय डेटा हटाया नहीं जाएगा।';
+
+  @override
+  String get deleteButton => 'हटाएं';
+
+  @override
+  String get confirmDelete => 'हटाने की पुष्टि करें';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'क्या आप वास्तव में क्लाउड में संग्रहीत अपने सभी डेटा को स्थायी रूप से हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'क्लाउड में संग्रहीत सभी डेटा सफलतापूर्वक हटा दिया गया।';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'क्लाउड में संग्रहीत सभी डेटा हटाने में विफल: $error';
+  }
 }

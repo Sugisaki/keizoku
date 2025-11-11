@@ -124,5 +124,21 @@
   "congratulations": "تهانينا!",
   "recordSavedSuccessfully": "تم حفظ السجل بنجاح!",
   "unsavedChangesWarning": "لم يتم حفظ التغييرات. إذا غادرت الشاشة، فسيتم فقدانها. هل أنت متأكد؟",
-  "checkingLoginStatus": "جاري التحقق..."
+  "checkingLoginStatus": "جاري التحقق...",
+  "googleAccount": "حساب Google",
+  "notLoggedIn": "غير مسجل الدخول",
+  "loggedInAs": "مسجل الدخول باسم {displayName}",
+  "loginFailed": "فشل تسجيل الدخول إلى Google: {error}",
+  "loggedIn": "مسجل الدخول",
+  "loginButton": "تسجيل الدخول",
+  "logoutButton": "تسجيل الخروج",
+  "loggedOut": "تم تسجيل الخروج بنجاح.",
+  "logoutFailed": "فشل تسجيل الخروج: {error}",
+  "deleteFirestoreData": "حذف بيانات السحابة",
+  "deleteFirestoreDataDescription": "حذف جميع بياناتك المخزنة في السحابة نهائيًا. هذا لن يحذف البيانات المحلية.",
+  "deleteButton": "حذف",
+  "confirmDelete": "تأكيد الحذف",
+  "deleteFirestoreDataConfirmation": "هل أنت متأكد من أنك تريد حذف جميع البيانات المحفوظة في السحابة نهائيًا؟ هذا الإجراء لا يمكن التراجع عنه.",
+  "firestoreDataDeletedSuccessfully": "تم حذف جميع البيانات المحفوظة في السحابة بنجاح.",
+  "firestoreDataDeletionFailed": "فشل في حذف جميع البيانات المحفوظة في السحابة: {error}"
 }

@@ -23,6 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<CalendarItem>? _reorderableItems;
   GoogleSignInAccount? _googleUser;
   bool _isCheckingSignIn = true; // サインイン状態の確認中フラグ
+  bool _isDeletingFirestoreData = false; // Firestoreデータ削除中フラグ
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -160,6 +161,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ),
+          // Googleアカウントにログインしている場合のみ、Firestoreデータ削除ボタンを表示
+          if (_googleUser != null) ...[
+            const Divider(),
+            ListTile(
+              title: Text(localizations.deleteFirestoreData),
+              subtitle: Text(localizations.deleteFirestoreDataDescription),
+              trailing: ElevatedButton(
+                onPressed: _isDeletingFirestoreData ? null : () => _confirmAndDeleteFirestoreData(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+                child: _isDeletingFirestoreData
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(localizations.deleteButton),
+              ),
+            ),
+          ],
           const Divider(),
           // 事柄の管理セクション
           Padding(
@@ -354,6 +380,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       }
       print("Error during Google Sign-In: $e");
+    }
+  }
+
+  // Firestoreデータ削除の確認と実行
+  Future<void> _confirmAndDeleteFirestoreData(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    final bool confirm = await showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(localizations.confirmDelete),
+          content: Text(localizations.deleteFirestoreDataConfirmation),
+          actions: <Widget>[
+            TextButton(
+              child: Text(localizations.cancelButton),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false);
+              },
+            ),
+            TextButton(
+              child: Text(localizations.deleteButton),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ) ?? false;
+
+    if (confirm) {
+      setState(() {
+        _isDeletingFirestoreData = true; // 削除処理開始
+      });
+      try {
+        await context.read<CalendarProvider>().deleteFirestoreUserData();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(localizations.firestoreDataDeletedSuccessfully)),
+          );
+        }
+        // 削除成功後、Googleサインアウト
+        await _handleGoogleSignOut();
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(localizations.firestoreDataDeletionFailed(e.toString()))),
+          );
+        }
+        print("Error deleting Firestore data: $e");
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isDeletingFirestoreData = false; // 削除処理終了
+          });
+        }
+      }
     }
   }
 

@@ -10,4 +10,7 @@ abstract class RecordsRepository {
 
   // 記録を保存する
   Future<void> saveRecords(CalendarRecords records);
+
+  // すべての記録を削除する
+  Future<void> deleteFirestoreRecords();
 }

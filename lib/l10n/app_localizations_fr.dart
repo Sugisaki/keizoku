@@ -239,38 +239,64 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noButton => 'Non';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Compte Google';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'Non connecté';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'Connecté en tant que $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Échec de la connexion Google : $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'Connecté';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'Se connecter';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'Se déconnecter';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'Déconnecté avec succès.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'Échec de la déconnexion : $error';
   }
 
   @override
   String get checkingLoginStatus => 'Vérification...';
+
+  @override
+  String get deleteFirestoreData => 'Supprimer les données du cloud';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Supprimer définitivement toutes vos données stockées dans le cloud. Cela ne supprimera pas les données locales.';
+
+  @override
+  String get deleteButton => 'Supprimer';
+
+  @override
+  String get confirmDelete => 'Confirmer la suppression';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'Êtes-vous sûr de vouloir supprimer définitivement toutes vos données stockées dans le cloud ? Cette action ne peut pas être annulée.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'Toutes les données stockées dans le cloud ont été supprimées avec succès.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Échec de la suppression de toutes les données stockées dans le cloud : $error';
+  }
 }

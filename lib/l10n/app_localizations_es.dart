@@ -152,7 +152,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addItem => 'Añadir';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'Ayer';
 
   @override
   String get cancelButton => 'Cancelar';
@@ -238,38 +238,64 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noButton => 'No';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Cuenta de Google';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'No conectado';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'Conectado como $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Error en el inicio de sesión de Google: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'Conectado';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'Iniciar sesión';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'Cerrar sesión';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'Sesión cerrada exitosamente.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'Error al cerrar sesión: $error';
   }
 
   @override
   String get checkingLoginStatus => 'Verificando...';
+
+  @override
+  String get deleteFirestoreData => 'Eliminar datos de la nube';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Eliminar permanentemente todos sus datos almacenados en la nube. Esto no eliminará los datos locales.';
+
+  @override
+  String get deleteButton => 'Eliminar';
+
+  @override
+  String get confirmDelete => 'Confirmar eliminación';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      '¿Está seguro de que desea eliminar permanentemente todos sus datos almacenados en la nube? Esta acción no se puede deshacer.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'Todos los datos almacenados en la nube han sido eliminados exitosamente.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Error al eliminar todos los datos almacenados en la nube: $error';
+  }
 }

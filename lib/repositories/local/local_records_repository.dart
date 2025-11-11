@@ -140,6 +140,20 @@ class LocalRecordsRepository implements RecordsRepository {
     }
   }
 
+  @override
+  Future<void> deleteFirestoreRecords() async {
+    try {
+      final file = await _localFile;
+      if (await file.exists()) {
+        await file.delete();
+        print('Local records file deleted.');
+      }
+    } catch (e) {
+      print('Error deleting local records file: $e');
+      rethrow;
+    }
+  }
+
   // 日時を適切にフォーマットするヘルパーメソッド（ローカルタイムを使用）
   String _formatDateTime(DateTime dateTime) {
     // マイクロ秒とミリ秒が0の場合は小数点以下を削除

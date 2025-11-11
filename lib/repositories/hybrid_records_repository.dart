@@ -131,4 +131,15 @@ class HybridRecordsRepository implements RecordsRepository {
     }
     print('DEBUG: HybridRecordsRepository.saveRecords() completed');
   }
+
+  @override
+  Future<void> deleteFirestoreRecords() async {
+    print('DEBUG: HybridRecordsRepository.deleteAllRecords() called');
+
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await _firestoreRepository.deleteFirestoreRecords();
+    }
+    print('DEBUG: HybridRecordsRepository.deleteAllRecords() completed');
+  }
 }

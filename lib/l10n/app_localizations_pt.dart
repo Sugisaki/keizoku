@@ -152,7 +152,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addItem => 'Adicionar';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'Ontem';
 
   @override
   String get cancelButton => 'Cancelar';
@@ -238,38 +238,64 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noButton => 'Não';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Conta do Google';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'Não conectado';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return 'Conectado como $displayName';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Falha no login do Google: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => 'Conectado';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => 'Entrar';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => 'Sair';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => 'Logout realizado com sucesso.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return 'Falha no logout: $error';
   }
 
   @override
   String get checkingLoginStatus => 'Verificando...';
+
+  @override
+  String get deleteFirestoreData => 'Excluir Dados da Nuvem';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      'Excluir permanentemente todos os seus dados armazenados na nuvem. Isso não excluirá os dados locais.';
+
+  @override
+  String get deleteButton => 'Excluir';
+
+  @override
+  String get confirmDelete => 'Confirmar Exclusão';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      'Tem certeza de que deseja excluir permanentemente todos os seus dados armazenados na nuvem? Esta ação não pode ser desfeita.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      'Todos os dados armazenados na nuvem foram excluídos com sucesso.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return 'Falha ao excluir todos os dados armazenados na nuvem: $error';
+  }
 }

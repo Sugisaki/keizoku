@@ -123,5 +123,21 @@
   "yesButton": "Oui",
   "noButton": "Non",
   "unsavedChangesWarning": "Les modifications n'ont pas été enregistrées. Si vous quittez l'écran, elles seront perdues. Êtes-vous sûr ?",
-  "checkingLoginStatus": "Vérification..."
+  "checkingLoginStatus": "Vérification...",
+  "googleAccount": "Compte Google",
+  "notLoggedIn": "Non connecté",
+  "loggedInAs": "Connecté en tant que {displayName}",
+  "loginFailed": "Échec de la connexion Google : {error}",
+  "loggedIn": "Connecté",
+  "loginButton": "Se connecter",
+  "logoutButton": "Se déconnecter",
+  "loggedOut": "Déconnecté avec succès.",
+  "logoutFailed": "Échec de la déconnexion : {error}",
+  "deleteFirestoreData": "Supprimer les données du cloud",
+  "deleteFirestoreDataDescription": "Supprimer définitivement toutes vos données stockées dans le cloud. Cela ne supprimera pas les données locales.",
+  "deleteButton": "Supprimer",
+  "confirmDelete": "Confirmer la suppression",
+  "deleteFirestoreDataConfirmation": "Êtes-vous sûr de vouloir supprimer définitivement toutes vos données stockées dans le cloud ? Cette action ne peut pas être annulée.",
+  "firestoreDataDeletedSuccessfully": "Toutes les données stockées dans le cloud ont été supprimées avec succès.",
+  "firestoreDataDeletionFailed": "Échec de la suppression de toutes les données stockées dans le cloud : {error}"
 }

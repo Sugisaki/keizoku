@@ -238,38 +238,64 @@ class AppLocalizationsKo extends AppLocalizations {
   String get noButton => '아니오';
 
   @override
-  String get googleAccount => 'Google Account';
+  String get googleAccount => 'Google 계정';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => '로그인하지 않음';
 
   @override
   String loggedInAs(String displayName) {
-    return 'Logged in as $displayName';
+    return '$displayName으로 로그인됨';
   }
 
   @override
   String loginFailed(String error) {
-    return 'Google login failed: $error';
+    return 'Google 로그인 실패: $error';
   }
 
   @override
-  String get loggedIn => 'Logged in';
+  String get loggedIn => '로그인됨';
 
   @override
-  String get loginButton => 'Login';
+  String get loginButton => '로그인';
 
   @override
-  String get logoutButton => 'Logout';
+  String get logoutButton => '로그아웃';
 
   @override
-  String get loggedOut => 'Logged out successfully.';
+  String get loggedOut => '성공적으로 로그아웃했습니다.';
 
   @override
   String logoutFailed(String error) {
-    return 'Logout failed: $error';
+    return '로그아웃 실패: $error';
   }
 
   @override
   String get checkingLoginStatus => '확인 중...';
+
+  @override
+  String get deleteFirestoreData => '클라우드 데이터 삭제';
+
+  @override
+  String get deleteFirestoreDataDescription =>
+      '클라우드에 저장된 모든 데이터를 영구적으로 삭제합니다. 로컬 데이터는 삭제되지 않습니다.';
+
+  @override
+  String get deleteButton => '삭제';
+
+  @override
+  String get confirmDelete => '삭제 확인';
+
+  @override
+  String get deleteFirestoreDataConfirmation =>
+      '클라우드에 저장된 모든 데이터를 영구적으로 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.';
+
+  @override
+  String get firestoreDataDeletedSuccessfully =>
+      '클라우드에 저장된 모든 데이터가 성공적으로 삭제되었습니다.';
+
+  @override
+  String firestoreDataDeletionFailed(String error) {
+    return '클라우드에 저장된 모든 데이터 삭제 실패: $error';
+  }
 }
