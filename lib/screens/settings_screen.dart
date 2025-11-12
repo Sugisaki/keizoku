@@ -35,26 +35,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _initGoogleSignIn() async {
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _googleUser = account;
-        _isCheckingSignIn = false; // 確認完了
+    try {
+      // GoogleSignIn状態変更の監視
+      _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+        setState(() {
+          _googleUser = account;
+          _isCheckingSignIn = false;
+        });
       });
-    });
-    
-    // 現在のユーザーを確認し、サインインしていない場合のみsignInSilently()を実行
-    if (_googleSignIn.currentUser == null) {
-      await _googleSignIn.signInSilently();
-    } else {
+      
+      // 現在のサインイン状態を確認
+      // signInSilently()は過去にログインしたことがある場合のみ成功する
+      final GoogleSignInAccount? currentUser = await _googleSignIn.signInSilently();
+      
+      // FirebaseAuth の状態も確認して整合性をチェック
+      final User? firebaseUser = _auth.currentUser;
+      
+      // Firebase認証とGoogle認証の状態を照合
+      if (currentUser != null && firebaseUser != null) {
+        // 両方でログイン済み - 正常な状態
+        setState(() {
+          _googleUser = currentUser;
+          _isCheckingSignIn = false;
+        });
+      } else if (currentUser != null && firebaseUser == null) {
+        // Google認証のみ有効、Firebase認証なし - 不整合状態なので初期化
+        await _googleSignIn.signOut();
+        setState(() {
+          _googleUser = null;
+          _isCheckingSignIn = false;
+        });
+      } else {
+        // 両方ともログインなし - 正常な初期状態
+        setState(() {
+          _googleUser = null;
+          _isCheckingSignIn = false;
+        });
+      }
+    } catch (e) {
+      // エラーが発生した場合はログアウト状態として扱う
+      print('Google Sign-In initialization error: $e');
       setState(() {
-        _googleUser = _googleSignIn.currentUser;
+        _googleUser = null;
+        _isCheckingSignIn = false;
       });
     }
-    
-    // 確認完了フラグを設定（onCurrentUserChangedが呼ばれない場合用）
-    setState(() {
-      _isCheckingSignIn = false;
-    });
   }
 
   @override
